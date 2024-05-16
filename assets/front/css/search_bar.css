@@ -1,0 +1,162 @@
+.custom-select {
+    position: relative;
+    width: 200px; /* Adjust as needed */
+  }
+  
+  .select-box {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    position: relative;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 4px 4px 0 0;
+  }
+  
+  .options-container {
+    max-height: 150px; /* Set a max height for options */
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    background-color: #fff;
+    display: none;
+  }
+  
+  .option {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .option:hover {
+    background-color: #f2f2f2;
+  }
+  /* =-------------------------------------------------------------------- */
+
+  .search-custom-select {
+    position: relative;
+    width: 200px; /* Adjust as needed */
+  }
+  
+  .search-select-box {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    position: relative;
+  }
+  
+  .search-search-input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 4px 4px 0 0;
+  }
+  
+  .search-options-container {
+    max-height: 150px; /* Set a max height for options */
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    background-color: #fff;
+    display: none;
+  }
+  
+  .search-option {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .search-option:hover {
+    background-color: #f2f2f2;
+  }
+
+  /* ---------------------------------------------------------------------------------------- */
+
+  .days-custom-select {
+    position: relative;
+    width: 200px; /* Adjust as needed */
+  }
+  
+  .days-select-box {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    position: relative;
+  }
+  
+  .days-search-input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 4px 4px 0 0;
+  }
+  
+  .days-options-container {
+    max-height: 150px; /* Set a max height for options */
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    background-color: #fff;
+    display: none;
+  }
+  
+  .days-option {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .days-option:hover {
+    background-color: #f2f2f2;
+  }
+  
+  /* -------------------------------------------------------- */
+  
+
+  .month-search-input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .month-custom-select {
+    position: relative;
+    width: 200px; /* Adjust as needed */
+  }
+  
+  .month-select-box {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    position: relative;
+  }
+  
+  .month-options-containers {
+    max-height: 150px; /* Set a max height for options */
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    background-color: #fff;
+    display: block;
+  }
+  
+  .month_option {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .month_option:hover {
+    background-color: #f2f2f2;
+  }
+

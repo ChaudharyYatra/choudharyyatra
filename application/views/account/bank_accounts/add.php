@@ -1,0 +1,121 @@
+<style>
+  .mealplan_css{
+            border: 1px solid red !important;
+        }
+</style>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1><?php echo $module_title; ?></h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <a href="<?php echo $module_url_path; ?>/index"><button class="btn btn-primary">Back</button></a>
+              
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- left column -->
+          <div class="col-md-12">
+            <!-- jquery validation -->
+            <?php $this->load->view('admin/layout/admin_alert'); ?>
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title"><?php echo $page_title; ?></h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form method="post" enctype="multipart/form-data" id="add_bank_accounts_master">
+                <div class="card-body">
+                 <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Bank Name</label>
+                            <input type="text" class="form-control" name="bank_name" id="bank_name" placeholder="Enter bank name"  required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Account Name</label>
+                            <input type="text" class="form-control" name="account_name" id="account_name" placeholder="Enter account name"  required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Account Number</label>
+                            <input type="text" class="form-control" name="account_number" id="account_number" placeholder="Enter account number"  required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Account Type</label>
+                            <input type="text" class="form-control" name="account_type" id="account_type" placeholder="Enter account type"  required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Branch Name</label>
+                            <input type="text" class="form-control" name="branch_name" id="branch_name" placeholder="Enter branch name"  required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Branch Address</label>
+                            <input type="text" class="form-control" name="branch_address" id="branch_address" placeholder="Enter branch address"  required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Contact Information</label>
+                            <input type="text" class="form-control" name="contact_information" id="contact_information" placeholder="Enter contact information"  required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Account Balance</label>
+                            <input type="text" class="form-control" name="account_balance" id="account_balance" placeholder="Enter account balance"  required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Notes/Comments</label>
+                            <input type="text" class="form-control" name="comments" id="comments" placeholder="Enter comments"  required="required">
+                        </div>
+                    </div>
+              </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary" name="submit" value="submit" id="submit_slider">Submit</button>
+				            <a href="<?php echo $module_url_path; ?>/index"><button type="button" class="btn btn-danger" >Cancel</button></a>
+                </div>
+              </form>
+            </div>
+            <!-- /.card -->
+            </div>
+          <!--/.col (left) -->
+          <!-- right column -->
+          <div class="col-md-6">
+
+          </div>
+          <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  
+
+</body>
+</html>

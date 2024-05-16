@@ -1,0 +1,479 @@
+<!-- jQuery UI CSS -->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+<style>
+    .card-bg{
+        background-color: #F6F6F6;
+    }
+    img{
+        width:25% !important;
+        height:25% !important;
+    }
+
+    table{
+        table-layout: fixed;
+        display: block;
+        overflow: auto;
+    }
+    .for_row_set .row_set{
+        width:135px;
+
+    }
+    .for_row_set .row_set1{
+        width:70px;
+
+    }
+    .chaudhary_yatra_logo{
+        width:100% !important;
+    }
+    .for_row_set .select_css{
+        color: black !important;
+    }
+    .red_remove .select_css{
+        color: black !important;
+    }
+    /* .footer-top{
+        margin-bottom: 70px !important;
+    } */
+</style>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1><?php echo $module_title; ?></h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <!-- <a href="<?php //echo $module_url_path; ?>/index"><button class="btn btn-primary">List</button></a> -->
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- left column -->
+            <div class="col-md-12">
+            <!-- jquery validation -->
+            <?php $this->load->view('agent/layout/agent_alert'); ?>
+            <div class="card card-primary">
+              <div class="card-header">
+              <?php foreach($traveller_booking_info as $traveller_booking_info_value) 
+                   {  ?>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>Tour Details -</label>
+                        </div>  
+                        <div class="col-md-5">
+                            <div><?php echo $traveller_booking_info_value['tour_number']; ?> - <?php echo $traveller_booking_info_value['tour_title']; ?></div>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Customer Name -</label>
+                        </div>
+                        <div class="col-md-3">
+                            <div><?php echo $traveller_booking_info_value['first_name']; ?> <?php echo $traveller_booking_info_value['middle_name']; ?> <?php echo $traveller_booking_info_value['srname']; ?></div>
+                        </div>
+                        <div class="col-md-2">  
+                            <label>Tour Date -</label>
+                        </div>
+                        <div class="col-md-5">  
+                            <div><?php echo date('d-m-Y', strtotime($traveller_booking_info_value['journey_date'])); ?></div>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Mobile No -</label>
+                        </div>
+                        <div class="col-md-3">
+                            <div><?php echo $traveller_booking_info_value['mobile_number']; ?></div>
+                        </div>
+                        <div class="col-md-7">
+                        </div>
+                        <div class="col-md-3">
+                            <label> Total Travellers Count -</label>
+                        </div>
+                        <div class="col-md-1">
+                            <div><?php echo $traveller_booking_info_value['seat_count']; ?></div>
+                        </div>
+                    </div>
+                <?php } ?>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                
+                <div class="card-body footer-top">
+                    <form method="post" enctype="multipart/form-data" id="all_traveller_info">
+                    <?php
+                    foreach($booking_basic_info_data as $booking_basic_info_data_value) 
+                    { 
+                    ?>
+                    <div class="col-md-12 text-center">
+                        <div class="row">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <!-- <label>Traveller Count</label>  -->
+                                    <input type="text" class="form-control" name="seat_count" id="seat_count_add" placeholder="Enter seat count" value="<?php $tcount=$booking_basic_info_data_value['seat_count']; echo $booking_basic_info_data_value['seat_count']; ?>" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    <?php
+                    foreach($agent_booking_enquiry_data as $agent_booking_enquiry_data_info) 
+                    { 
+                        $enquiry_id =  $agent_booking_enquiry_data_info['id'];
+                    ?>
+                        <input type="hidden" class="form-control" name="domestic_enquiry_id" id="domestic_enquiry_id" value="<?php echo $agent_booking_enquiry_data_info['id']; ?>">
+                    <?php } ?>
+
+                          
+                        <input type="hidden" class="form-control" name="package_id" id="package_id" value="<?php echo $package_id['tour_no']; ?>">
+                        
+                    <table class="table table-bordered" style="width:100%" id="traveller_table_add">
+                        
+                        <colgroup>
+                            <col span="1" style="width: 10%;">
+                            <col span="1" style="width: 20%;">
+                            <col span="1" style="width: 20%;">
+                            <col span="1" style="width: 20%;">
+                            <col span="1" style="width: 0%;">
+                            <col span="1" style="width: 10%;">
+                            <col span="1" style="width: 10%;">
+                        </colgroup>
+                            <thead>
+                                <tr style="background:#a19f9f; color:white;">
+                                    <th style="width:10%;">For credentials</th>
+                                    <th style="width:17%;">Mr / Mrs</th>
+                                    <th style="width:15%;">Last name</th>
+                                    <th style="width:15%;">First name</th>
+                                    <th style="width:15%;">Middle name</th>
+                                    
+                                    <th style="width:10%;">DOB</th>
+                                    <th style="width:10%;">Age</th>
+                                    <th style="width:15%;">Relation</th>
+                                    <th style="width:15%;">Anniversary Date (Optional)</th>
+                                    <th style="width:15%;">Mobile Number (Optional)</th>
+                                    
+                                    <th style="width:10%;">Upload Tourist Image</th>
+                                    <th style="width:10%;">Upload Tourist AadharCard Image</th>
+                                    <th style="width:10%;">Action</th>
+                                
+                                </tr>
+                            </thead>
+                            <tbody class="for_row_set">
+                                <?php 
+                                if(!empty($all_traveller_info)){
+                                    // alert('hiiiiiiiiiiiii'); 
+                                    $pre_count= count($all_traveller_info);
+                                    $all_traveller_count = $tcount-count($all_traveller_info);
+                                    ?>
+                                    <input type="hidden" class="form-control" name="all_traveller_count" id="all_traveller_count" value="<?php echo $pre_count; ?>">
+
+                                    <input type="hidden" class="form-control" name="d_hidden" id="d_hidden" value="<?php echo $all_traveller_count; ?>">
+
+                                    <?php 
+                                    $img_count=1;
+                                    foreach($all_traveller_info as $all_traveller_info_value) 
+                                    {
+                                        // print_r($all_traveller_info_value); die;
+                                ?>
+                            <tr>
+
+                            <input type="hidden" class="form-control" name="travaller_info_id[]" id="travaller_info_id" value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['id'];} ?>">
+                                 
+                                <td>
+                                <input type="radio" id="yes" name="for_credentials[]" value="<?php echo $all_traveller_info_value['id']; ?>" <?php if(isset($all_traveller_info_value['for_credentials'])){if($all_traveller_info_value['for_credentials']=='yes'){echo "checked";}} ?> required>
+                                
+                                </td>
+                                <td>
+                                <input type="hidden" class="form-control" name="row_id[]" id="row_id" value="<?php echo $all_traveller_info_value['id']; ?>">
+                                    <select class="select_css row_set1" name="mrandmrs[]" id="mrandmrs">
+                                        <option value="">select Mr / Mrs</option>
+                                        <?php
+                                        foreach($courtesy_titles_data as $courtesy_titles_data_info){ 
+                                        ?>
+                                        <option value="<?php echo $courtesy_titles_data_info['id'];?>" <?php if(isset($all_traveller_info_value['mr/mrs'])){if($courtesy_titles_data_info['id'] == $all_traveller_info_value['mr/mrs']) {echo 'selected';}}?>><?php echo $courtesy_titles_data_info['courtesy_titles_name'];?></option>
+                                        
+                                        <?php } ?>
+                                    </select>
+                                    
+                                </td>
+
+                                <td>
+                                    <input type="text" style="text-transform: capitalize;" class="form-control row_set last_name" name="last_name[]" id="last_name<?php echo $img_count; ?>" attr_for_search="<?php echo $img_count; ?>" autocomplete="off"
+
+                                    value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['last_name'];} ?>" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');">
+
+                                    <div id="user_name">
+                                        <ul id="search-results3<?php echo $img_count;?>">
+                                            
+                                        </ul>
+                                    </div>
+
+                                </td>
+                                
+                                <td>
+                                    <input type="text" style="text-transform: capitalize;" class="form-control row_set first_name" name="first_name[]" id="first_name<?php echo $img_count; ?>" attr_for_search="<?php echo $img_count; ?>" autocomplete="off"
+                                    value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['first_name'];} ?>" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');" list="nameList">
+
+                                    <div id="user_name">    
+                                        <ul id="search-results<?php echo $img_count;?>">
+                                            
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="text" style="text-transform: capitalize;" class="form-control row_set middle_name" name="middle_name[]" id="middle_name<?php echo $img_count; ?>" attr_for_search="<?php echo $img_count; ?>" autocomplete="off"
+
+                                    value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['middle_name'];} ?>" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');">
+
+                                    <div id="user_name">
+                                        <ul id="search-results2<?php echo $img_count;?>">
+                                            
+                                        </ul>
+                                    </div>
+                                    
+
+                                </td>
+                                
+                                <td>
+                                    <input type="date" class="form-control row_set" name="dob[]" id="dob" max="<?php echo date("Y-m-d");?>" value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['dob'];} ?>">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control row_set" name="age[]" id="age" value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['age'];} ?>" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                                </td>
+                                <td>
+                                    <select class="select_css row_set" name="relation[]" id="relation">
+                                        <option value="">Select</option>
+                                        <?php
+                                        foreach($relation_data as $relation_data_info){ 
+                                        ?>
+                                        <option value="<?php echo $relation_data_info['id'];?>" <?php if(isset($all_traveller_info_value['all_traveller_relation'])){if($relation_data_info['id'] == $all_traveller_info_value['all_traveller_relation']) {echo 'selected';}}?>><?php echo $relation_data_info['relation'];?></option>
+                                        
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" class="form-control row_set" name="anniversary_date[]" id="anniversary_date" max="<?php echo date("Y-m-d");?>" value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['anniversary_date'];} ?>">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control row_set" name="mobile_number[]" id="mobile_number" value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['mobile_number'];} ?>" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" minlength="10">
+                                </td>
+                                
+                                <td>
+                                    <input type="file" name="image_name[]" id="image_name<?php echo $img_count;?>" onchange="encodeImgtoBase64traveller_img(this)" attr_id="<?php echo $img_count;?>">
+                                    <input type="hidden" id="document_file_traveller_img<?php echo $img_count;?>" name="document_file_traveller_img[]" 
+                                    value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['img_encoded'];} ?>">
+                                    <div id="imagePreview_traveller_img<?php echo $img_count;?>" class="mt-2 img_size_cast">
+                                        <img src="<?php echo base_url(); ?>uploads/traveller/<?php echo $all_traveller_info_value['image_name'];?>" width="100%" value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['image_name'];} ?>"/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="file" name="aadhar_image_name[]" id="aadhar_image_name<?php echo $img_count;?>" onchange="encodeImgtoBase64aadhar_img(this)" attr_id="<?php echo $img_count;?>">
+                                    <input type="hidden" id="document_file_aadhar_img<?php echo $img_count;?>" name="document_file_aadhar_img[]" 
+                                    value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['aadhar_img_encoded'];} ?>">
+                                    <div id="imagePreview_aadhar_img<?php echo $img_count;?>" class="mt-2 img_size_cast">
+                                        <img src="<?php echo base_url(); ?>uploads/traveller_aadhar/<?php  echo $all_traveller_info_value['aadhar_image_name'];?>" width="100%" value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['aadhar_image_name'];} ?>"/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger resetBtn" id="resetBtn" name="Clear" value="Reset">Delete</button>
+                                </td>
+                                
+                            </tr>
+                        <?php 
+                        $img_count++;
+                                    }
+                        }
+                        else{
+                            for($i=1; $i<=$tcount; $i++){
+                                $img_count=$i+1;
+                                $traveller_id = $all_traveller_info_tble_id+$i;
+                            ?>
+                            <tr class="dynamic-row">
+
+                            <input type="hidden" name="traveller_id[]" value="<?php echo $traveller_id; ?>" required>
+
+                                <td>
+                                <input type="radio" id="yes" name="for_credentials[]" class="relation-radio" value="<?php echo $traveller_id; ?>" required>
+                                </td>
+                                    
+                                <td>
+                                    <select class="select_css row_set1" name="mrandmrs[]" id="mrandmrs[<?php echo $i ?>]" required>
+                                        <option value="">select Mr / Mrs</option>
+                                        <?php
+                                        foreach($courtesy_titles_data as $courtesy_titles_data_info){ 
+                                        ?>
+                                        <option value="<?php echo $courtesy_titles_data_info['id'];?>" <?php if(isset($all_traveller_info_value['mr/mrs'])){if($courtesy_titles_data_info['id'] == $all_traveller_info_value['mr/mrs']) {echo 'selected';}}?>><?php echo $courtesy_titles_data_info['courtesy_titles_name'];?></option>
+                                        
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                <?php if(!empty($all_traveller_info)){ ?>
+                                    <input type="text" style="text-transform: capitalize;" class="form-control row_set last_name" name="last_name[]" id="last_name<?php echo $i; ?>" attr_for_search="<?php echo $i; ?>" autocomplete="off"
+                                    value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['last_name'];} ?>" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');">
+                                <?php } else if($i==1){ 
+                                foreach($traveller_booking_info as $traveller_booking_info_value){ 
+                                    ?>
+                                    <input type="text" style="text-transform: capitalize;" class="form-control row_set last_name" name="last_name[]" id="last_name<?php echo $i; ?>" attr_for_search="<?php echo $i; ?>" autocomplete="off"
+                                    value="<?php echo $traveller_booking_info_value['srname']; ?>" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');">
+                                <?php } } else{ ?> 
+                                    <input type="text" style="text-transform: capitalize;" class="form-control row_set last_name" name="last_name[]" id="last_name<?php echo $i; ?>" attr_for_search="<?php echo $i; ?>" autocomplete="off"
+                                    value="" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');">
+                                <?php  } ?>
+
+                                    <div id="user_name">
+                                        <ul id="search-results3<?php echo $i;?>">
+                                            
+                                        </ul>
+                                    </div>
+
+                                </td>
+                                <td>
+                                <?php if(!empty($all_traveller_info)){ ?> 
+                                    <input type="text" style="text-transform: capitalize;" class="form-control row_set first_name" name="first_name[]" id="first_name<?php echo $i; ?>" attr_for_search="<?php echo $i; ?>" autocomplete="off"
+                                    value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['first_name'];} ?>" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');">
+                                <?php } else if($i==1){ 
+                                    foreach($traveller_booking_info as $traveller_booking_info_value){ 
+                                        ?> 
+                                    <input type="text" style="text-transform: capitalize;" class="form-control row_set first_name" name="first_name[]" id="first_name<?php echo $i; ?>" attr_for_search="<?php echo $i; ?>" autocomplete="off"
+                                    value="<?php echo $traveller_booking_info_value['first_name']; ?>" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');">
+                                <?php } } else{ 
+                                        ?> 
+                                    <input type="text" style="text-transform: capitalize;" class="form-control row_set first_name" name="first_name[]" id="first_name<?php echo $i; ?>" attr_for_search="<?php echo $i; ?>" autocomplete="off"
+                                    value="" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');">
+                                <?php  }?>
+
+                                    <div id="user_name">
+                                        <ul class="search-results" id="search-results<?php echo $i;?>">
+                                            
+                                        </ul>
+                                    </div>
+
+                                </td>
+                                <td>
+                                <?php if(!empty($all_traveller_info)){ ?> 
+                                    <input type="text" style="text-transform: capitalize;" class="form-control row_set middle_name" name="middle_name[]" id="middle_name<?php echo $i; ?>" attr_for_search="<?php echo $i; ?>" autocomplete="off"
+                                    value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['middle_name'];} ?>" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');">
+                                <?php } else if($i==1){ 
+                                    foreach($traveller_booking_info as $traveller_booking_info_value){ 
+                                        ?> 
+                                    <input type="text" style="text-transform: capitalize;" class="form-control row_set middle_name" name="middle_name[]" id="middle_name<?php echo $i; ?>" attr_for_search="<?php echo $i; ?>" autocomplete="off"
+                                    value="<?php echo $traveller_booking_info_value['middle_name']; ?>" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');">
+                                <?php } } else{ ?> 
+                                    <input type="text" style="text-transform: capitalize;" class="form-control row_set middle_name" name="middle_name[]" id="middle_name<?php echo $i; ?>" attr_for_search="<?php echo $i; ?>" autocomplete="off"
+                                    value="" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');">
+                                <?php  } ?>
+
+                                    <div id="user_name">
+                                        <ul id="search-results2<?php echo $i;?>">
+                                            
+                                        </ul>
+                                    </div>
+
+                                </td>
+                                
+                                <td>
+                                    <input type="date" class="form-control row_set" name="dob[]" id="dob<?php echo $i ?>" max="<?php echo date("Y-m-d");?>">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control row_set" name="age[]" id="age<?php echo $i ?>" value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['age'];} ?>" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                                </td>
+                                <td>
+                                    <select class="select_css row_set" name="relation[]" id="relation<?php echo $i ?>">
+                                        <option value="">Select</option>
+                                        <?php
+                                        foreach($relation_data as $relation_data_info){ 
+                                        ?>
+                                        <option value="<?php echo $relation_data_info['id']; ?>"><?php echo $relation_data_info['relation']; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" class="form-control row_set" name="anniversary_date[]" id="anniversary_date" max="<?php echo date("Y-m-d");?>">
+                                </td>
+                                <td>
+                                <?php if(!empty($all_traveller_info)){ ?>
+                                    <input type="text" class="form-control row_set" name="mobile_number[]" id="mobile_number<?php echo $i ?>" value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['mobile_number'];} ?>" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" minlength="10">
+                                    <?php } else if($i==1){ 
+                                foreach($traveller_booking_info as $traveller_booking_info_value){ 
+                                    ?>
+                                    <input type="text" class="form-control row_set" name="mobile_number[]" id="mobile_number<?php echo $i ?>" value="<?php echo $traveller_booking_info_value['mobile_number']; ?>" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" minlength="10">
+                                <?php } } else{ ?> 
+                                    <input type="text" class="form-control row_set" name="mobile_number[]" id="mobile_number<?php echo $i ?>" value="" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" minlength="10">
+                                    <?php  } ?>
+                                </td>
+                                
+                               
+                                <td>
+                                    <input type="file" name="image_name[]" id="image_name<?php echo $img_count;?>" onchange="encodeImgtoBase64traveller_img(this)" attr_id="<?php echo $img_count;?>">
+                                    <input type="hidden" id="document_file_traveller_img<?php echo $img_count;?>" name="document_file_traveller_img[]"
+                                        value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['img_encoded'];} ?>">
+                                        <div id="imagePreview_traveller_img<?php echo $img_count;?>" class="mt-2 img_size_cast">
+                                            <img src="<?php echo base_url(); ?>uploads/traveller/" width="100%" />
+                                        </div>
+                                </td>
+                              
+                                <td>
+                                    <input type="file" name="aadhar_image_name[]" id="aadhar_image_name<?php echo $img_count;?>" onchange="encodeImgtoBase64aadhar_img(this)" attr_id='<?php echo $img_count;?>'>
+                                    <input type="hidden" id="document_file_aadhar_img<?php echo $img_count;?>" name="document_file_aadhar_img[]" 
+                                    value="<?php if(!empty($all_traveller_info_value)){ echo $all_traveller_info_value['aadhar_img_encoded'];} ?>">
+                                    <div id="imagePreview_aadhar_img<?php echo $img_count;?>" class="mt-2 img_size_cast">
+                                        <img src="<?php echo base_url(); ?>uploads/traveller_aadhar/" width="100%" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger resetBtn" id="resetBtn" name="Clear" value="Reset">Delete</button>
+                                </td>
+                                
+                            </tr>
+                            <?php
+
+                            } 
+                        }
+                        ?>
+                        
+                            </tbody>
+                    </table>
+                    
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary" name="submit" value="submit">Save & Close</button>
+                        <button type="submit" class="btn btn-success" name="booknow_submit" value="Book Now" id="append_val">Submit & Proceed</button>
+                        <button type="submit" class="btn btn-warning" name="submit_back" value="submit_back" id="back-button_all_traveller">Back</button>
+
+                        <!-- <a onclick="return confirm('Are You Sure You Want Save This Record?')">
+                        <button type="submit" class="btn btn-warning" name="submit_back" value="submit_back" id="back-button">Back</button></a> -->
+
+                        <!-- <a href="<?php //echo $module_booking_basic_info; ?>/add/<?php //echo $enquiry_id;?>/1"><button type="button" class="btn btn-warning" name="back_btn">Back</button></a> -->
+                        <a href="<?php echo $domestic_booking_process; ?>/index"><button type="button" class="btn btn-danger" >Cancel</button></a>
+                    </div>
+                </form>
+                
+                </div>
+            </div>
+            <!-- /.card -->
+            </div>
+          <!--/.col (left) -->
+          <!-- right column -->
+          
+          <!--/.col (right) -->
+        </div>
+
+
+
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  

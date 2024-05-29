@@ -495,9 +495,6 @@
                                             <td>
                                                 <select class="select_css start_point" name="start_point[]" id="start_point">
                                                     <option value="">Select start point</option>
-                                                    <!-- <?php //foreach($citywise_other_add_more as $citywise_other_add_more_info){ ?> 
-                                                        <option value="<?php //echo $citywise_other_add_more_info['id'];?>"><?php //echo $citywise_other_add_more_info['place_name'];?></option>
-                                                    <?php //} ?> -->
                                                 </select>
                                             </td>
                                             <td><input type="time" class="form-control quantity" name="start_time[]" id="start_time<?php echo $i;?>"></td>

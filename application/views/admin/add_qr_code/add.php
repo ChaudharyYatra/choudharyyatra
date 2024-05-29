@@ -15,7 +15,6 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <a href="<?php echo $module_url_path; ?>/index"><button class="btn btn-primary">Back</button></a>
-              
             </ol>
           </div>
         </div>
@@ -80,7 +79,7 @@
                         <div class="col-md-6">
                           <div class="form-group">
                               <label>Nick Name</label>
-                              <input type="text" class="form-control" name="nick_name[]" id="nick_name" placeholder="Enter Nick Name" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');" required="required">
+                              <input type="text" class="form-control" name="nick_name[]" id="nick_name" placeholder="Enter Nick Name" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');">
                           </div>
                         </div>
 

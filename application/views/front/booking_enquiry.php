@@ -140,7 +140,7 @@
                                                     <select class="niceSelect" name="department_id" id="department_id">
                                                         <option value="">Select Region</option>
                                                         <?php foreach($department_data as $department){ ?> 
-                                           <option value="<?php echo $department['id'];?>"><?php echo $department['department'];?></option>
+                                                            <option value="<?php echo $department['id'];?>"><?php echo $department['department'];?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>

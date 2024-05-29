@@ -211,6 +211,20 @@
                               </select>
                             </div>
                           </div>
+
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label>Total Grocery Cost (Kirana)</label>
+                              <input type="text" class="form-control" name="grocery_cost" id="grocery_cost" value="<?php echo $info['grocery_cost'];?>" placeholder="Enter Grocery Cost" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" required="required">
+                            </div>
+                          </div>
+
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label>Total Person Count</label>
+                              <input type="text" class="form-control" name="total_person_count" id="total_person_count" value="<?php echo $info['total_person_count'];?>" placeholder="Enter Total Person Count" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" required="required">
+                            </div>
+                          </div>
                           
                         <div class="col-md-4">
                           <div class="form-group">

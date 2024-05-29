@@ -29,50 +29,13 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <li class="nav-item">
-                <a href="<?php echo base_url(); ?>kitchen_staff_cook/dashboard/index" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard</p>
-                </a>
+          <li class="nav-item">
+              <a href="<?php echo base_url(); ?>kitchen_staff_cook/dashboard/index" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Dashboard</p>
+              </a>
           </li>
 
-          
-          
-          <!-- <li class="nav-item">
-            <a href="<?php //echo base_url(); ?>tour_manager/suggestion_module/index" class="nav-link">
-              <i class="nav-icon fas fa-book"></i>
-              <p>
-               Suggestion Module
-              </p>
-            </a>
-          </li> -->
-
-          <!-- <li class="nav-item">
-            <a href="<?php //echo base_url(); ?>tour_manager/instruction_module/index" class="nav-link">
-              <i class="nav-icon fas fa-book"></i>
-              <p>
-               Instruction Module
-              </p>
-            </a>
-          </li> -->
-
-          <!-- <li class="nav-item">
-            <a href="<?php //echo base_url(); ?>tour_manager/tour_expenses/index" class="nav-link">
-              <i class="nav-icon fas fa-book"></i>
-              <p>
-               Tour Expenses
-              </p>
-            </a>
-          </li> -->
-
-          <!-- <li class="nav-item">
-            <a href="<?php //echo base_url(); ?>tour_manager/customer_feedback/index" class="nav-link">
-              <i class="nav-icon fas fa-book"></i>
-              <p>
-               Feedback From Customer 
-              </p>
-            </a>
-          </li> -->
 
           <li class="nav-item">
             <a href="" class="nav-link">
@@ -83,7 +46,6 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-               
               <li class="nav-item">
                 <a href="<?php echo base_url(); ?>kitchen_staff_cook/asign_tour_to_manager/index" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>

@@ -3107,6 +3107,12 @@ $('#add_package').validate({ // initialize the plugin
         zone_name: {
             required: true,
         },
+        grocery_cost: {
+            required: true,
+        },
+        total_person_count: {
+            required: true,
+        },
         image_name: {
             required: true,
         },
@@ -3188,6 +3194,12 @@ $('#add_package').validate({ // initialize the plugin
         zone_name : {
             required : "Please select zone name",
         },
+        grocery_cost : {
+            required : "Please enter grocery cost",
+        },
+        total_person_count : {
+            required : "Please enter total person count",
+        },
         image_name : {
             required : "Please upload image",
         },
@@ -3254,6 +3266,12 @@ $('#edit_package').validate({ // initialize the plugin
             required: true,
         },
         zone_name: {
+            required: true,
+        },
+        grocery_cost: {
+            required: true,
+        },
+        total_person_count: {
             required: true,
         },
         old_img_name: {
@@ -3336,6 +3354,12 @@ $('#edit_package').validate({ // initialize the plugin
         },
         zone_name : {
             required : "Please select zone name",
+        },
+        grocery_cost : {
+            required : "Please enter grocery cost",
+        },
+        total_person_count : {
+            required : "Please enter total person count",
         },
         old_img_name : {
             required : "Please upload image",
@@ -9317,9 +9341,9 @@ $('#add_QR_code').validate({ // initialize the plugin
         "company_account_yes_no[$i]": {
             required: true,
         },
-        "nick_name[]": {
-            required: true,
-        },
+        // "nick_name[]": {
+        //     required: true,
+        // },
         "bank_name[]": {
             required: true,
         },
@@ -9355,9 +9379,9 @@ $('#add_QR_code').validate({ // initialize the plugin
         "company_account_yes_no[$i]": {
             required : "Please select is company account",
         },
-        "nick_name[]": {
-            required : "Please enter nick name",
-        },
+        // "nick_name[]": {
+        //     required : "Please enter nick name",
+        // },
         "bank_name[]": {
             required : "Please enter bank name",
         },
@@ -9408,9 +9432,9 @@ $('#edit_QR_code').validate({ // initialize the plugin
         upi_app_name: {
             required : true,
         },
-        nick_name: {
-            required: true,
-        },
+        // nick_name: {
+        //     required: true,
+        // },
         mobile_number: {
             required: true,
             maxlength:10,
@@ -9453,9 +9477,9 @@ $('#edit_QR_code').validate({ // initialize the plugin
         company_account_yes_no : {
             required : "Please select is company account",
         },
-        nick_name : {
-            required : "Please Enter Nick Name",
-        },
+        // nick_name : {
+        //     required : "Please Enter Nick Name",
+        // },
         mobile_number : {
             required : "Please Enter Mobile Number",
             maxlength: "Please enter maximum 10 digit number",
@@ -12409,7 +12433,258 @@ $(document).on('click', '.btn_remove', function(){
         });
     });
 </script>
-<!-- district wise citywise place master show select -->
+<!-- district wise citywise place master show select -->'
+
+
+<!----------------- vehicle costing details  ---------------------->
+<script>
+
+        function updatePerUnitRate(row) {
+            var quantity = parseFloat($(row).find(".total_km").val());
+            var rate = parseFloat($(row).find(".per_km_rate").val());
+
+            if (!isNaN(quantity) && !isNaN(rate) && quantity !== 0) {
+                var perUnitRate = rate * quantity;
+                $(row).find(".total").val(perUnitRate.toFixed(2)); // You can adjust the number of decimal places as needed.
+            } else {
+                $(row).find(".total").val('');
+            }
+        }
+
+        var i=1;
+    $('#add_more_vehicle_costing_details').click(function() {
+       // alert('hhhh');
+            i++;
+    var structure = $(`<tr id="new_row`+i+`">
+                    <td class="hotel_room_rate">
+                        <select class="form-control" name="vehicle_type[]" id="vehicle_type`+i+`">
+                            <option value="">Select vehicle type</option>
+                                <?php foreach($vehicle_type as $vehicle_type_value){ ?> 
+                                    <option value="<?php echo $vehicle_type_value['id'];?>"><?php echo $vehicle_type_value['vehicle_type_name'];?></option>
+                                <?php } ?>
+                        </select>
+                    </td>
+                    <td class="hotel_room_rate">
+                        <input type="text" class="form-control total_km" name="total_km[]" id="total_km`+i+`" placeholder="Enter total km" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required="required">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control per_km_rate" name="per_km_rate[]" id="per_km_rate`+i+`" placeholder="Enter per km rate" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control total" name="total_km_per_km_rate[]" id="total_km_per_km_rate`+i+`" placeholder="Enter total calculation" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    </td>
+                    <td>
+                        <button type="button" name="remove" id="`+i+`" class="btn btn-danger btn_remove">X</button>
+                    </td>
+                </tr>`);
+$('#main_row_vehicle_costing_details').append(structure);    
+
+});
+
+$(document).on("input", ".total_km, .per_km_rate", function() {
+            // Loop through all rows and update their per_unit_rate
+            $("#main_row_vehicle_costing_details tbody tr").each(function() {
+                updatePerUnitRate(this);
+            });
+            // updateExpenseAmount(); // Recalculate the total when a rate or quantity changes
+        });
+
+$(document).on('click', '.btn_remove', function(){  
+           var button_id = $(this).attr("id");   
+           $('#new_row'+button_id+'').remove();  
+      });
+
+</script>
+
+<script>
+  $(".vehicle_costing_details_delete_instruction").click(function() { 
+   
+     var vehicle_costing_details_id =  $(this).attr('value');
+    //  alert(delete_add_more_state_id);
+     if(vehicle_costing_details_id !== '')
+     {
+          // Display a confirmation dialog
+          var confirmDelete = confirm('Are You Sure You Want To Delete This Record?');
+
+          if (confirmDelete) {
+              // User clicked "OK," send the AJAX request to delete the record
+              $.ajax({
+                  type: "POST",
+                  url: '<?=base_url()?>admin/vehicle_costing_details/add_more_delete',
+                  data: {
+                      request_id: vehicle_costing_details_id
+                  },
+                  success: function(response) {
+                      console.log(response);
+                      if (response === true) {
+                          // The record was successfully deleted
+                          alert("Record deleted successfully.");
+                          // You can add further handling here
+                      } else {
+                          alert('Record deleted successfully.');
+                      }
+                  },
+              });
+          }
+     }
+});
+</script>
+
+
+<script>
+
+    function updatePerUnitRate(row) {
+            var quantity = parseFloat($(row).find(".total_km").val());
+            var rate = parseFloat($(row).find(".per_km_rate").val());
+
+            if (!isNaN(quantity) && !isNaN(rate) && quantity !== 0) {
+                var perUnitRate = rate * quantity;
+                $(row).find(".total").val(perUnitRate.toFixed(2)); // You can adjust the number of decimal places as needed.
+            } else {
+                $(row).find(".total").val('');
+            }
+        }
+
+        var i=1;
+    $('#edit_add_more_vehicle_costing_details').click(function() {
+       // alert('hhhh');
+    var structure = $(`<tr id="new_row`+i+`">
+                    <td class="hotel_room_rate">
+                        <select class="form-control" name="edit_vehicle_type[]" id="edit_vehicle_type`+i+`">
+                            <option value="">Select vehicle type</option>
+                                <?php foreach($vehicle_type as $vehicle_type_value){ ?> 
+                                    <option value="<?php echo $vehicle_type_value['id'];?>"><?php echo $vehicle_type_value['vehicle_type_name'];?></option>
+                                <?php } ?>
+                        </select>
+                    </td>
+                    <td class="hotel_room_rate">
+                        <input type="text" class="form-control total_km" name="edit_total_km[]" id="edit_total_km`+i+`" placeholder="Enter total km" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required="required">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control per_km_rate" name="edit_per_km_rate[]" id="edit_per_km_rate`+i+`" placeholder="Enter per km rate" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required="required">
+                    </td>
+                    <td class="hotel_room_rate">
+                        <input type="text" class="form-control total" name="edit_total_km_per_km_rate[]" id="edit_total_km_per_km_rate`+i+`" placeholder="Enter total calculation" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required="required">
+                    </td>
+                    <td>
+                        <button type="button" name="remove" id="`+i+`" class="btn btn-danger btn_remove">X</button>
+                    </td>
+                </tr> `);
+$('#edit_main_row_for_state_master').append(structure); 
+i++;
+initializeValidationForNewRow(i - 1);
+});
+
+
+function initializeValidationForNewRow(rowIndex) {
+    // Define rules and messages for the newly added row
+    $('#edit_vehicle_type' + rowIndex).rules('add', {
+        required: true,
+        messages: {
+            required: "Select vehicle type"
+        }
+    });
+
+    $('#edit_total_km' + rowIndex).rules('add', {
+        required: true,
+        messages: {
+            required: "Enter total kilometer"
+        }
+    });
+
+    $('#edit_per_km_rate' + rowIndex).rules('add', {
+        required: true,
+        messages: {
+            required: "Enter per kilometer rate"
+        }
+    });
+
+    $('#edit_total_km_per_km_rate' + rowIndex).rules('add', {
+        required: true,
+        messages: {
+            required: "Enter total"
+        }
+    });
+}
+
+$(document).on('click', '.btn_remove', function(){  
+           var button_id = $(this).attr("id");   
+           $('#new_row'+button_id+'').remove();  
+      });
+
+
+// Update per_unit_rate when quantity or rate changes in any row
+$(document).on("input", ".total_km, .per_km_rate", function() {
+            // Loop through all rows and update their per_unit_rate
+            $("#edit_main_row_for_state_master tbody tr").each(function() {
+                updatePerUnitRate(this);
+            });
+
+            // updateExpenseAmount(); // Recalculate the total when a rate or quantity changes
+        });
+</script>
+
+<script>
+$(document).ready(function () {
+
+$('#add_vehicle_costing_details').validate({ // initialize the plugin
+    errorPlacement: function($error, $element) {
+    $error.appendTo($element.closest("td"));
+  },
+});
+
+$('[name^="vehicle_type"]').each(function() {
+        // alert("cccccc");
+        $(this).rules('add', {
+            required: true,
+            // minlength: 2,
+            messages: {
+                required: "Select vehicle type",
+                // minlength: "Enter at least {0} characters",
+            }
+        })
+    });
+
+    $('[name^="total_km"]').each(function() {
+        // alert("cccccc");
+        $(this).rules('add', {
+            required: true,
+            // minlength: 2,
+            messages: {
+                required: "Enter total kilometer",
+                // minlength: "Enter at least {0} characters",
+            }
+        })
+    });
+
+    $('[name^="per_km_rate"]').each(function() {
+        // alert("cccccc");
+        $(this).rules('add', {
+            required: true,
+            // minlength: 2,
+            messages: {
+                required: "Enter per kilometer rate",
+                // minlength: "Enter at least {0} characters",
+            }
+        })
+    });
+
+    $('[name^="total_km_per_km_rate"]').each(function() {
+        // alert("cccccc");
+        $(this).rules('add', {
+            required: true,
+            // minlength: 2,
+            messages: {
+                required: "Enter total calculation",
+                // minlength: "Enter at least {0} characters",
+            }
+        })
+    });
+
+});
+
+</script>
+<!----------------- vehicle costing details  ---------------------->
 
 <!--  -->
 <script type='text/javascript'>

@@ -54,10 +54,14 @@ class Academic_year extends CI_Controller{
        
         if($this->input->post('submit'))
         {
+            $this->form_validation->set_rules('from_date', 'from_date', 'required');
+            $this->form_validation->set_rules('to_date', 'to_date', 'required');
             $this->form_validation->set_rules('year', 'Year', 'required');
             
             if($this->form_validation->run() == TRUE)
             {
+                $from_date = $this->input->post('from_date');
+                $to_date = $this->input->post('to_date');
                 $year = $this->input->post('year');
                 
                 $this->db->where('year',$year);
@@ -70,6 +74,8 @@ class Academic_year extends CI_Controller{
                 }
                 
                 $arr_insert = array(
+                    'from_date'   =>   $from_date,
+                    'to_date'   =>   $to_date,
                     'year'   =>   $year
                 );
                 
@@ -196,10 +202,14 @@ class Academic_year extends CI_Controller{
             $arr_data = $this->master_model->getRecords('academic_years');
             if($this->input->post('submit'))
             {
+                $this->form_validation->set_rules('from_date', 'from_date', 'required');
+                $this->form_validation->set_rules('to_date', 'to_date', 'required');
                 $this->form_validation->set_rules('year', 'Academic Year', 'required');
                 
                 if($this->form_validation->run() == TRUE)
                 {
+                   $from_date = trim($this->input->post('from_date'));
+                   $to_date = trim($this->input->post('to_date'));
                    $year = trim($this->input->post('year'));
                    
                     $this->db->where('year',$year);
@@ -213,10 +223,12 @@ class Academic_year extends CI_Controller{
                     }
                    
                     $arr_update = array(
+                        'from_date' => $from_date,
+                        'to_date' => $to_date,
                         'year' => $year
                     );
                     $arr_where     = array("id" => $id);
-                   $this->master_model->updateRecord('academic_years',$arr_update,$arr_where);
+                    $this->master_model->updateRecord('academic_years',$arr_update,$arr_where);
                     if($id > 0)
                     {
                         $this->session->set_flashdata('success_message',$this->module_title." Information Updated Successfully.");

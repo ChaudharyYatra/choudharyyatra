@@ -34,6 +34,8 @@
                   <thead>
                   <tr>
                     <th>SN</th>
+                    <th>From Date</th>
+                    <th>To Date</th>
                     <th>Academic Year</th>
                     <th>Is Active?</th>
                     <th>Action</th>
@@ -48,6 +50,8 @@
                      ?>
                   <tr>
                     <td><?php echo $i; ?></td>
+                    <td><?php echo date('d-m-Y', strtotime($info['from_date'])) ?></td>
+                    <td><?php echo date('d-m-Y', strtotime($info['to_date'])) ?></td>
                     <td><?php echo $info['year'] ?></td>
                    
                     <td>

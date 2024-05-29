@@ -111,6 +111,18 @@
 
                             <a href="<?php echo $module_url_vehicle_costing_details;?>/index/<?php echo $info['id'];?>">
                             <button class="dropdown-item">Vehicle Costing Details</button></a>
+                             <a href="<?php echo $module_url_path_iternary; ?>/tour_coast_details/<?php echo $info['id']; ?>/<?php echo $info['tour_number_of_days']; ?>" >
+                             <button class="dropdown-item">Coasting</button></a>
+		
+                          <a href="<?php echo $module_add_staff; ?>/index/<?php $tour_creation_id=base64_encode($info['id']); 
+					                  echo rtrim($tour_creation_id, '='); ?>/<?php $tour_days_id=base64_encode($info['tour_number_of_days']); echo rtrim($tour_days_id, '=');?>" >
+                            <button class="dropdown-item">Add Staff</button>
+                          </a>			
+                          <a href="<?php echo $module_vehicle_cost_adding; ?>/index/<?php $tour_creation_id=base64_encode($info['id']); 
+					                  echo rtrim($tour_creation_id, '='); ?>/<?php $tour_days_id=base64_encode($info['tour_number_of_days']); echo rtrim($tour_days_id, '=');?>" >
+                            <button class="dropdown-item">Add vehicle cost</button>
+                          </a>	
+                             
                         </div>
                       </div>
                     </td>

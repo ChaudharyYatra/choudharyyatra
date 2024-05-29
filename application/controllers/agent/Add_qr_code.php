@@ -92,7 +92,7 @@ class Add_qr_code extends CI_Controller{
                      
                     $uploadPath = './uploads/QR_code_image/'; 
                     $config['upload_path'] = $uploadPath; 
-                    $config['allowed_types'] = 'jpg|jpeg|png|gif'; 
+                    $config['allowed_types'] = 'png|jpg|jpeg|PNG|JPEG|JPG';
 
                     $this->load->library('upload', $config); 
                     $this->upload->initialize($config); 

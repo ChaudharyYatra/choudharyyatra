@@ -24,6 +24,18 @@
             </div>
         </div>
 
+            <!-- Search Box -->
+            <div class="search-box">
+                <input type="text" id="searchInput" onkeyup="searchSidebar()" placeholder="Search...">
+                <div>
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" id="searchResults" style="display: none;">
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Original Sidebar Content -->
+            <div id="originalSidebarContent">
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
@@ -1026,4 +1038,50 @@
         <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
+</div>
+
+
+    <!-- JavaScript for Search Functionality -->
+    <script>
+        function searchSidebar() {
+            // Retrieve input value and convert to lowercase for case-insensitive search
+            var input = document.getElementById("searchInput").value.toLowerCase();
+            var navItems = document.querySelectorAll('.nav-item'); // Select all sidebar items
+
+            // Filter through sidebar items
+            var found = false;
+            var results = '';
+            var existingResults = [];
+
+            navItems.forEach(function(item) {
+                var text = item.textContent.toLowerCase(); // Get text content of the sidebar item
+                if (text.includes(input)) { // If the input text is found in the sidebar item
+                    // Check if the item is not already in the results
+                    if (!existingResults.includes(text)) {
+                        found = true;
+                        results += item.outerHTML; // Add the item's HTML to the results
+                        existingResults.push(text);
+                    }
+                }
+            });
+
+            // Display search results or clear results if search input is empty
+            var searchResults = document.getElementById('searchResults');
+            if (input.trim() === '') {
+                searchResults.style.display = 'none'; // Hide search results if input is empty
+                searchResults.innerHTML = ''; // Clear search results
+            } else if (found) {
+                searchResults.style.display = 'block';
+                searchResults.innerHTML = results;
+            } else {
+                searchResults.style.display = 'block';
+                searchResults.innerHTML = "No results found";
+            }
+
+            // Toggle visibility of original sidebar content based on search input
+            var originalSidebarContent = document.getElementById('originalSidebarContent');
+            originalSidebarContent.style.display = (input.trim() === '') ? 'block' : 'none';
+        }
+    </script>
+
 </aside>

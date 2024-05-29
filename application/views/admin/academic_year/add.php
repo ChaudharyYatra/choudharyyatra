@@ -33,10 +33,29 @@
               <!-- form start -->
               <form method="post" enctype="multipart/form-data" id="add_academicyear">
                 <div class="card-body">
-                 
-                  <div class="form-group">
-                    <label>Academic Year</label>
-                    <input type="text" class="form-control" name="year" id="year" placeholder="Enter Academic Year" oninput="this.value = this.value.replace(/[^0-9-]/g, '').replace(/(\..*)\./g, '$1');" required="required">
+                  <div class="row">
+
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>From Date</label>
+                        <input type="date" class="form-control" name="from_date" placeholder="Select from date" required="required">
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>To Date</label>
+                        <input type="date" class="form-control" name="to_date" placeholder="Select to date" required="required">
+                      </div>
+                    </div>
+                  
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Academic Year</label>
+                        <input type="text" class="form-control" name="year" id="year" placeholder="Enter Academic Year" oninput="this.value = this.value.replace(/[^0-9-]/g, '').replace(/(\..*)\./g, '$1');" required="required">
+                      </div>
+                    </div>
+
                   </div>
                 </div>
                 <!-- /.card-body -->

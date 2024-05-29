@@ -15,6 +15,8 @@ class Tour_creation extends CI_Controller{
 		$this->module_url_path_iternary    =  base_url().$this->config->item('admin_panel_slug')."/tour_creation_iternary";
         $this->module_day_to_day_program    =  base_url().$this->config->item('admin_panel_slug')."/day_to_day_program";
 		$this->module_url_path_hotel    =  base_url().$this->config->item('admin_panel_slug')."/tour_creation_hotel";
+        $this->module_add_staff   =  base_url().$this->config->item('admin_panel_slug')."/add_staff";
+        $this->module_vehicle_cost_adding   =  base_url().$this->config->item('admin_panel_slug')."/vehicle_cost_adding";
         $this->module_title       = "Tour Creation";
         $this->module_url_slug    = "tour_creation";
         $this->module_view_folder = "tour_creation/";    
@@ -47,6 +49,8 @@ class Tour_creation extends CI_Controller{
         $this->arr_view_data['module_title']    = $this->module_title;
         $this->arr_view_data['module_url_path'] = $this->module_url_path;
         $this->arr_view_data['module_day_to_day_program'] = $this->module_day_to_day_program;
+        $this->arr_view_data['module_add_staff'] = $this->module_add_staff;
+        $this->arr_view_data['module_vehicle_cost_adding'] = $this->module_vehicle_cost_adding;
         $this->arr_view_data['middle_content']  = $this->module_view_folder."index";
         $this->load->view('admin/layout/admin_combo',$this->arr_view_data);
        

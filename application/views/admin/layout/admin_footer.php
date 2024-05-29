@@ -2111,15 +2111,27 @@ $('#add_academicyear').validate({ // initialize the plugin
     $error.appendTo($element.closest("div"));
   },
     rules: {
+        from_date: {
+            required: true,
+        },
+        to_date: {
+            required: true,
+        },
         year: {
             required: true,
         }
     },
 
     messages :{
+        from_date : {
+            required : "Please select from date",
+        },
+        to_date : {
+            required : "Please select to date",
+        },
         year : {
             required : "Please enter academic year",
-        },
+        }
     }
 });
 
@@ -12399,3 +12411,282 @@ $(document).on('click', '.btn_remove', function(){
 </script>
 <!-- district wise citywise place master show select -->
 
+<!--  -->
+<script type='text/javascript'>
+  // baseURL variable
+  var baseURL= "<?php echo base_url();?>";
+ 
+  $(document).ready(function(){
+    
+    // Event delegation for dynamically added elements
+    $(document).on('change', '#role_type', function(){
+      var did = $(this).val();
+      var currentRow = $(this).closest('tr');
+      // AJAX request
+      $.ajax({
+        url: baseURL + 'admin/add_staff/getrolename',
+        method: 'post',
+        data: {did: did},
+        dataType: 'json',
+        success: function(response){
+          console.log(response);
+          
+          var staffNameDropdown = currentRow.find('#staff_name');
+          staffNameDropdown.find('option').not(':first').remove();
+       
+          $.each(response, function(index, data){       
+             staffNameDropdown.append('<option value="'+data['id']+'">'+data['supervision_name']+'</option>');
+          });
+        }
+      });
+    });
+    
+    var i = 1;
+    $('#add_more_staff').click(function() {
+      i++;
+      var structure = $(`<tr id="new_row` + i + `">
+                    <td class="hotel_room_rate">
+                        <select class="select_css" name="role_type[]" id="role_type`+i+`">
+                            <option value="">Select role type</option>
+                            <?php
+                            foreach($role_type as $role_type_info) 
+                            { 
+                            ?>
+                            <option value="<?php echo $role_type_info['id'];?>"><?php echo $role_type_info['role_name'];?></option>
+                            <?php } ?>
+                        </select>
+                    </td>
+                    <td class="hotel_room_rate">
+                        <select class="select_css name" name="staff_name[]" id="staff_name`+i+`" required="required">
+                            <option value="">select name</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="daywise_salary[]" id="daywise_salary` + i + `" placeholder="Enter Days" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    </td>
+                    <td>
+                        <button type="button" name="remove" id="` + i + `" class="btn btn-danger btn_remove">X</button>
+                    </td>
+                </tr>`);
+      $('#main_row_for_staff_master').append(structure);    
+    });
+
+    $(document).on('click', '.btn_remove', function(){  
+      var button_id = $(this).attr("id");   
+      $('#new_row' + button_id).remove();  
+    });
+  });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+    $('#add_staff').validate({ // initialize the plugin
+        errorPlacement: function($error, $element) {
+        $error.appendTo($element.closest("div,td"));
+    },
+
+    });
+
+    $('[name^="role_type"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Select staff role type",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+        $('[name^="staff_name"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Select staff name",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+        $('[name^="daywise_salary"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Enter daywise salary",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+    });
+
+</script>
+
+<script>
+    $(document).ready(function () {
+    $('#edit_staff').validate({ // initialize the plugin
+        errorPlacement: function($error, $element) {
+        $error.appendTo($element.closest("div,td"));
+    },
+
+    });
+
+    $('[name^="role_type"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Select staff role type",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+        $('[name^="staff_name"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Select staff name",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+        $('[name^="daywise_salary"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Enter daywise salary",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+    });
+
+</script>
+
+<!--  -->
+
+<script type='text/javascript'>
+  // baseURL variable
+  var baseURL= "<?php echo base_url();?>";
+ 
+  $(document).ready(function(){
+    
+    var i = 1;
+    $('#add_more_vehicle_cost_adding').click(function() {
+      i++;
+      var structure = $(`<tr id="new_row` + i + `">
+                    <td class="hotel_room_rate">
+                        <select class="select_css" name="vehicle_type[]" id="vehicle_type`+i+`">
+                            <option value="">Select vehicle type</option>
+                            <?php
+                            foreach($vehicle_type as $vehicle_type_info) 
+                            { 
+                            ?>
+                            <option value="<?php echo $vehicle_type_info['id'];?>"><?php echo $vehicle_type_info['vehicle_type_name'];?></option>
+                            <?php } ?>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="per_km_rate[]" id="per_km_rate` + i + `" placeholder="Enter Days" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    </td>
+                    <td>
+                        <button type="button" name="remove" id="` + i + `" class="btn btn-danger btn_remove">X</button>
+                    </td>
+                </tr>`);
+      $('#main_row_for_vehicle_cost_adding_master').append(structure);    
+    });
+
+    $(document).on('click', '.btn_remove', function(){  
+      var button_id = $(this).attr("id");   
+      $('#new_row' + button_id).remove();  
+    });
+  });
+</script>
+
+<script>
+    $(document).ready(function () {
+    $('#add_vehicle_cost_adding').validate({ // initialize the plugin
+        errorPlacement: function($error, $element) {
+        $error.appendTo($element.closest("div,td"));
+    },
+
+    });
+
+    $('[name^="vehicle_type"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Select vehicle type",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+        $('[name^="per_km_rate"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Enter per km rate",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+    });
+
+</script>
+
+<script>
+    $(document).ready(function () {
+    $('#edit_vehicle_cost_adding').validate({ // initialize the plugin
+        errorPlacement: function($error, $element) {
+        $error.appendTo($element.closest("div,td"));
+    },
+
+    });
+
+    $('[name^="vehicle_type"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Select vehicle type",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+        $('[name^="per_km_rate"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Enter per km rate",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+    });
+
+</script>

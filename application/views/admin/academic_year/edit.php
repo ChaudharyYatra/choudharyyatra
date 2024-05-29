@@ -37,15 +37,33 @@
                      ?>
               <form method="post" enctype="multipart/form-data" id="edit_academicyear">
                 <div class="card-body">
-                  <div class="form-group">
-                    <label>Academic Year</label>
-                    <input type="text" class="form-control" name="year" id="year" placeholder="Enter Academic Year" required="required" value="<?php echo $info['year']; ?>">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>From Date</label>
+                        <input type="date" class="form-control" name="from_date" placeholder="Select from date" required="required" value="<?php echo $info['from_date']; ?>">
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>To Date</label>
+                        <input type="date" class="form-control" name="to_date" placeholder="Select to date" required="required" value="<?php echo $info['to_date']; ?>">
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Academic Year</label>
+                        <input type="text" class="form-control" name="year" id="year" placeholder="Enter Academic Year" required="required" value="<?php echo $info['year']; ?>">
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
-					<a href="<?php echo $module_url_path; ?>/index"><button type="button" class="btn btn-danger" >Cancel</button></a>
+					          <a href="<?php echo $module_url_path; ?>/index"><button type="button" class="btn btn-danger" >Cancel</button></a>
                 </div>
               </form>
               <?php } ?>

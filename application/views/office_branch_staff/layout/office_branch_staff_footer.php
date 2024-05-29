@@ -1822,35 +1822,6 @@ $('#all_traveller_info').validate({ // initialize the plugin
  
  </script>
 
-<script type='text/javascript'>
-  // baseURL variable
-  var baseURL= "<?php echo base_url();?>";
- 
-//   $(document).ready(function(){
- 
-    // district change
-    function tour_dates(){
-      var did = $("#tour_no").val();
-        // alert(did_tour); 
-      // AJAX request
-      $.ajax({
-        url:'<?=base_url()?>agent/booking_basic_info/get_tourdate',
-        method: 'post',
-        data: {did: did},
-        dataType: 'json',
-        success: function(response){
-        console.log(response);
-        
-          $('#tour_date').find('option').not(':first').remove();
-       
-          $.each(response,function(index,data){       
-             $('#tour_date').append('<option value="'+data['id']+'">'+data['journey_date']+'</option>');
-          });
-        }
-     });
-   }
-//  });
- </script>
 <!-- booking bus seat selection boarding office location start -->
 
 <!-- booking all traveller info (state,district,taluka) start -->
@@ -1951,36 +1922,7 @@ $('#all_traveller_info').validate({ // initialize the plugin
  });
  </script>
 
-<script type='text/javascript'>
-  // baseURL variable
-  var baseURL= "<?php echo base_url();?>";
- 
-//   $(document).ready(function(){
- 
-    // district change
-    function inter_tour_dates(){
-      var did = $("#inter_tour_no").val();
-    //    alert(did); 
-      // AJAX request
-      $.ajax({
-        url:'<?=base_url()?>agent/inter_bus_seat_selection/inter_get_tourdate',
-        method: 'post',
-        data: {did: did},
-        dataType: 'json',
-        success: function(response){
-        console.log(response);
-        
-          $('#inter_tour_date').find('option').not(':first').remove();
-       
-          $.each(response,function(index,data){    
-// alert(data['id']);
-             $('#inter_tour_date').append('<option value="'+data['id']+'">'+data['journey_date']+'</option>');
-          });
-        }
-     });
-   }
-//  });
- </script>
+
 <!-- booking bus seat selection boarding office location start -->
 
 <!-- jquery validation on add international Enquiry -->
@@ -5225,3 +5167,59 @@ $('#edit_kitchen_staff_cook').validate({ // initialize the plugin
     }
 </script>
 
+<script type='text/javascript'>
+  // baseURL variable
+  var baseURL= "<?php echo base_url();?>";
+ 
+  $(document).ready(function(){
+ 
+    // City change
+    $('#department_id').on('change', function () {
+      var did = $("#department_id").val();
+    //   alert(did);
+     
+      // AJAX request
+      $.ajax({
+        url:'<?=base_url()?>office_branch_staff/Add_sra_form/getbooking_center',
+        method: 'post',
+        data: {did: did},
+        dataType: 'json',
+        success: function(response){
+        console.log(response);
+        
+          $('#booking_center').find('option').not(':first').remove();
+       
+          $.each(response,function(index,data){             
+             $('#booking_center').append('<option value="'+data['id']+'">'+data['booking_center']+'</option>');
+          });
+        }
+     });
+   });
+ });
+ </script>
+
+<script>
+
+$(document).ready(function(){
+
+$('#sra_tour_number').change(function(){
+
+var did = $(this).val();
+
+  $.ajax({
+    url:'<?=base_url()?>office_branch_staff/add_sra_form/get_tourdate',
+    method: 'post',
+    data: {did: did},
+    dataType: 'json',
+    success: function(response){
+    // console.log(response);
+      $('#tour_date').find('option').not(':first').remove();
+      $.each(response,function(index,data){      
+         $('#tour_date').append('<option value="'+data['id']+'">'+data['journey_date']+'</option>');
+      });
+    }
+ });
+});
+});
+
+</script>

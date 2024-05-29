@@ -72,6 +72,14 @@
                     <td><?php echo $info['short_description']; ?></td>
                   </tr>
 
+                  <tr>
+                    <th>Total Grocery Cost (Kirana)</th>
+                    <td><?php echo $info['grocery_cost']; ?></td>
+                  
+                    <th>Total Person Count</th>
+                    <td><?php echo $info['total_person_count']; ?></td>
+                  </tr>
+
                   </table>
               </div>
               

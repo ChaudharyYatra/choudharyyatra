@@ -18,7 +18,6 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <a href="<?php echo $module_url_path; ?>/index"><button class="btn btn-primary">Back</button></a>
-              
             </ol>
           </div>
         </div>
@@ -32,7 +31,7 @@
           <!-- left column -->
           <div class="col-md-12">
             <!-- jquery validation -->
-            <?php $this->load->view('admin/layout/admin_alert'); ?>
+            <?php $this->load->view('office_branch_staff/layout/agent_alert'); ?>
             <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title"><?php echo $page_title; ?></h3>
@@ -59,9 +58,28 @@
 
                     <!--  firstly payment fields -->
                     <div id="firstly_submit_form" style="display:none;">
-                    <form method="post" action="<?php echo base_url(); ?>agent/add_sra_form/add" enctype="multipart/form-data">
+                    <form method="post" action="<?php echo base_url(); ?>office_branch_staff/add_sra_form/add" enctype="multipart/form-data">
                       <div class="row">
+                      <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Region Name</label> <br>
+                        <select class="niceSelect form-control" name="department_id" id="department_id" required="required">
+                            <option value="">Select Region</option>
+                            <?php foreach($department_data as $department){ ?> 
+                                <option value="<?php echo $department['id'];?>"><?php echo $department['department'];?></option>
+                            <?php } ?>
+                        </select>
+                      </div>
+                    </div>
 
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Booking Center</label> <br>
+                        <select class="niceSelect form-control" name="booking_center" id="booking_center" required="required">
+                            <option value="">Select Booking Center</option>
+                        </select>
+                      </div>
+                    </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label>Academic Year</label>

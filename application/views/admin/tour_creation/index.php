@@ -103,11 +103,14 @@
                             <a href="<?php echo $module_day_to_day_program; ?>/take_days/<?php $tour_creation_id=base64_encode($info['id']); 
 					                  echo rtrim($tour_creation_id, '='); ?>/<?php $tour_days_id=base64_encode($info['tour_number_of_days']); echo rtrim($tour_days_id, '=');?>" >
                             <button class="dropdown-item">Day to Day Program</button></a>			
-							            <a href="<?php echo $module_url_path_hotel;?>/add/<?php echo $info['id'];  ?>" ><button class="dropdown-item">Add Hotel</button></a>
-                          <a onclick="return confirm('Are You Sure You Want To Delete This Record?')" href="<?php echo $module_url_path;?>/delete/<?php $aid=base64_encode($info['id']); 
+							              <a href="<?php echo $module_url_path_hotel;?>/add/<?php echo $info['id'];  ?>" ><button class="dropdown-item">Add Hotel</button></a>
+                            <a onclick="return confirm('Are You Sure You Want To Delete This Record?')" href="<?php echo $module_url_path;?>/delete/<?php $aid=base64_encode($info['id']); 
 					                  echo rtrim($aid, '='); ?>" title="Delete"><button class="dropdown-item">Delete</button></a>
-                             <a href="<?php echo $module_url_path_iternary; ?>/tour_coast_details/<?php echo $info['id']; ?>/<?php echo $info['tour_number_of_days']; ?>" >
-                             <button class="dropdown-item">Coasting</button></a>
+                             <!-- <a href="<?php //echo $module_url_path_iternary; ?>/tour_coast_details/<?php //echo $info['id']; ?>/<?php //echo $info['tour_number_of_days']; ?>" >
+                             <button class="dropdown-item">Coasting</button></a> -->
+
+                            <a href="<?php echo $module_url_vehicle_costing_details;?>/index/<?php echo $info['id'];?>">
+                            <button class="dropdown-item">Vehicle Costing Details</button></a>
                         </div>
                       </div>
                     </td>

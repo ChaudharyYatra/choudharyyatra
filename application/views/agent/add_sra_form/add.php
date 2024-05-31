@@ -79,7 +79,9 @@
                         <div class="col-md-6">
                             <div class="form-group">
                             <label>SRA No</label>
-                            <input type="text" class="form-control" name="sra_no" id="sra_no" placeholder="Enter SRA No" required="required">
+                            <select class="form-control" style="width: 100%; overflow-y: auto;" size="3" name="sra_no" id="sra_no" required="required"></select>
+                            <input class="form-control" type="text" id="textbox" class="form-control" style="margin-top: 10px;" readonly>
+                            <!-- <input type="text" class="form-control" name="sra_no" id="sra_no" placeholder="Enter SRA No" required="required"> -->
                             <input type="hidden" class="form-control" name="firstly_payment" id="firstly_payment" required="required">
                             </div>
                         </div>

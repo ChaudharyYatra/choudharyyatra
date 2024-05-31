@@ -342,7 +342,7 @@ class Add_sra_form extends CI_Controller{
     {  
         // print_r($_REQUEST); die;
         $agent_sess_name = $this->session->userdata('agent_name');
-       echo $id=$this->session->userdata('agent_sess_id');
+        $id=$this->session->userdata('agent_sess_id');
 
             $academic_year=$this->input->post('academic_year');
             $tour_number=$this->input->post('tour_number');
@@ -366,10 +366,10 @@ class Add_sra_form extends CI_Controller{
             $record = array();
             $fields = "sra_payment.*,package_date.journey_date,academic_years.year,sra_payment.id as sra_pay_id,packages.tour_number as package_tour_number,
             sra_booking_payment_details.pending_amt,sum(sra_booking_payment_details.booking_amt) as abcamt";
-            $this->db->join("package_date", 'package_date.id=sra_payment.tour_date','right');
+            $this->db->join("package_date", 'package_date.id=sra_payment.tour_date','left');
             $this->db->join("packages", 'packages.id=sra_payment.tour_number','left');
             $this->db->join("academic_years", 'academic_years.id=sra_payment.academic_year','left');
-            $this->db->join("sra_booking_payment_details", 'sra_booking_payment_details.sra_payment_id=sra_payment.id','right');
+            $this->db->join("sra_booking_payment_details", 'sra_booking_payment_details.sra_payment_id=sra_payment.id','left');
             // $this->db->where('sra_payment.academic_year', $academic_year);
             $this->db->where('sra_payment.agent_id', $id);
             if ($academic_year) {
@@ -389,9 +389,10 @@ class Add_sra_form extends CI_Controller{
         
             $arr_data = $this->master_model->getRecords('sra_payment',array('sra_payment.is_deleted'=>'no'),$fields);
             // $arr_data = $this->master_model->getRecords('sra_payment','',$fields);
-            print_r($arr_data);
-            die;
+            // print_r($arr_data);
+            // die;
             echo json_encode($arr_data);
+            
             
             // $record = array();
             // $this->db->where('academic_year',$academic_year);

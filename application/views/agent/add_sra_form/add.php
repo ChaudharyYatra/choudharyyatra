@@ -100,7 +100,7 @@
                                   foreach($packages_tour_type as $packages_tour_type_info) 
                                   { 
                                 ?>
-                                  <option value="<?php echo $packages_tour_type_info['tour_number']; ?>"><?php echo $packages_tour_type_info['tour_number']; ?> - <?php echo $packages_tour_type_info['tour_title']; ?></option>
+                                  <option value="<?php echo $packages_tour_type_info['id']; ?>"><?php echo $packages_tour_type_info['tour_number']; ?> - <?php echo $packages_tour_type_info['tour_title']; ?></option>
                               <?php } ?>
                               </select>
                           </div>

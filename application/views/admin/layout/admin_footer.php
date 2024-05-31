@@ -12965,3 +12965,52 @@ $('[name^="vehicle_type"]').each(function() {
     });
 
 </script>
+
+<!-- boarding point validation  -->
+<script>
+$(document).ready(function () {
+
+$('#add_boarding_point').validate({ // initialize the plugin
+    errorPlacement: function($error, $element) {
+    $error.appendTo($element.closest("div"));
+  },
+    rules: {
+        boarding_point: {
+            required: true,
+        }
+    },
+
+    messages :{
+        boarding_point : {
+            required : "Please enter boarding point",
+        },
+    }
+});
+
+});
+
+</script>
+<script>
+$(document).ready(function () {
+
+$('#edit_boarding_point').validate({ // initialize the plugin
+    errorPlacement: function($error, $element) {
+    $error.appendTo($element.closest("div"));
+  },
+    rules: {
+        boarding_point: {
+            required: true,
+        }
+    },
+
+    messages :{
+        boarding_point : {
+            required : "Please enter boarding point",
+        },
+    }
+});
+
+});
+
+</script>
+<!-- boarding point validation  -->

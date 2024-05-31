@@ -503,6 +503,13 @@
                                     </a>
                                 </li>
 
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url(); ?>admin/boarding_point/index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Boarding Point Master</p>
+                                    </a>
+                                </li>
+
                             </ul>
                         </li>
 
@@ -510,7 +517,7 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
-                                    Oprations Master
+                                    Operation Master
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>

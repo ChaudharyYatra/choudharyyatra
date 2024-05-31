@@ -18,7 +18,6 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <!-- <a href="<?php //echo $module_url_path; ?>/index"><button class="btn btn-primary">Back</button></a> -->
-              
             </ol>
           </div>
         </div>

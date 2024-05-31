@@ -32,17 +32,29 @@ class Sra_booking_payment_details extends CI_Controller {
         $agent_sess_name = $this->session->userdata('agent_name');
         $id=$this->session->userdata('agent_sess_id');
 
+        // $record = array();
+        // $fields = "sra_payment.*,package_date.journey_date,sra_payment.id as sra_payment_id";
+        // $this->db->where('sra_payment.is_deleted','no');
+        // $this->db->where('sra_payment.is_active','yes');
+        // $this->db->join("package_date", 'package_date.id=sra_payment.tour_date','left');
+        // $this->db->group_start();
+        // $this->db->where('sra_payment.sra_no', $iid);
+        // $this->db->where('sra_payment.academic_year', $academic_year);
+        // $this->db->group_end();
+        // $traveller_booking_info = $this->master_model->getRecords('sra_payment','',$fields);
+        // print_r($traveller_booking_info); die;
+
         $record = array();
-        $fields = "sra_payment.*,package_date.journey_date,sra_payment.id as sra_payment_id";
+        $fields = "sra_payment.*,package_date.journey_date,sra_payment.id as sra_payment_id,,packages.tour_number as package_tour_number";
         $this->db->where('sra_payment.is_deleted','no');
         $this->db->where('sra_payment.is_active','yes');
+        $this->db->join("packages", 'packages.id=sra_payment.tour_number','left');
         $this->db->join("package_date", 'package_date.id=sra_payment.tour_date','left');
         $this->db->group_start();
         $this->db->where('sra_payment.sra_no', $iid);
         $this->db->where('sra_payment.academic_year', $academic_year);
         $this->db->group_end();
         $traveller_booking_info = $this->master_model->getRecords('sra_payment','',$fields);
-        // print_r($traveller_booking_info); die;
 
         // $record = array();
         // $fields = "booking_basic_info.*,packages.id as pid,packages.tour_title,packages.tour_number,packages.tour_number,package_date.journey_date,package_hotel.package_id,package_hotel.hotel_name_id";

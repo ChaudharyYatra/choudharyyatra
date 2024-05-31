@@ -11292,7 +11292,7 @@ $('#edit_internationalenquiry').validate({ // initialize the plugin
                             <td>`+ sra_id +`</td>
                             <td>`+ data['year'] +`</td>
                             <td>`+ data['sra_no'] +`</td>
-                            <td>`+ data['tour_number'] +`</td>
+                            <td>`+ data['package_tour_number'] +`</td>
                             <td>`+ data['journey_date'] +`</td>
                             <td>`+ data['customer_name'] +`</td>
                             <td>`+ data['total_seat'] +`</td>
@@ -12297,15 +12297,14 @@ $("#sra_payment_final_booking_submit").click(function() {
     $('#otp').on('keyup', function() {
         
         if($(this).val().length != 6) {
-        target.disabled = true;
-        // alert('Please enter six(6) digit OTP.');
-        $('#least_count').html(" You must enter 6 digit OTP.");
-        }
-        else{
-        target.disabled = false;
+            target.disabled = true;
+            $('#least_count').html("You must enter 6 digit OTP.");
+        } else {
+            target.disabled = false;
+            $('#least_count').html(""); // Clear the message when 6 digits are entered
         }
     });
-    });
+});
 </script>
 
 <!-------------------- partial payment send otp, resend otp, and verify otp ---------------------->
@@ -13118,3 +13117,127 @@ $(document).ready(function() {
 });
 
 </script>
+
+<!--  -->
+
+<!-- <script>
+    $(document).ready(function() {
+        // Initialize Select2 on your select element
+        $('#sra_no').select2({
+            minimumResultsForSearch: Infinity, // Hides the search box if not needed
+            closeOnSelect: true // Automatically close the dropdown on selection
+        });
+
+        // Load initial options
+        loadOptions(1, 100);
+
+        // Event listener for when the select dropdown opens
+        $('#sra_no').on('select2:open', function() {
+            $('.select2-results__options').on('scroll', handleScroll);
+        });
+
+        // Event listener for when an option is selected
+        $('#sra_no').on('select2:select', function(e) {
+            let selectedValue = e.params.data.id;
+            $('#selected_value').val(selectedValue);
+            $('#sra_no').select2('close');
+        });
+    });
+
+    function loadOptions(start, end) {
+        let options = '';
+        for (let i = start; i <= end && i <= 100000; i++) {
+            options += '<option value="' + i + '">' + i + '</option>';
+        }
+        $('#sra_no').append(options).trigger('change');
+    }
+
+    function handleScroll() {
+        let selectBox = $('.select2-results__options');
+        if (selectBox.scrollTop() + selectBox.innerHeight() >= selectBox[0].scrollHeight) {
+            let currentLength = $('#sra_no').find('option').length;
+            if (currentLength < 100000) {
+                loadOptions(currentLength + 1, currentLength + 100);
+            }
+        }
+    }
+</script> -->
+
+<script>
+        // $(document).ready(function() {
+        //     // Load initial options
+        //     loadOptions(1, 100000);
+
+        //     // Event listener for the select box gaining focus
+        //     $('#sra_no').on('focus', function() {
+        //         $(this).on('scroll', handleScroll);
+        //     });
+
+        //     // Event listener for the select box losing focus
+        //     $('#sra_no').on('blur', function() {
+        //         $(this).off('scroll', handleScroll);
+        //     });
+        // });
+
+        // function loadOptions(start, end) {
+        //     let options = '';
+        //     for (let i = start; i <= end && i <= 100000; i++) {
+        //         options += '<option value="' + i + '">' + i + '</option>';
+        //     }
+        //     $('#sra_no').append(options);
+        // }
+
+        // function handleScroll() {
+        //     let selectBox = $('#sra_no');
+        //     if (selectBox[0].scrollTop + selectBox[0].clientHeight >= selectBox[0].scrollHeight) {
+        //         let currentLength = selectBox.find('option').length;
+        //         if (currentLength < 100000) {
+        //             loadOptions(currentLength + 1, currentLength + 100);
+        //         }
+        //     }
+        // }
+
+
+        $(document).ready(function() {
+            $('#sra_no').append('<option value="" disabled selected>Select SRA No</option>');
+            // Load initial options
+            loadOptions(1, 100000);
+
+            // Event listener for the select box gaining focus
+            $('#sra_no').on('focus', function() {
+                $(this).on('scroll', handleScroll);
+            });
+
+            // Event listener for the select box losing focus
+            $('#sra_no').on('blur', function() {
+                $(this).off('scroll', handleScroll);
+            });
+
+            // Event listener for the select box change
+            $('#sra_no').on('change', function() {
+                let selectedValue = $(this).val();
+                $('#textbox').val(selectedValue);
+                $(this).blur(); // Close the dropdown
+            });
+        });
+
+        function loadOptions(start, end) {
+            let options = '';
+            for (let i = start; i <= end && i <= 100000; i++) {
+                options += '<option value="' + i + '">' + i + '</option>';
+            }
+            $('#sra_no').append(options);
+        }
+
+        function handleScroll() {
+            let selectBox = $('#sra_no');
+            if (selectBox[0].scrollTop + selectBox[0].clientHeight >= selectBox[0].scrollHeight) {
+                let currentLength = selectBox.find('option').length;
+                if (currentLength < 100000) {
+                    loadOptions(currentLength + 1, currentLength + 100);
+                }
+            }
+        }
+    </script>
+
+    

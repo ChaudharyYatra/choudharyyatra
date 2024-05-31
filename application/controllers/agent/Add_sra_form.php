@@ -401,6 +401,10 @@ class Add_sra_form extends CI_Controller{
             $this->db->join("packages", 'packages.id=sra_payment.tour_number','left');
             $this->db->join("academic_years", 'academic_years.id=sra_payment.academic_year','left');
             $this->db->join("sra_booking_payment_details", 'sra_booking_payment_details.sra_payment_id=sra_payment.id','left');
+<<<<<<< HEAD
+=======
+            // $this->db->where('sra_payment.academic_year', $academic_year);
+>>>>>>> b8308fae7fe93df930b3bfe2eaa7768600e0a284
             $this->db->where('sra_payment.agent_id', $id);
 
             // Check if both academic year and sra_no are provided
@@ -434,9 +438,18 @@ class Add_sra_form extends CI_Controller{
             }
 
             $this->db->group_by('sra_booking_payment_details.sra_payment_id');
+<<<<<<< HEAD
 
             $arr_data = $this->master_model->getRecords('sra_payment', array('sra_payment.is_deleted' => 'no'), $fields);
+=======
+        
+            $arr_data = $this->master_model->getRecords('sra_payment',array('sra_payment.is_deleted'=>'no'),$fields);
+            // $arr_data = $this->master_model->getRecords('sra_payment','',$fields);
+            // print_r($arr_data);
+            // die;
+>>>>>>> b8308fae7fe93df930b3bfe2eaa7768600e0a284
             echo json_encode($arr_data);
+            
             
             // $record = array();
             // $this->db->where('academic_year',$academic_year);

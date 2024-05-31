@@ -99,12 +99,12 @@
                                   foreach($packages_tour_type as $packages_tour_type_info) 
                                   { 
                                 ?>
-                                  <option value="<?php echo $packages_tour_type_info['tour_number']; ?>"><?php echo $packages_tour_type_info['tour_number']; ?> - <?php echo $packages_tour_type_info['tour_title']; ?></option>
+                                  <option value="<?php echo $packages_tour_type_info['id']; ?>"><?php echo $packages_tour_type_info['tour_number']; ?> - <?php echo $packages_tour_type_info['tour_title']; ?></option>
                               <?php } ?>
                               </select>
                           </div>
                         </div>
-
+                                <!-- tour_number above enter by replacing tour_number -->
                         <!-- <div class="col-md-6" id="tour_number_div">
                             <div class="form-group">
                             <label>Tour Number</label>

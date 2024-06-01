@@ -46,9 +46,9 @@
                       <div class="form-group">
                           <label>Which is payment type ?</label> <br>
                           <input type="radio" id="first_payment" name="payment_type" value="1" onclick="first_payment_main();" />
-                          <label>First Payment</label> &nbsp;&nbsp;
+                          <label>SRA Receipt</label> &nbsp;&nbsp;
                           <input type="radio" id="partially_payment" name="payment_type" value="0" onclick="partially_payment_sub();" />
-                          <label>Partial Payment</label> &nbsp;&nbsp;
+                          <label>Partial Receipt</label> &nbsp;&nbsp;
                           <!-- <input type="radio" id="add_on_services" name="payment_type" value="2" onclick="extra_services();" />
                           <label>Add On Services</label> <br> -->
                       </div>

@@ -177,13 +177,13 @@
                               <?php
                               $title = explode(',',$info['boarding_office']);
                               $c=count($title);
-                                foreach($agent_data as $agent_info) 
+                                foreach($boarding_point as $boarding_point_info) 
                                 { 
                                     for($i=0; $i<$c; $i++){
                                         $tid= $title[$i];
                                     }
                               ?>
-                                <option value="<?php echo $agent_info['id']; ?>" <?php if(in_array($agent_info['id'], $title)) { echo "selected"; } ?>><?php echo $agent_info['booking_center']; ?></option>
+                                <option value="<?php echo $boarding_point_info['id']; ?>" <?php if(in_array($boarding_point_info['id'], $title)) { echo "selected"; } ?>><?php echo $boarding_point_info['boarding_point']; ?></option>
                             <?php  } ?>
                             </select>
                           </div>

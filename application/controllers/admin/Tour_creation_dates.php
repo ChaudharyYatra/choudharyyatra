@@ -12,6 +12,7 @@ class Tour_creation_dates extends CI_Controller{
         }
 		
         $this->module_url_path    =  base_url().$this->config->item('admin_panel_slug')."/tour_creation_dates";
+        $this->module_tour_creation    =  base_url().$this->config->item('admin_panel_slug')."/tour_creation";
         $this->module_title       = "Package Dates";
         $this->module_url_slug    = "tour_creation_dates";
         $this->module_view_folder = "tour_creation_dates/";    
@@ -27,9 +28,15 @@ class Tour_creation_dates extends CI_Controller{
         $this->db->where('tour_creation_dates.package_id',$id);
         $this->db->join("tour_creation", 'tour_creation_dates.package_id=tour_creation.id','left');
         $arr_data = $this->master_model->getRecords('tour_creation_dates',array('tour_creation_dates.is_deleted'=>'no'),$fields);
-        
+        // print_r($arr_data); die;
+
+        foreach($arr_data as $info){
+            $tour_created_id = $info['package_id'];
+        } 
+
         $this->arr_view_data['listing_page']    = 'yes';
         $this->arr_view_data['arr_data']        = $arr_data;
+        $this->arr_view_data['tour_created_id']        = $tour_created_id;
         $this->arr_view_data['page_title']      = $this->module_title." List";
         $this->arr_view_data['module_title']    = $this->module_title;
         $this->arr_view_data['module_url_path'] = $this->module_url_path;
@@ -127,6 +134,7 @@ class Tour_creation_dates extends CI_Controller{
         $this->arr_view_data['page_title']      = "Add ".$this->module_title;
         $this->arr_view_data['module_title']    = $this->module_title;
         $this->arr_view_data['module_url_path'] = $this->module_url_path;
+        $this->arr_view_data['module_tour_creation'] = $this->module_tour_creation;
         $this->arr_view_data['middle_content']  = $this->module_view_folder."add";
         $this->load->view('admin/layout/admin_combo',$this->arr_view_data);
     }

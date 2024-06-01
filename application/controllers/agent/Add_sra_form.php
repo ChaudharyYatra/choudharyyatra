@@ -412,10 +412,10 @@ class Add_sra_form extends CI_Controller{
             // Check if both academic year and tour_number are provided
             else if ($academic_year && $tour_number) {
                 $this->db->where('sra_payment.academic_year', $academic_year);
-                $this->db->where('packages.tour_number', $tour_number);
+                $this->db->where('packages.id', $tour_number);
             }
             else if ($tour_number) {
-                $this->db->where('packages.tour_number', $tour_number);
+                $this->db->where('packages.id', $tour_number);
             }
             else if ($mobile_number) {
                 $this->db->where('sra_payment.mobile_number', $mobile_number);

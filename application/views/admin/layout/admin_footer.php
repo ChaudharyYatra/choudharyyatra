@@ -12694,7 +12694,7 @@ $('[name^="vehicle_type"]').each(function() {
   $(document).ready(function(){
     
     // Event delegation for dynamically added elements
-    $(document).on('change', '#role_type', function(){
+    $(document).on('change', '[id^=role_type]', function(){
       var did = $(this).val();
       var currentRow = $(this).closest('tr');
       // AJAX request
@@ -12706,7 +12706,7 @@ $('[name^="vehicle_type"]').each(function() {
         success: function(response){
           console.log(response);
           
-          var staffNameDropdown = currentRow.find('#staff_name');
+          var staffNameDropdown = currentRow.find('select[id^=staff_name]');
           staffNameDropdown.find('option').not(':first').remove();
        
           $.each(response, function(index, data){       

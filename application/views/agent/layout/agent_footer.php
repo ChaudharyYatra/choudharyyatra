@@ -13164,80 +13164,54 @@ $(document).ready(function() {
 </script> -->
 
 <script>
-        // $(document).ready(function() {
-        //     // Load initial options
-        //     loadOptions(1, 100000);
-
-        //     // Event listener for the select box gaining focus
-        //     $('#sra_no').on('focus', function() {
-        //         $(this).on('scroll', handleScroll);
-        //     });
-
-        //     // Event listener for the select box losing focus
-        //     $('#sra_no').on('blur', function() {
-        //         $(this).off('scroll', handleScroll);
-        //     });
-        // });
-
-        // function loadOptions(start, end) {
-        //     let options = '';
-        //     for (let i = start; i <= end && i <= 100000; i++) {
-        //         options += '<option value="' + i + '">' + i + '</option>';
-        //     }
-        //     $('#sra_no').append(options);
-        // }
-
-        // function handleScroll() {
-        //     let selectBox = $('#sra_no');
-        //     if (selectBox[0].scrollTop + selectBox[0].clientHeight >= selectBox[0].scrollHeight) {
-        //         let currentLength = selectBox.find('option').length;
-        //         if (currentLength < 100000) {
-        //             loadOptions(currentLength + 1, currentLength + 100);
-        //         }
-        //     }
-        // }
-
-
         $(document).ready(function() {
-            $('#sra_no').append('<option value="" disabled selected>Select SRA No</option>');
-            // Load initial options
-            loadOptions(1, 100000);
-
-            // Event listener for the select box gaining focus
-            $('#sra_no').on('focus', function() {
-                $(this).on('scroll', handleScroll);
-            });
-
-            // Event listener for the select box losing focus
-            $('#sra_no').on('blur', function() {
-                $(this).off('scroll', handleScroll);
+            // Initialize Select2 with search functionality
+            $('#sra_no').select2({
+                placeholder: "Select SRA No",
+                width: '100%',
+                dropdownAutoWidth: true,
+                minimumResultsForSearch: 1,
+                ajax: {
+                    transport: function (params, success, failure) {
+                        setTimeout(function () {
+                            var results = [];
+                            var term = params.data.q || ''; // Search term
+                            var start = params.data.page ? (params.data.page - 1) * 50 + 1 : 1;
+                            var end = start + 49;
+                            
+                            for (var i = start; i <= end && i <= 100000; i++) {
+                                if (i.toString().includes(term)) {
+                                    results.push({ id: i, text: i });
+                                }
+                            }
+                            
+                            success({
+                                results: results,
+                                pagination: {
+                                    more: end < 100000
+                                }
+                            });
+                        }, 500);
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.results,
+                            pagination: data.pagination
+                        };
+                    },
+                    delay: 250,
+                    cache: true
+                }
             });
 
             // Event listener for the select box change
-            $('#sra_no').on('change', function() {
+            $('#sra_no').on('select2:select', function(e) {
                 let selectedValue = $(this).val();
                 $('#textbox').val(selectedValue);
-                $(this).blur(); // Close the dropdown
+                $('#sra_no').select2('close'); // Close the dropdown
             });
         });
-
-        function loadOptions(start, end) {
-            let options = '';
-            for (let i = start; i <= end && i <= 100000; i++) {
-                options += '<option value="' + i + '">' + i + '</option>';
-            }
-            $('#sra_no').append(options);
-        }
-
-        function handleScroll() {
-            let selectBox = $('#sra_no');
-            if (selectBox[0].scrollTop + selectBox[0].clientHeight >= selectBox[0].scrollHeight) {
-                let currentLength = selectBox.find('option').length;
-                if (currentLength < 100000) {
-                    loadOptions(currentLength + 1, currentLength + 100);
-                }
-            }
-        }
     </script>
 
     

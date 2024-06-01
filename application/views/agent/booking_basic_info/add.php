@@ -238,7 +238,7 @@
                             <?php foreach($agent_data_office_address as $agent_data_office_address_value){ ?>   
                                       <option value="<?php echo $agent_data_office_address_value['id'];?>" <?php
                                         if(!empty($booking_basic_info_tour)){ if($agent_data_office_address_value['id']==$booking_basic_info_tour['boarding_office_location']){echo "selected";}} ?>>
-                                      <?php echo $agent_data_office_address_value['booking_center'];?></option>
+                                      <?php echo $agent_data_office_address_value['boarding_point'];?></option>
                                     <?php } ?>
                           </select>
                         </div>

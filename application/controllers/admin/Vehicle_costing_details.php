@@ -103,7 +103,7 @@ class Vehicle_costing_details extends CI_Controller{
         $this->arr_view_data['country_name_data']    = $country_name_data;
         $this->arr_view_data['arr_data2']    = $arr_data2;
         $this->arr_view_data['vehicle_type']    = $vehicle_type;
-        $this->arr_view_data['$tour_creation_id_encoded']    = $tour_creation_id_encoded;
+        // $this->arr_view_data['$tour_creation_id_encoded']    = $tour_creation_id_encoded;
         $this->arr_view_data['state_table']    = $state_table;
         $this->arr_view_data['module_url_path'] = $this->module_url_path;
         $this->arr_view_data['middle_content']  = $this->module_view_folder."add";

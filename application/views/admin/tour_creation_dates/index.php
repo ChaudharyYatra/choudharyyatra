@@ -9,8 +9,8 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <!--<a href="<?php //echo $module_url_path; ?>/add"><button class="btn btn-primary">Add</button></a>-->
-              
+              <a href="<?php echo $module_url_path; ?>/add/<?php $aid=base64_encode($tour_created_id); 
+					                  echo rtrim($aid, '='); ?>"><button class="btn btn-primary">back</button></a>
             </ol>
           </div>
         </div>

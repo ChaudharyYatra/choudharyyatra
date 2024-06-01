@@ -155,7 +155,7 @@
                     <div class="col-md-3">
                       <div class="form-group">
                         <label>Visiting Place Name</label>
-                        <input type="text" class="form-control" name="Place_name[]" id="Place_name" placeholder="Enter Name" oninput="this.value = this.value.replace(/[^A-Za-z]/g, '');" required="required">
+                        <input type="text" class="form-control" name="Place_name[]" id="Place_name" placeholder="Enter Name" oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '');" required="required">
                       </div>
                     </div>
 

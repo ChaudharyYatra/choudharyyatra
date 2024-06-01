@@ -8783,7 +8783,7 @@ $('#edit_train').validate({ // initialize the plugin
         $('.select2').select2()
        // alert('hhhh');
             p++;
-        alert(p);
+        // alert(p);
         // var selectedDays = [];
         // $('#open_days' + p + ' option:selected').each(function() {
         //     selectedDays.push($(this).val());
@@ -8794,7 +8794,7 @@ $('#edit_train').validate({ // initialize the plugin
                         <div class="col-md-3">
                         <div class="form-group">
                             <label>Visiting Place Name</label>
-                            <input type="text" class="form-control" name="Place_name[]" id="Place_name`+p+`" placeholder="Enter Name" oninput="this.value = this.value.replace(/[^A-Za-z]/g, '');" required="required">
+                            <input type="text" class="form-control" name="Place_name[]" id="Place_name`+p+`" placeholder="Enter Name" oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, ''); required="required">
                         </div>
                         </div>
 
@@ -11464,13 +11464,8 @@ $(document).on("click", ".remove-row", function() {
 
                                         <a href="<?php echo $module_daily_program_data;?>/editt/<?php $aid=base64_encode($info['id']); 
                                                 echo rtrim($aid, '='); ?>/<?php $did=base64_encode($info['tour_number_of_days']); 
-                                                echo rtrim($did, '='); ?>/`+i+`" class="itinerary_css"><i class="fas fa-edit" aria-hidden="true" style="color:blue" ;="" title="edit"></i></a> &nbsp;/&nbsp;
+                                                echo rtrim($did, '='); ?>/`+i+`" class="itinerary_css"><i class="fas fa-edit" aria-hidden="true" style="color:blue" ;="" title="edit"></i></a> &nbsp;&nbsp;
                                         
-                                        <a onclick="return confirm('Are You Sure You Want To Delete This Record?')" href="" title="Delete"><i class="fa fa-trash" aria-hidden="true" style="color:red"; title="delete"></i></a>
-                                        
-                                        <!-- <a href="<?php //echo $module_url_path;?>/delete/<?php //$aid=base64_encode($info['id']); 
-                                                    //echo rtrim($aid, '='); ?> /<?php //$did=base64_encode($info['add_more_id']); 
-                                                    //echo rtrim($did, '='); ?>" class="itinerary_css"><i class="fa fa-trash" aria-hidden="true" style="color:red" ;=""></i></a> -->
                                         </div>
                                     </div>
                                     </td>

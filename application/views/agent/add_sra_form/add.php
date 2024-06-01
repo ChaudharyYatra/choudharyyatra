@@ -105,7 +105,7 @@
                               </select>
                           </div>
                         </div>
-
+                                <!-- tour_number above enter by replacing tour_number -->
                         <!-- <div class="col-md-6" id="tour_number_div">
                             <div class="form-group">
                             <label>Tour Number</label>

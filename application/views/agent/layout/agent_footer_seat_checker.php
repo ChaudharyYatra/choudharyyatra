@@ -130,10 +130,10 @@ var js_array =<?php echo json_encode($bus_info); ?>;
 
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> -->
 
-<?php if ($bus_type == '2x2') { ?>
+<?php if ($bus_type == '2*2') { ?>
     <script src="<?php echo base_url(); ?>assets/admin/bus_seat_design/js/jquery.seat-charts_seat_checker.js"></script>
     <script src="<?php echo base_url(); ?>assets/admin/bus_seat_design/js/script_seat_checker.js"></script>
-<?php } elseif ($bus_type == '1x2') { ?>
+<?php } elseif ($bus_type == '1*2') { ?>
     <script src="<?php echo base_url(); ?>assets/admin/bus_seat_design/js/jquery.seat-charts_seat_checker_1by2.js"></script>
     <script src="<?php echo base_url(); ?>assets/admin/bus_seat_design/js/script_seat_checker_1by2.js"></script>
 <?php } ?>

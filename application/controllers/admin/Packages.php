@@ -55,8 +55,8 @@ class Packages extends CI_Controller{
     {   
         $this->db->where('is_active','yes');
         $this->db->where('is_deleted','no');
-        $agent_data = $this->master_model->getRecords('agent');
-        $this->arr_view_data['agent_data'] = $agent_data;
+        $boarding_point = $this->master_model->getRecords('boarding_point');
+        $this->arr_view_data['boarding_point'] = $boarding_point;
         
         if($this->input->post('submit'))
         {

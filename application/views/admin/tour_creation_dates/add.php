@@ -1,3 +1,8 @@
+<style>
+  .back_css{
+    margin-left: 10px;
+  }
+</style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -10,7 +15,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <a href="<?php echo $module_url_path; ?>/index/<?php echo $id; ?>"><button class="btn btn-primary">Date List</button></a>
-              
+              <a href="<?php echo $module_tour_creation; ?>/index"><button class="btn btn-primary back_css">Back</button></a>
             </ol>
           </div>
         </div>

@@ -270,7 +270,7 @@ class Vehicle_cost_adding extends CI_Controller{
         $this->arr_view_data['vehicle_type']    = $vehicle_type;
         $this->arr_view_data['id']    = $id;
         $this->arr_view_data['tour_creation_id']    = $tour_creation_id;
-        $this->arr_view_data['role_type_id']    = $role_type_id;
+        // $this->arr_view_data['role_type_id']    = $role_type_id;
         $this->arr_view_data['tour_no_of_days']    = $tour_no_of_days;
         $this->arr_view_data['module_url_path'] = $this->module_url_path;
         $this->arr_view_data['middle_content']  = $this->module_view_folder."edit";

@@ -8783,7 +8783,7 @@ $('#edit_train').validate({ // initialize the plugin
         $('.select2').select2()
        // alert('hhhh');
             p++;
-        alert(p);
+        // alert(p);
         // var selectedDays = [];
         // $('#open_days' + p + ' option:selected').each(function() {
         //     selectedDays.push($(this).val());
@@ -8794,7 +8794,7 @@ $('#edit_train').validate({ // initialize the plugin
                         <div class="col-md-3">
                         <div class="form-group">
                             <label>Visiting Place Name</label>
-                            <input type="text" class="form-control" name="Place_name[]" id="Place_name`+p+`" placeholder="Enter Name" oninput="this.value = this.value.replace(/[^A-Za-z]/g, '');" required="required">
+                            <input type="text" class="form-control" name="Place_name[]" id="Place_name`+p+`" placeholder="Enter Name" oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, ''); required="required">
                         </div>
                         </div>
 
@@ -11464,13 +11464,8 @@ $(document).on("click", ".remove-row", function() {
 
                                         <a href="<?php echo $module_daily_program_data;?>/editt/<?php $aid=base64_encode($info['id']); 
                                                 echo rtrim($aid, '='); ?>/<?php $did=base64_encode($info['tour_number_of_days']); 
-                                                echo rtrim($did, '='); ?>/`+i+`" class="itinerary_css"><i class="fas fa-edit" aria-hidden="true" style="color:blue" ;="" title="edit"></i></a> &nbsp;/&nbsp;
+                                                echo rtrim($did, '='); ?>/`+i+`" class="itinerary_css"><i class="fas fa-edit" aria-hidden="true" style="color:blue" ;="" title="edit"></i></a> &nbsp;&nbsp;
                                         
-                                        <a onclick="return confirm('Are You Sure You Want To Delete This Record?')" href="" title="Delete"><i class="fa fa-trash" aria-hidden="true" style="color:red"; title="delete"></i></a>
-                                        
-                                        <!-- <a href="<?php //echo $module_url_path;?>/delete/<?php //$aid=base64_encode($info['id']); 
-                                                    //echo rtrim($aid, '='); ?> /<?php //$did=base64_encode($info['add_more_id']); 
-                                                    //echo rtrim($did, '='); ?>" class="itinerary_css"><i class="fa fa-trash" aria-hidden="true" style="color:red" ;=""></i></a> -->
                                         </div>
                                     </div>
                                     </td>
@@ -12694,7 +12689,7 @@ $('[name^="vehicle_type"]').each(function() {
   $(document).ready(function(){
     
     // Event delegation for dynamically added elements
-    $(document).on('change', '#role_type', function(){
+    $(document).on('change', '[id^=role_type]', function(){
       var did = $(this).val();
       var currentRow = $(this).closest('tr');
       // AJAX request
@@ -12706,7 +12701,7 @@ $('[name^="vehicle_type"]').each(function() {
         success: function(response){
           console.log(response);
           
-          var staffNameDropdown = currentRow.find('#staff_name');
+          var staffNameDropdown = currentRow.find('select[id^=staff_name]');
           staffNameDropdown.find('option').not(':first').remove();
        
           $.each(response, function(index, data){       
@@ -12965,3 +12960,52 @@ $('[name^="vehicle_type"]').each(function() {
     });
 
 </script>
+
+<!-- boarding point validation  -->
+<script>
+$(document).ready(function () {
+
+$('#add_boarding_point').validate({ // initialize the plugin
+    errorPlacement: function($error, $element) {
+    $error.appendTo($element.closest("div"));
+  },
+    rules: {
+        boarding_point: {
+            required: true,
+        }
+    },
+
+    messages :{
+        boarding_point : {
+            required : "Please enter boarding point",
+        },
+    }
+});
+
+});
+
+</script>
+<script>
+$(document).ready(function () {
+
+$('#edit_boarding_point').validate({ // initialize the plugin
+    errorPlacement: function($error, $element) {
+    $error.appendTo($element.closest("div"));
+  },
+    rules: {
+        boarding_point: {
+            required: true,
+        }
+    },
+
+    messages :{
+        boarding_point : {
+            required : "Please enter boarding point",
+        },
+    }
+});
+
+});
+
+</script>
+<!-- boarding point validation  -->

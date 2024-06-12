@@ -79,7 +79,7 @@
                             <label>Tour No -</label>
                         </div>  
                         <div class="col-md-5">
-                            <div><?php echo $traveller_booking_info_value['tour_number']; ?></div>
+                            <div><?php echo $traveller_booking_info_value['package_tour_number']; ?></div>
                         </div>
                         <div class="col-md-2">
                             <label>Customer Name -</label>
@@ -91,7 +91,7 @@
                             <label>Tour Date -</label>
                         </div>
                         <div class="col-md-5">  
-                            <div><?php echo date('d-m-Y', strtotime($traveller_booking_info_value['tour_date'])); ?></div>
+                            <div><?php echo date('d-m-Y', strtotime($traveller_booking_info_value['journey_date'])); ?></div>
                         </div>
                         <div class="col-md-2">
                             <label>Mobile No -</label>

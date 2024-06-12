@@ -5,12 +5,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1><?php echo $page_title; ?></h1>
+            <h1><?php echo $module_title; ?></h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <a href="<?php echo $module_url_path; ?>/add/<?php $aid=base64_encode($tour_created_id); 
-					                  echo rtrim($aid, '='); ?>"><button class="btn btn-primary">back</button></a>
+              <a href="<?php echo $module_url_path; ?>/add"><button class="btn btn-primary">Add</button></a>
+              
             </ol>
           </div>
         </div>
@@ -34,13 +34,7 @@
                   <thead>
                   <tr>
                     <th>SN</th>
-                    <th>Package Date Unique Id</th>
-                    <th>Tour Title</th>
-                    <th>Tour Date</th>
-                    <th>Year Slot</th>
-                    <th>Single Seat Cost</th>
-                    <th>Twin Sharing Cost</th>
-                    <th>3/4 Sharing Cost</th>
+                    <th>Boarding Point</th>
                     <th>Is Active?</th>
                     <th>Action</th>
                   </tr>
@@ -54,41 +48,37 @@
                      ?>
                   <tr>
                     <td><?php echo $i; ?></td>
-                    <td><?php echo $info['package_unique_id'] ?></td>
-                    <td><?php echo $info['tour_title'] ?></td>
-                    <td><?php echo date('d F Y', strtotime($info['journey_date'])); ?></td>
-                    <td><?php echo $info['year_slot'] ?></td>
-                    <td><?php echo $info['single_seat_cost'] ?></td>
-                    <td><?php echo $info['twin_seat_cost'] ?></td>
-                    <td><?php echo $info['three_four_sharing_cost'] ?></td>
+                    <td><?php echo $info['boarding_point'] ?></td>
+                   
                     <td>
                         <?php 
                         if($info['is_active']=='yes')
                           {
                         ?>
-                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php echo $info['id'].'/'.$info['is_active']; ?>"><button class="btn btn-success btn-sm">YES</button></a>
+                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php $aid=base64_encode($info['id']); 
+							echo rtrim($aid, '=').'/'.$info['is_active']; ?>"><button class="btn btn-success btn-sm">YES</button></a>
                         <?php } else { ?>
-                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php echo $info['id'].'/'.$info['is_active']; ?>"><button class="btn btn-danger btn-sm">NO</button> </a>
+                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php $aid=base64_encode($info['id']); 
+							echo rtrim($aid, '=').'/'.$info['is_active']; ?>"><button class="btn btn-danger btn-sm">NO</button> </a>
                         <?php } ?>
                     </td>
                     <td>
-                          <a href="<?php echo $module_url_path;?>/edit/<?php echo $info['id']; ?>" title="Update"><i class="fas fa-edit" aria-hidden="true" style="color:blue";></i></a> &nbsp;/&nbsp;
-                          <a onclick="return confirm('Are You Sure You Want To Delete This Record?')" href="<?php echo $module_url_path;?>/delete/<?php echo $info['id']; ?>" title="Delete"><i class="fa fa-trash" aria-hidden="true" style="color:red";></i></a>
+                          <a href="<?php echo $module_url_path;?>/edit/<?php $aid=base64_encode($info['id']); 
+					   echo rtrim($aid, '='); ?>" title="Update"><i class="fas fa-edit" aria-hidden="true" style="color:blue";></i></a> &nbsp;/&nbsp;
+                          <a onclick="return confirm('Are You Sure You Want To Delete This Record?')" href="<?php echo $module_url_path;?>/delete/<?php $aid=base64_encode($info['id']); 
+					   echo rtrim($aid, '='); ?>" title="Delete"><i class="fa fa-trash" aria-hidden="true" style="color:red";></i></a>
+                          
                     </td>
                   </tr>
-                  
                   <?php $i++; } ?>
-                  
                   </tbody>
-                  
                 </table>
-                <?php } else
+                 <?php } else
                 { echo '<div class="alert alert-danger alert-dismissable">
                 <i class="fa fa-ban"></i>
                 <b>Alert!</b>
                 Sorry No records available
               </div>' ; } ?>
-               
               </div>
               <!-- /.card-body -->
             </div>

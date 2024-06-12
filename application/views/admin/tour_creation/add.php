@@ -153,10 +153,10 @@
                             <select class="select2" multiple="multiple" data-placeholder="Select Boarding  Office/ Location" style="width: 100%;" name="boarding_office[]" id="boarding_office" required="required">
                                 <option value="">Select Bording  Office/ Location</option>
                                 <?php
-                                  foreach($agent_data as $agent_info) 
+                                  foreach($boarding_point as $boarding_point_info) 
                                   { 
                                 ?>
-                                  <option value="<?php echo $agent_info['id']; ?>"><?php echo $agent_info['booking_center']; ?></option>
+                                  <option value="<?php echo $boarding_point_info['id']; ?>"><?php echo $boarding_point_info['boarding_point']; ?></option>
                               <?php } ?>
                               </select>
                           </div>

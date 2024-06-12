@@ -17,8 +17,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <!-- <a href="<?php //echo $module_url_path; ?>/index"><button class="btn btn-primary">Back</button></a> -->
-              
+              <a href="<?php echo $module_url_path; ?>/index"><button class="btn btn-primary">Back</button></a>
             </ol>
           </div>
         </div>
@@ -32,7 +31,7 @@
           <!-- left column -->
           <div class="col-md-12">
             <!-- jquery validation -->
-            <?php $this->load->view('admin/layout/admin_alert'); ?>
+            <?php $this->load->view('office_branch_staff/layout/agent_alert'); ?>
             <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title"><?php echo $page_title; ?></h3>
@@ -46,9 +45,9 @@
                       <div class="form-group">
                           <label>Which is payment type ?</label> <br>
                           <input type="radio" id="first_payment" name="payment_type" value="1" onclick="first_payment_main();" />
-                          <label>SRA Receipt</label> &nbsp;&nbsp;
+                          <label>First Payment</label> &nbsp;&nbsp;
                           <input type="radio" id="partially_payment" name="payment_type" value="0" onclick="partially_payment_sub();" />
-                          <label>Partial Receipt</label> &nbsp;&nbsp;
+                          <label>Partial Payment</label> &nbsp;&nbsp;
                           <!-- <input type="radio" id="add_on_services" name="payment_type" value="2" onclick="extra_services();" />
                           <label>Add On Services</label> <br> -->
                       </div>
@@ -59,9 +58,28 @@
 
                     <!--  firstly payment fields -->
                     <div id="firstly_submit_form" style="display:none;">
-                    <form method="post" action="<?php echo base_url(); ?>agent/add_sra_form/add" enctype="multipart/form-data">
+                    <form method="post" action="<?php echo base_url(); ?>office_branch_staff/add_sra_form/add" enctype="multipart/form-data">
                       <div class="row">
+                      <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Region Name</label> <br>
+                        <select class="niceSelect form-control" name="department_id" id="department_id" required="required">
+                            <option value="">Select Region</option>
+                            <?php foreach($department_data as $department){ ?> 
+                                <option value="<?php echo $department['id'];?>"><?php echo $department['department'];?></option>
+                            <?php } ?>
+                        </select>
+                      </div>
+                    </div>
 
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Booking Center</label> <br>
+                        <select class="niceSelect form-control" name="booking_center" id="booking_center" required="required">
+                            <option value="">Select Booking Center</option>
+                        </select>
+                      </div>
+                    </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label>Academic Year</label>
@@ -79,9 +97,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                             <label>SRA No</label>
-                            <select class="form-control" style="width: 100%;" name="sra_no" id="add_sra_sra_no" required="required"></select>
-                            <input type="text" id="textbox" class="form-control" style="margin-top: 10px;" readonly>
-                            <!-- <input type="text" class="form-control" name="sra_no" id="sra_no" placeholder="Enter SRA No" required="required"> -->
+                            <input type="text" class="form-control" name="sra_no" id="sra_no" placeholder="Enter SRA No" required="required">
                             <input type="hidden" class="form-control" name="firstly_payment" id="firstly_payment" required="required">
                             </div>
                         </div>
@@ -105,7 +121,7 @@
                               </select>
                           </div>
                         </div>
-                                <!-- tour_number above enter by replacing tour_number -->
+
                         <!-- <div class="col-md-6" id="tour_number_div">
                             <div class="form-group">
                             <label>Tour Number</label>
@@ -178,7 +194,6 @@
                             <td>Academic Year</td>
                             <td>"Academic Year: Navigate here to include new academic above the 'Academic Year' option."</td>
                             <td>
-                            <!-- <a href="<?php //echo base_url(); ?>admin/academic_year/index"><button type="button" class="btn btn-success" >Add</button></a> -->
                             <p>Contact to Admin</p>
                             </td>
                           </tr>
@@ -186,7 +201,6 @@
                             <td>Packages</td>
                             <td>"Tour Number - Name: Navigate here to include new tour above the 'Tour Number - Name' option."</td>
                             <td>
-                            <!-- <a href="<?php echo base_url(); ?>admin/packages/index"><button type="button" class="btn btn-success" >Add</button></a> -->
                             <p>Contact to Admin</p>
                             </td>
                           </tr>
@@ -227,7 +241,7 @@
                                     foreach($packages_tour_type as $packages_tour_type_info) 
                                     { 
                                   ?>
-                                    <option value="<?php echo $packages_tour_type_info['tour_number']; ?>"><?php echo $packages_tour_type_info['tour_number']; ?> - <?php echo $packages_tour_type_info['tour_title']; ?></option>
+                                    <option value="<?php echo $packages_tour_type_info['id']; ?>"><?php echo $packages_tour_type_info['tour_number']; ?> - <?php echo $packages_tour_type_info['tour_title']; ?></option>
                                 <?php } ?>
                                 </select>
                             </div>

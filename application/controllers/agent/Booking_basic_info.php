@@ -179,13 +179,13 @@ class Booking_basic_info extends CI_Controller {
 
 
         $record = array();
-        $fields = "agent.*";
-        $this->db->where('agent.is_active','yes');
-        $this->db->where('agent.is_deleted','no');
+        $fields = "boarding_point.*";
+        $this->db->where('boarding_point.is_active','yes');
+        $this->db->where('boarding_point.is_deleted','no');
         // $this->db->where('booking_basic_info.tour_no',$booking_basic_info_tour_id);
         // $this->db->where('booking_basic_info.domestic_enquiry_id',$booking_basic_domestic_enquiry);
         // $this->db->join("booking_basic_info", 'agent.id=booking_basic_info.boarding_office_location','left');
-        $agent_data_office_address = $this->master_model->getRecords('agent','',$fields);
+        $agent_data_office_address = $this->master_model->getRecords('boarding_point','',$fields);
 
         // print_r( $agent_data_office_address);
         // die;

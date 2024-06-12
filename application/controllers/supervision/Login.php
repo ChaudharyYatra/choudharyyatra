@@ -19,6 +19,7 @@ class Login extends CI_Controller{
         $this->module_url_path_dashboard_expences_add_master  =  base_url().$this->config->item('expences_add_master_panel_slug')."expences_add_master/dashboard";
 
         $this->module_url_path_dashboard_office_branch_staff  =  base_url().$this->config->item('office_branch_staff_panel_slug')."office_branch_staff/dashboard";
+        $this->module_url_path_dashboard_train_hod  =  base_url().$this->config->item('train_hod_panel_slug')."train_hod/dashboard";
         $this->module_title       = "Login";
         $this->module_url_slug    = "login";
         $this->module_view_folder = "login/";
@@ -95,6 +96,10 @@ class Login extends CI_Controller{
                     }elseif($this->session->userdata['supervision_role']=='11'){
                         
                         redirect($this->module_url_path_dashboard_office_branch_staff.'/index');
+                    }
+                    elseif($this->session->userdata['supervision_role']=='12'){
+                        
+                        redirect($this->module_url_path_dashboard_train_hod.'/index');
                     }
                     
                 }

@@ -121,7 +121,11 @@
                           <a href="<?php echo $module_vehicle_cost_adding; ?>/index/<?php $tour_creation_id=base64_encode($info['id']); 
 					                  echo rtrim($tour_creation_id, '='); ?>/<?php $tour_days_id=base64_encode($info['tour_number_of_days']); echo rtrim($tour_days_id, '=');?>" >
                             <button class="dropdown-item">Add vehicle cost</button>
-                          </a>	
+                          </a>
+                          
+                          <a href="<?php echo $module_daily_program_data; ?>/budget_creation/<?php $tour_creation_id=base64_encode($info['id']); 
+					                  echo rtrim($tour_creation_id, '='); ?>" >
+                            <button class="dropdown-item">Prize Generation</button></a>
                              
                         </div>
                       </div>

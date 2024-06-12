@@ -7,7 +7,7 @@ class Login extends CI_Controller{
 		parent::__construct();
 	    $this->arr_view_data = [];
         
-        $this->module_url_path    =  base_url().$this->config->item('supervision_panel_slug')."supervision/login";
+        $this->module_url_path    =  base_url().$this->config->item('supervision_panel_slug')."/all_login";
 		$this->module_url_path_dashboard    =  base_url().$this->config->item('supervision_panel_slug')."supervision/dashboard";
 		$this->module_url_path_dashboard_2    =  base_url().$this->config->item('tour_operation_manager_panel_slug')."tour_operation_manager/dashboard";
         $this->module_url_path_dashboard_account  =  base_url().$this->config->item('account_panel_slug')."account/dashboard";
@@ -117,7 +117,7 @@ class Login extends CI_Controller{
         $this->session->unset_userdata('supervision_email');
         $this->session->unset_userdata('supervision_name');
         $this->session->sess_destroy();
-        redirect($this->module_url_path.'/index');  
+        redirect($this->module_url_path.'index');  
     }
 
    

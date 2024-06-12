@@ -18,6 +18,8 @@ class Tour_creation extends CI_Controller{
 		$this->module_url_vehicle_costing_details   =  base_url().$this->config->item('admin_panel_slug')."/vehicle_costing_details";
         $this->module_add_staff   =  base_url().$this->config->item('admin_panel_slug')."/add_staff";
         $this->module_vehicle_cost_adding   =  base_url().$this->config->item('admin_panel_slug')."/vehicle_cost_adding";
+        $this->module_daily_program_data    =  base_url().$this->config->item('admin_panel_slug')."/daily_program_data";
+
         $this->module_title       = "Tour Creation";
         $this->module_url_slug    = "tour_creation";
         $this->module_view_folder = "tour_creation/";    
@@ -53,6 +55,7 @@ class Tour_creation extends CI_Controller{
         $this->arr_view_data['module_day_to_day_program'] = $this->module_day_to_day_program;
         $this->arr_view_data['module_add_staff'] = $this->module_add_staff;
         $this->arr_view_data['module_vehicle_cost_adding'] = $this->module_vehicle_cost_adding;
+        $this->arr_view_data['module_daily_program_data'] = $this->module_daily_program_data;
         $this->arr_view_data['middle_content']  = $this->module_view_folder."index";
         $this->load->view('admin/layout/admin_combo',$this->arr_view_data);
        

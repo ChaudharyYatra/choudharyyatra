@@ -90,14 +90,65 @@
                         </div>
                         <?php } ?>
 
-                        <?php foreach($add_more_ticket_cost as $add_more_ticket_cost_info){ ?> 
-                            <div class="col-md-6">
+                        
+                            <div class="col-md-3">
                                 <div class="form-group">
                                 <label>Total Ticket Cost</label>
-                                    <input readonly type="text" class="form-control" name="tour_creation_id" id="tour_creation_id" value="<?php echo $add_more_ticket_cost_info['total_ticket_cost'];?>">
+                                    <input readonly type="text" class="form-control" name="tour_creation_id" id="tour_creation_id" value="<?php echo $all_final_costing['total_ticket_cost_final'];?>">
                                 </div>
                             </div>
-                        <?php } ?>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <label>Total Munciple Tax</label>
+                                    <input readonly type="text" class="form-control" name="tour_creation_id" id="tour_creation_id" value="<?php echo $all_final_costing['total_municipal_amt_final'];?>">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <label>Parking Cost</label>
+                                    <input readonly type="text" class="form-control" name="tour_creation_id" id="tour_creation_id" value="<?php echo $all_final_costing['total_parking_cost_final'];?>">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <label>State Permit Cost</label>
+                                    <input readonly type="text" class="form-control" name="tour_creation_id" id="tour_creation_id" value="<?php echo $all_final_costing['total_state_permit_final'];?>">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <label>Daily Tax</label>
+                                    <input readonly type="text" class="form-control" name="tour_creation_id" id="tour_creation_id" value="<?php echo $all_final_costing['total_daily_tax_final'];?>">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <label>Per Person KM Rates</label>
+                                    <input readonly type="text" class="form-control" name="tour_creation_id" id="tour_creation_id" value="<?php echo $total_km_rate_per_person;?>">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <label>Staff Salary</label>
+                                    <input readonly type="text" class="form-control" name="tour_creation_id" id="tour_creation_id" value="<?php echo $staff_day_salary;?>">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <label>Grocery Cost Per Person</label>
+                                    <input readonly type="text" class="form-control" name="tour_creation_id" id="tour_creation_id" value="<?php echo $grocery_cost_per_person;?>">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <label>Total Final Amount</label>
+                                    <input readonly type="text" class="form-control" name="tour_creation_id" id="tour_creation_id" value="<?php echo $total_all_final_cost;?>">
+                                </div>
+                            </div>
+                        
 
                         <?php foreach($add_more_day_to_day_program as $add_more_day_to_day_program_info){
                             if($add_more_day_to_day_program_info['meal_type'] == 'Breakfast'){ ?> 

@@ -1239,6 +1239,224 @@ class Daily_program_data extends CI_Controller {
         // $supervision_sess_name = $this->session->userdata('supervision_name');
         // $iid = $this->session->userdata('supervision_sess_id');
 
+        // $fields = "SUM(citywise_other_add_more.ticket_cost) AS total_ticket_cost, add_more_day_to_day_program.is_deleted,
+        // add_more_day_to_day_program.is_active,add_more_day_to_day_program.tour_creation_id,add_more_day_to_day_program.day_no,
+        //  citywise_other_add_more.place_name AS start_place_name";
+        $fields = "citywise_other_add_more.id,ticket_cost, municipal_amt, parking_cost";
+        $this->db->select($fields);
+        $this->db->where('add_more_day_to_day_program.is_deleted', 'no');
+        $this->db->where('add_more_day_to_day_program.is_active', 'yes');
+        $this->db->where('add_more_day_to_day_program.tour_creation_id', $id);  
+        $this->db->where('add_more_day_to_day_program.day_no', $day);
+        $this->db->join("citywise_other_add_more", 'add_more_day_to_day_program.start_place = citywise_other_add_more.id', 'left');
+        $this->db->group_by('add_more_day_to_day_program.tour_creation_id'); // Assuming you want to group by tour_creation_id
+        $this->db->group_by('add_more_day_to_day_program.start_place'); // Assuming you want to group by tour_creation_id
+        $ticket_tax_parking_cost = $this->master_model->getRecords('add_more_day_to_day_program', array('add_more_day_to_day_program.is_deleted' => 'no'), $fields);
+
+   
+        $total_ticket_cost_final_amt = 0;
+        $total_municipal_amt_final_amt = 0;
+        $total_parking_cost_final_amt = 0;
+        $all_final_costing = array(
+            'total_ticket_cost_final' => 0,
+            'total_municipal_amt_final' => 0,
+            'total_parking_cost_final' => 0,
+            'total_state_permit_final' => 0,
+            'total_daily_tax_final' => 0,
+            'total_ticket_cost_final_end' => 0,
+            'total_municipal_amt_final_end' => 0,
+            'total_parking_cost_final_end' => 0,
+        );
+
+        $start_place_id=array();
+        foreach($ticket_tax_parking_cost as $ticket_cost_option)
+        {
+            if (isset($ticket_cost_option['id'])) { // Ensure the ID is set
+                array_push($start_place_id, $ticket_cost_option['id']);
+            }
+            $total_ticket_cost_final_amt+= (float)$ticket_cost_option['ticket_cost'];
+            $total_municipal_amt_final_amt+= (float)$ticket_cost_option['municipal_amt'];
+            $total_parking_cost_final_amt+= (float)$ticket_cost_option['parking_cost'];
+        }
+
+
+
+        $start_place_id_val = array_values($start_place_id);
+
+        $fields = "citywise_other_add_more.id,ticket_cost, municipal_amt, parking_cost";
+        $this->db->select($fields);
+        $this->db->where('add_more_day_to_day_program.is_deleted', 'no');
+        $this->db->where('add_more_day_to_day_program.is_active', 'yes');
+        $this->db->where('add_more_day_to_day_program.tour_creation_id', $id);  
+        $this->db->where('add_more_day_to_day_program.day_no', $day);
+        $this->db->join("citywise_other_add_more", 'add_more_day_to_day_program.end_place = citywise_other_add_more.id', 'left');
+        $this->db->where_not_in('citywise_other_add_more.id', $start_place_id_val);
+        $this->db->group_by('add_more_day_to_day_program.tour_creation_id'); // Assuming you want to group by tour_creation_id
+        $this->db->group_by('add_more_day_to_day_program.end_place'); // Assuming you want to group by tour_creation_id
+        $ticket_tax_parking_cost_end = $this->master_model->getRecords('add_more_day_to_day_program', array('add_more_day_to_day_program.is_deleted' => 'no'), $fields);
+
+  
+        // $total_ticket_cost_final_end = 0;
+        // $total_municipal_amt_final_end = 0;
+        // $total_parking_cost_final_end = 0;
+        // $all_final_costing = array(
+        //     'total_ticket_cost_final_end' => 0,
+        //     'total_municipal_amt_final_end' => 0,
+        //     'total_parking_cost_final_end' => 0,
+        //     'total_state_permit_final' => 0,
+        //     'total_daily_tax_final' => 0,
+        // );
+        foreach($ticket_tax_parking_cost_end as $ticket_cost_option)
+        {
+            $total_ticket_cost_final_end_amt+= (float)$ticket_cost_option['ticket_cost'];
+            $total_municipal_amt_final_end_amt+= (float)$ticket_cost_option['municipal_amt'];
+            $total_parking_cost_final_end_amt+= (float)$ticket_cost_option['parking_cost'];
+        }
+
+
+
+        $all_final_costing['total_ticket_cost_final']=$total_ticket_cost_final_amt+$total_ticket_cost_final_end_amt;
+        $all_final_costing['total_municipal_amt_final']=$total_municipal_amt_final_amt+$total_municipal_amt_final_end_amt;
+        $all_final_costing['total_parking_cost_final']=$total_parking_cost_final_amt+$total_parking_cost_final_end_amt;
+
+
+        // print_r($all_final_costing);
+        // die;
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        // $fields = "add_more_day_to_day_program.start_district,state_permit_rate,daily_tax_rate";
+        // $this->db->select($fields);
+        // $this->db->where('add_more_day_to_day_program.is_deleted', 'no');
+        // $this->db->where('add_more_day_to_day_program.is_active', 'yes');
+        // $this->db->where('add_more_day_to_day_program.tour_creation_id', $id);  
+        // $this->db->where('add_more_day_to_day_program.day_no', $day);
+        // // $this->db->where('add_more_day_to_day_program.activity_type', '');
+        // $this->db->join("citywise_other_add_more", 'add_more_day_to_day_program.start_place = citywise_other_add_more.id', 'left');
+        // $this->db->join("district_table", 'add_more_day_to_day_program.start_district = district_table.id', 'left');
+        // $this->db->join("state_table", 'district_table.state_id = state_table.id', 'left');
+        // $this->db->group_by('district_table.state_id'); // Assuming you want to group by tour_creation_id
+        // $start_distrct_data = $this->master_model->getRecords('add_more_day_to_day_program', array('add_more_day_to_day_program.is_deleted' => 'no'), $fields);
+
+        // $fields = "add_more_day_to_day_program.end_district,state_permit_rate,daily_tax_rate";
+        // $this->db->select($fields);
+        // $this->db->where('add_more_day_to_day_program.is_deleted', 'no');
+        // $this->db->where('add_more_day_to_day_program.is_active', 'yes');
+        // $this->db->where('add_more_day_to_day_program.tour_creation_id', $id);  
+        // $this->db->where('add_more_day_to_day_program.day_no', $day);
+        // // $this->db->where('add_more_day_to_day_program.activity_type', '');
+        // $this->db->join("citywise_other_add_more", 'add_more_day_to_day_program.end_place = citywise_other_add_more.id', 'left');
+        // $this->db->join("district_table", 'add_more_day_to_day_program.end_district = district_table.id', 'left');
+        // $this->db->join("state_table", 'district_table.state_id = state_table.id', 'left');
+        // $this->db->group_by('district_table.state_id'); // Assuming you want to group by tour_creation_id
+        // $end_distrct_data = $this->master_model->getRecords('add_more_day_to_day_program', array('add_more_day_to_day_program.is_deleted' => 'no'), $fields);
+
+        $fields = "
+        COALESCE(district_table_start.id, district_table_end.id) as district_id,
+        COALESCE(state_table_start.id, state_table_end.id) as state_id,
+        COALESCE(state_table_start.state_permit_rate, state_table_end.state_permit_rate) as state_permit_rate,
+        COALESCE(state_table_start.daily_tax_rate, state_table_end.daily_tax_rate) as daily_tax_rate
+    ";
+    
+    $this->db->select($fields);
+    $this->db->where('add_more_day_to_day_program.is_deleted', 'no');
+    $this->db->where('add_more_day_to_day_program.is_active', 'yes');
+    $this->db->where('add_more_day_to_day_program.tour_creation_id', $id);  
+    $this->db->where('add_more_day_to_day_program.day_no', $day);
+    
+    // Joins for start district and state
+    $this->db->join("citywise_other_add_more as start_place", 'add_more_day_to_day_program.start_place = start_place.id', 'left');
+    $this->db->join("district_table as district_table_start", 'add_more_day_to_day_program.start_district = district_table_start.id', 'left');
+    $this->db->join("state_table as state_table_start", 'district_table_start.state_id = state_table_start.id', 'left');
+    
+    // Joins for end district and state
+    $this->db->join("citywise_other_add_more as end_place", 'add_more_day_to_day_program.end_place = end_place.id', 'left');
+    $this->db->join("district_table as district_table_end", 'add_more_day_to_day_program.end_district = district_table_end.id', 'left');
+    $this->db->join("state_table as state_table_end", 'district_table_end.state_id = state_table_end.id', 'left');
+    
+    // Group by state and district to ensure each district is considered only once
+    $this->db->group_by('state_id');
+    
+    $district_costing_data = $this->master_model->getRecords('add_more_day_to_day_program', array('add_more_day_to_day_program.is_deleted' => 'no'), $fields);
+    
+        $total_state_permit_final = 0;
+        $total_daily_tax_final = 0;
+        foreach($district_costing_data as $district_tax_rates)
+        {
+            $all_final_costing['total_state_permit_final']+=$district_tax_rates['state_permit_rate'];
+            $all_final_costing['total_daily_tax_final']+=$district_tax_rates['daily_tax_rate'];
+        }
+       
+
+        // print_r($all_final_costing);
+        // die;
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        // $fields = "SUM(add_more_day_to_day_program.distance)";
+        // $this->db->select($fields);
+        // $this->db->where('add_more_day_to_day_program.is_deleted', 'no');
+        // $this->db->where('add_more_day_to_day_program.is_active', 'yes');
+        // $this->db->where('add_more_day_to_day_program.tour_creation_id', $id);  
+        // $this->db->where('add_more_day_to_day_program.day_no', $day);
+        // $this->db->where('add_more_day_to_day_program.activity_type', 'Travel');
+        // $this->db->join("citywise_other_add_more", 'add_more_day_to_day_program.start_place = citywise_other_add_more.id', 'left');
+        // $total_km = $this->master_model->getRecords('add_more_day_to_day_program', array('add_more_day_to_day_program.is_deleted' => 'no'), $fields);
+        // $result_total_km = $total_km->row();
+
+        $fields = "SUM(add_more_day_to_day_program.distance) as total_day_distance";
+        $this->db->select($fields);
+        $this->db->where('add_more_day_to_day_program.is_deleted', 'no');
+        $this->db->where('add_more_day_to_day_program.is_active', 'yes');
+        $this->db->where('add_more_day_to_day_program.tour_creation_id', $id);  
+        // $this->db->where('add_more_day_to_day_program.day_no', $day);
+        $this->db->where('add_more_day_to_day_program.activity_type', 'Travel');
+        $total_km = $this->db->get('add_more_day_to_day_program');
+        $result_total_km = $total_km->row();
+
+        $fields = "MAX(vehicle_costing_details.per_km_rate) as max_per_km_rate";
+        $this->db->select($fields);
+        $this->db->where('vehicle_costing_details.tour_creation_id', $id);
+        $this->db->where('vehicle_costing_details.is_deleted', 'no');
+        $query = $this->db->get('vehicle_costing_details');
+        $result = $query->row();
+        // $result->max_per_km_rate;
+
+    //    $fields = "MAX(vehicle_costing_details.per_km_rate) as max_per_km_rate";
+       $this->db->select('total_person_count,grocery_cost');
+       $this->db->where('tour_creation.id', $id);
+       $this->db->where('tour_creation.is_deleted', 'no');
+       $total_person_query = $this->db->get('tour_creation');
+       $total_persons_count = $total_person_query->row();
+
+       $days_total_km_rate= (float)$result_total_km->total_day_distance*(float)$result->max_per_km_rate;
+       
+       $total_km_rate_per_person=$days_total_km_rate/$total_persons_count->total_person_count;
+
+       $grocery_cost_per_person=$total_persons_count->grocery_cost/$total_persons_count->total_person_count;
+
+       $fields = "SUM(add_staff.daywise_salary) as staff_day_salary";
+        $this->db->select($fields);
+        $this->db->where('add_staff.is_deleted', 'no');
+        $this->db->where('add_staff.is_active', 'yes');
+        $this->db->where('add_staff.tour_creation_id', $id);  
+        $day_staff_salary = $this->db->get('add_staff');
+        $final_day_staff_salary = $day_staff_salary->row();
+       
+        $staff_day_salary=$final_day_staff_salary->staff_day_salary;
+
+
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++==
+        $total_all_final_cost=$all_final_costing['total_ticket_cost_final']+$all_final_costing['total_municipal_amt_final']+
+                              $all_final_costing['total_parking_cost_final']+$all_final_costing['total_state_permit_final']+
+                              $all_final_costing['total_daily_tax_final']+(float)$total_km_rate_per_person+(float)$staff_day_salary+
+                              $grocery_cost_per_person;
+
+                            //   print_r($total_all_final_cost);
+                            //   die;
+
+
+
+
         $fields = "SUM(citywise_other_add_more_end.ticket_cost) AS total_ticket_cost, add_more_day_to_day_program.*, district_table_start.district AS start_district_name, district_table_end.district AS end_district_name, citywise_other_add_more_start.place_name AS start_place_name, citywise_other_add_more_end.place_name AS end_place_name";
         $this->db->select($fields);
         $this->db->where('add_more_day_to_day_program.is_deleted', 'no');
@@ -1314,17 +1532,235 @@ class Daily_program_data extends CI_Controller {
 
         // $this->arr_view_data['supervision_sess_name'] = $supervision_sess_name;
 
-        $this->arr_view_data['no_of_days']        = $no_of_days;
-        $this->arr_view_data['id']        = $id;
-        $this->arr_view_data['add_more_day_to_day_program']        = $add_more_day_to_day_program;
-        $this->arr_view_data['add_more_ticket_cost']        = $add_more_ticket_cost;
-        // $this->arr_view_data['package_id']        = $package_id;
-        // $this->arr_view_data['package_date_id']        = $package_date_id;
+        $this->arr_view_data['no_of_days'] = $no_of_days;
+        $this->arr_view_data['id'] = $id;
+        $this->arr_view_data['add_more_day_to_day_program'] = $add_more_day_to_day_program;
+        $this->arr_view_data['add_more_ticket_cost'] = $add_more_ticket_cost;
+        $this->arr_view_data['all_final_costing'] = $all_final_costing;
+        $this->arr_view_data['total_all_final_cost'] = $total_all_final_cost;
+        $this->arr_view_data['staff_day_salary'] = $staff_day_salary;
+        $this->arr_view_data['grocery_cost_per_person'] = $grocery_cost_per_person;
+        $this->arr_view_data['total_km_rate_per_person']        = $total_km_rate_per_person;
         $this->arr_view_data['page_title']      = $this->module_title." Details ";
         $this->arr_view_data['module_title']    = $this->module_title;
         $this->arr_view_data['module_url_path'] = $this->module_url_path;
         $this->arr_view_data['day_to_day_program_module'] = $this->day_to_day_program_module;
         $this->arr_view_data['middle_content']  = $this->module_view_folder."details";
+        $this->load->view('admin/layout/admin_combo',$this->arr_view_data);
+    }
+
+
+    public function budget_creation($pid)
+    {
+        // $tour_expenses_id=base64_decode($id);
+        // $no_of_days=base64_decode($c_no_of_days);
+        $id=base64_decode($pid);
+
+
+        $fields = "citywise_other_add_more.id,ticket_cost, municipal_amt, parking_cost";
+        $this->db->select($fields);
+        $this->db->where('add_more_day_to_day_program.is_deleted', 'no');
+        $this->db->where('add_more_day_to_day_program.is_active', 'yes');
+        $this->db->where('add_more_day_to_day_program.tour_creation_id', $id);  
+        $this->db->join("citywise_other_add_more", 'add_more_day_to_day_program.start_place = citywise_other_add_more.id', 'left');
+        $this->db->group_by('add_more_day_to_day_program.tour_creation_id'); // Assuming you want to group by tour_creation_id
+        $this->db->group_by('add_more_day_to_day_program.start_place'); // Assuming you want to group by tour_creation_id
+        $ticket_tax_parking_cost = $this->master_model->getRecords('add_more_day_to_day_program', array('add_more_day_to_day_program.is_deleted' => 'no'), $fields);
+   
+        $total_ticket_cost_final_amt = 0;
+        $total_municipal_amt_final_amt = 0;
+        $total_parking_cost_final_amt = 0;
+        $all_final_costing = array(
+            'total_ticket_cost_final' => 0,
+            'total_municipal_amt_final' => 0,
+            'total_parking_cost_final' => 0,
+            'total_state_permit_final' => 0,
+            'total_daily_tax_final' => 0,
+            'total_ticket_cost_final_end' => 0,
+            'total_municipal_amt_final_end' => 0,
+            'total_parking_cost_final_end' => 0,
+        );
+
+       $start_place_id=array();
+        foreach($ticket_tax_parking_cost as $ticket_cost_option)
+        {
+            if (isset($ticket_cost_option['id'])) { // Ensure the ID is set
+                array_push($start_place_id, $ticket_cost_option['id']);
+            }
+            $total_ticket_cost_final_amt+= (float)$ticket_cost_option['ticket_cost'];
+            $total_municipal_amt_final_amt+= (float)$ticket_cost_option['municipal_amt'];
+            $total_parking_cost_final_amt+= (float)$ticket_cost_option['parking_cost'];
+        }
+
+        $start_place_id_val = array_values($start_place_id);
+
+        $fields = "citywise_other_add_more.id,ticket_cost, municipal_amt, parking_cost";
+        $this->db->select($fields);
+        $this->db->where('add_more_day_to_day_program.is_deleted', 'no');
+        $this->db->where('add_more_day_to_day_program.is_active', 'yes');
+        $this->db->where('add_more_day_to_day_program.tour_creation_id', $id);  
+        // $this->db->where('add_more_day_to_day_program.day_no', $day);
+        $this->db->join("citywise_other_add_more", 'add_more_day_to_day_program.end_place = citywise_other_add_more.id', 'left');
+        $this->db->where_not_in('citywise_other_add_more.id', $start_place_id_val);
+        $this->db->group_by('add_more_day_to_day_program.tour_creation_id'); // Assuming you want to group by tour_creation_id
+        $this->db->group_by('add_more_day_to_day_program.end_place'); // Assuming you want to group by tour_creation_id
+        $ticket_tax_parking_cost_end = $this->master_model->getRecords('add_more_day_to_day_program', array('add_more_day_to_day_program.is_deleted' => 'no'), $fields);
+
+        $total_ticket_cost_final_end_amt=0;
+        $total_municipal_amt_final_end_amt=0;
+        $total_parking_cost_final_end_amt=0;
+
+        foreach($ticket_tax_parking_cost_end as $ticket_cost_option)
+        {
+            $total_ticket_cost_final_end_amt+= (float)$ticket_cost_option['ticket_cost'];
+            $total_municipal_amt_final_end_amt+= (float)$ticket_cost_option['municipal_amt'];
+            $total_parking_cost_final_end_amt+= (float)$ticket_cost_option['parking_cost'];
+        }
+
+
+
+        $all_final_costing['total_ticket_cost_final']=$total_ticket_cost_final_amt+$total_ticket_cost_final_end_amt;
+        $all_final_costing['total_municipal_amt_final']=$total_municipal_amt_final_amt+$total_municipal_amt_final_end_amt;
+        $all_final_costing['total_parking_cost_final']=$total_parking_cost_final_amt+$total_parking_cost_final_end_amt;
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+       
+$fields = "
+        COALESCE(district_table_start.id, district_table_end.id) as district_id,
+        COALESCE(state_table_start.id, state_table_end.id) as state_id,
+        COALESCE(state_table_start.state_permit_rate, state_table_end.state_permit_rate) as state_permit_rate,
+        COALESCE(state_table_start.daily_tax_rate, state_table_end.daily_tax_rate) as daily_tax_rate
+    ";
+    
+    $this->db->select($fields);
+    $this->db->where('add_more_day_to_day_program.is_deleted', 'no');
+    $this->db->where('add_more_day_to_day_program.is_active', 'yes');
+    $this->db->where('add_more_day_to_day_program.tour_creation_id', $id);  
+    // $this->db->where('add_more_day_to_day_program.day_no', $day);
+    
+    // Joins for start district and state
+    $this->db->join("citywise_other_add_more as start_place", 'add_more_day_to_day_program.start_place = start_place.id', 'left');
+    $this->db->join("district_table as district_table_start", 'add_more_day_to_day_program.start_district = district_table_start.id', 'left');
+    $this->db->join("state_table as state_table_start", 'district_table_start.state_id = state_table_start.id', 'left');
+    
+    // Joins for end district and state
+    $this->db->join("citywise_other_add_more as end_place", 'add_more_day_to_day_program.end_place = end_place.id', 'left');
+    $this->db->join("district_table as district_table_end", 'add_more_day_to_day_program.end_district = district_table_end.id', 'left');
+    $this->db->join("state_table as state_table_end", 'district_table_end.state_id = state_table_end.id', 'left');
+    
+    // Group by state and district to ensure each district is considered only once
+    $this->db->group_by('state_id');
+    
+    $district_costing_data = $this->master_model->getRecords('add_more_day_to_day_program', array('add_more_day_to_day_program.is_deleted' => 'no'), $fields);
+    
+    $total_state_permit_final = 0;
+        $total_daily_tax_final = 0;
+        foreach($district_costing_data as $district_tax_rates)
+        {
+            $all_final_costing['total_state_permit_final']+=$district_tax_rates['state_permit_rate'];
+            $all_final_costing['total_daily_tax_final']+=$district_tax_rates['daily_tax_rate'];
+        }
+       
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        
+        $fields = "SUM(add_more_day_to_day_program.distance) as total_day_distance";
+        $this->db->select($fields);
+        $this->db->where('add_more_day_to_day_program.is_deleted', 'no');
+        $this->db->where('add_more_day_to_day_program.is_active', 'yes');
+        $this->db->where('add_more_day_to_day_program.tour_creation_id', $id);  
+        // $this->db->where('add_more_day_to_day_program.day_no', $day);
+        $this->db->where('add_more_day_to_day_program.activity_type', 'Travel');
+        $total_km = $this->db->get('add_more_day_to_day_program');
+        $result_total_km = $total_km->row();
+
+        $fields = "MAX(vehicle_costing_details.per_km_rate) as max_per_km_rate";
+        $this->db->select($fields);
+        $this->db->where('vehicle_costing_details.tour_creation_id', $id);
+        $this->db->where('vehicle_costing_details.is_deleted', 'no');
+        $query = $this->db->get('vehicle_costing_details');
+        $result = $query->row();
+        // $result->max_per_km_rate;
+
+    //    $fields = "MAX(vehicle_costing_details.per_km_rate) as max_per_km_rate";
+        $this->db->select('total_person_count,grocery_cost');
+        $this->db->where('tour_creation.id', $id);
+        $this->db->where('tour_creation.is_deleted', 'no');
+        $total_person_query = $this->db->get('tour_creation');
+        $total_persons_count = $total_person_query->row();
+
+        $days_total_km_rate= (float)$result_total_km->total_day_distance*(float)$result->max_per_km_rate;
+        
+        $total_km_rate_per_person=$days_total_km_rate/$total_persons_count->total_person_count;
+
+        $grocery_cost_per_person=$total_persons_count->grocery_cost/$total_persons_count->total_person_count;
+
+        $fields = "SUM(add_staff.daywise_salary) as staff_day_salary";
+        $this->db->select($fields);
+        $this->db->where('add_staff.is_deleted', 'no');
+        $this->db->where('add_staff.is_active', 'yes');
+        $this->db->where('add_staff.tour_creation_id', $id);  
+        $day_staff_salary = $this->db->get('add_staff');
+        $final_day_staff_salary = $day_staff_salary->row();
+        
+        $staff_day_salary=$final_day_staff_salary->staff_day_salary;
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++==
+            $total_all_final_cost=$all_final_costing['total_ticket_cost_final']+$all_final_costing['total_municipal_amt_final']+
+            $all_final_costing['total_parking_cost_final']+$all_final_costing['total_state_permit_final']+
+            $all_final_costing['total_daily_tax_final']+(float)$total_km_rate_per_person+(float)$staff_day_salary+
+            $grocery_cost_per_person;
+
+
+
+
+
+
+            $fields = "SUM(citywise_other_add_more_end.ticket_cost) AS total_ticket_cost, add_more_day_to_day_program.*, district_table_start.district AS start_district_name, district_table_end.district AS end_district_name, citywise_other_add_more_start.place_name AS start_place_name, citywise_other_add_more_end.place_name AS end_place_name";
+            $this->db->select($fields);
+            $this->db->where('add_more_day_to_day_program.is_deleted', 'no');
+            $this->db->where('add_more_day_to_day_program.is_active', 'yes');
+            $this->db->where('add_more_day_to_day_program.tour_creation_id', $id);  
+            $this->db->where('add_more_day_to_day_program.day_no', $day);
+            $this->db->join("district_table AS district_table_start", 'add_more_day_to_day_program.start_district = district_table_start.id', 'left');
+            $this->db->join("district_table AS district_table_end", 'add_more_day_to_day_program.end_district = district_table_end.id', 'left');
+            $this->db->join("citywise_other_add_more AS citywise_other_add_more_start", 'add_more_day_to_day_program.start_place = citywise_other_add_more_start.id', 'left');
+            $this->db->join("citywise_other_add_more AS citywise_other_add_more_end", 'add_more_day_to_day_program.end_place = citywise_other_add_more_end.id', 'left');
+            $this->db->group_by('add_more_day_to_day_program.tour_creation_id'); // Assuming you want to group by tour_creation_id
+            $add_more_ticket_cost = $this->master_model->getRecords('add_more_day_to_day_program', array('add_more_day_to_day_program.is_deleted' => 'no'), $fields);
+            // print_r($add_more_ticket_cost); die;
+    
+            $record = array();
+            $fields = "add_more_day_to_day_program.*, district_table_start.district AS start_district_name, district_table_end.district AS end_district_name, citywise_other_add_more_start.place_name AS start_place_name, citywise_other_add_more_end.place_name AS end_place_name,citywise_other_add_more_end.ticket_cost";
+            $this->db->where('add_more_day_to_day_program.is_deleted', 'no');
+            $this->db->where('add_more_day_to_day_program.is_active', 'yes');
+            $this->db->where('add_more_day_to_day_program.tour_creation_id', $id);  
+            $this->db->where('add_more_day_to_day_program.day_no', $day);
+            $this->db->join("district_table AS district_table_start", 'add_more_day_to_day_program.start_district = district_table_start.id', 'left');
+            $this->db->join("district_table AS district_table_end", 'add_more_day_to_day_program.end_district = district_table_end.id', 'left');
+            $this->db->join("citywise_other_add_more AS citywise_other_add_more_start", 'add_more_day_to_day_program.start_place = citywise_other_add_more_start.id', 'left');
+            $this->db->join("citywise_other_add_more AS citywise_other_add_more_end", 'add_more_day_to_day_program.end_place = citywise_other_add_more_end.id', 'left');
+            $add_more_day_to_day_program = $this->master_model->getRecords('add_more_day_to_day_program', array('add_more_day_to_day_program.is_deleted' => 'no'), $fields);
+    
+
+        $this->arr_view_data['tour_creation']        = $tour_creation;
+
+        // $this->arr_view_data['supervision_sess_name'] = $supervision_sess_name;
+
+        $this->arr_view_data['id'] = $id;
+        $this->arr_view_data['add_more_day_to_day_program'] = $add_more_day_to_day_program;
+        $this->arr_view_data['add_more_ticket_cost'] = $add_more_ticket_cost;
+        $this->arr_view_data['all_final_costing'] = $all_final_costing;
+        $this->arr_view_data['total_all_final_cost'] = $total_all_final_cost;
+        $this->arr_view_data['staff_day_salary'] = $staff_day_salary;
+        $this->arr_view_data['grocery_cost_per_person'] = $grocery_cost_per_person;
+        $this->arr_view_data['total_km_rate_per_person']        = $total_km_rate_per_person;
+        $this->arr_view_data['page_title']      = $this->module_title." Details ";
+        $this->arr_view_data['module_title']    = $this->module_title;
+        $this->arr_view_data['module_url_path'] = $this->module_url_path;
+        $this->arr_view_data['day_to_day_program_module'] = $this->day_to_day_program_module;
+        $this->arr_view_data['middle_content']  = $this->module_view_folder."tour_budget_creation";
         $this->load->view('admin/layout/admin_combo',$this->arr_view_data);
     }
 

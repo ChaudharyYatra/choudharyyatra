@@ -24,6 +24,7 @@ class Citywise_place_master extends CI_Controller{
         $this->db->where('citywise_place_master.is_deleted','no');
         $this->db->join("district_table", 'citywise_place_master.select_district=district_table.id','left');
         $this->db->join("city", 'citywise_place_master.select_city=city.id','left');
+        $this->db->group_by('citywise_place_master.select_district,citywise_place_master.select_city');
         $arr_data = $this->master_model->getRecords('citywise_place_master',array('citywise_place_master.is_deleted'=>'no'),$fields);
         // print_r($arr_data); die;
 

@@ -13166,7 +13166,7 @@ $(document).ready(function() {
 <script>
         $(document).ready(function() {
             // Initialize Select2 with search functionality
-            $('#sra_no').select2({
+            $('#add_sra_sra_no').select2({
                 placeholder: "Select SRA No",
                 width: '100%',
                 dropdownAutoWidth: true,
@@ -13206,10 +13206,10 @@ $(document).ready(function() {
             });
 
             // Event listener for the select box change
-            $('#sra_no').on('select2:select', function(e) {
+            $('#add_sra_sra_no').on('select2:select', function(e) {
                 let selectedValue = $(this).val();
                 $('#textbox').val(selectedValue);
-                $('#sra_no').select2('close'); // Close the dropdown
+                $('#add_sra_sra_no').select2('close'); // Close the dropdown
             });
         });
     </script>

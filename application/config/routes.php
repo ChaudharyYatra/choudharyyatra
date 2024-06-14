@@ -53,4 +53,4 @@ $route['default_controller'] = 'home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['all_login'] = 'supervision/login/index';
-$route['all_logins'] = 'supervision/';
+// $route['all_logins'] = 'supervision/';

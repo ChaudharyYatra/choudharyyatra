@@ -47,58 +47,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>kitchen_staff_cook/asign_tour_to_manager/index" class="nav-link">
+                <a href="<?php echo base_url(); ?>office_branch_staff/ticket_booking_request/index" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>My Asigned Tour</p>
+                  <p>My Asigned Extra Services</p>
                 </a>
               </li>
 
-              <!-- <li class="nav-item">
-                <a href="<?php //echo base_url(); ?>tour_manager/birthday_and_anniversary/index" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Birthday & Anniversary Module</p>
-                </a>
-              </li> -->
-
-              <!-- <li class="nav-item">
-                <a href="<?php //echo base_url(); ?>tour_manager/anniversary_module/index" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Anniversary Module</p>
-                </a>
-              </li> -->
-
-              <!-- <li class="nav-item">
-                <a href="<?php //echo base_url(); ?>tour_manager/attendance/index" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Daily Attendance</p>
-                </a>
-              </li> -->
-
-              <!-- <li class="nav-item">
-                <a href="<?php //echo base_url(); ?>tour_manager/tm_request_more_fund/index" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Requested amt details</p>
-                </a>
-              </li> -->
-
-              <!-- <li class="nav-item">
-                <a href="<?php //echo base_url(); ?>tour_manager/account_pay_amt/index" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Requested amount pay from account</p>
-                </a>
-              </li> -->
-
-            </ul>
-          </li>
-          
-          <!-- <li class="nav-item">
-            <a href="<?php //echo base_url(); ?>tour_manager/tm_account_details/add" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>
-               Account Details
-              </p>
-            </a>
-          </li> -->
+             
           <li class="nav-item">
             <a href="<?php echo base_url(); ?>kitchen_staff_cook/kitchen_staff_cook_photos/index" class="nav-link">
               <i class="far fa-circle nav-icon"></i>

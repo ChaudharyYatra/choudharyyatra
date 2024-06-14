@@ -47,13 +47,12 @@ class Sra_partial_payment_details extends CI_Controller {
         // $traveller_booking_info_header = $this->master_model->getRecords('sra_payment','',$fields);
         $traveller_booking_info_header = $this->master_model->getRecords('sra_payment',array('sra_payment.is_deleted'=>'no'),$fields);
 
-        $fields = "sra_payment.*,sra_booking_payment_details.run_pending_amt,sra_booking_payment_details.final_amt,sra_extra_services.services_amt as extra_services_amt";
+        $fields = "sra_payment.*,sra_booking_payment_details.run_pending_amt,sra_booking_payment_details.final_amt";
         $this->db->where('sra_booking_payment_details.is_deleted','no');
         $this->db->where('sra_payment.is_active','yes');
         $this->db->where('sra_booking_payment_details.sra_no',$iid);
         $this->db->where('sra_booking_payment_details.academic_year', $academic_year);
         $this->db->join("sra_payment", 'sra_booking_payment_details.sra_payment_id=sra_payment.id','left');
-        $this->db->join("sra_extra_services", 'sra_payment.id=sra_extra_services.sra_payment_id','left');
         $traveller_booking_info_amt = $this->master_model->getRecord('sra_booking_payment_details',array('sra_booking_payment_details.is_deleted'=>'no'),$fields);
 
         $total_sra_amt = 0;

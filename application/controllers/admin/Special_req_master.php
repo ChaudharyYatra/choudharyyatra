@@ -42,11 +42,9 @@ class Special_req_master extends CI_Controller{
             if($this->form_validation->run() == TRUE)
             {
                 $service_name = $this->input->post('service_name');
-                $ledger = $this->input->post('ledger');
 
                 $arr_insert = array(
                     'service_name'   =>   $service_name,
-                    'ledger'   =>   $ledger
                     
                 );
                 
@@ -76,12 +74,7 @@ class Special_req_master extends CI_Controller{
             }   
         }
 
-        $this->db->order_by('id','desc');
-        $this->db->where('is_deleted','no');
-        $ledger_data = $this->master_model->getRecords('ledgers');
-
         $this->arr_view_data['action']          = 'add';
-        $this->arr_view_data['ledger_data']        = $ledger_data;
         $this->arr_view_data['page_title']      = " Add ".$this->module_title;
         $this->arr_view_data['module_title']    = $this->module_title;
         $this->arr_view_data['module_url_path'] = $this->module_url_path;
@@ -195,7 +188,6 @@ class Special_req_master extends CI_Controller{
                 if($this->form_validation->run() == TRUE)
                 {
                     $service_name = $this->input->post('service_name');
-                    $ledger = $this->input->post('ledger');
                    
                    $this->db->where('service_name',$service_name);
                     $this->db->where('id!='.$id);
@@ -209,7 +201,6 @@ class Special_req_master extends CI_Controller{
 
                    $arr_update = array(
                         'service_name' => $service_name,
-                        'ledger' => $ledger
                     );
                     $arr_where     = array("id" => $id);
                    $this->master_model->updateRecord('special_req_master ',$arr_update,$arr_where);
@@ -230,13 +221,8 @@ class Special_req_master extends CI_Controller{
             $this->session->set_flashdata('error_message','Invalid Selection Of Record');
             redirect($this->module_url_path.'/index');
         }
-
-        $this->db->order_by('id','desc');
-        $this->db->where('is_deleted','no');
-        $ledger_data = $this->master_model->getRecords('ledgers');
          
         $this->arr_view_data['arr_data']        = $arr_data;
-        $this->arr_view_data['ledger_data']        = $ledger_data;
         $this->arr_view_data['page_title']      = "Edit ".$this->module_title;
         $this->arr_view_data['module_title']    = $this->module_title;
         $this->arr_view_data['module_url_path'] = $this->module_url_path;

@@ -63,10 +63,10 @@
                         </div>
                       </div>
                       <div class="col-md-6">
-                        <div class="form-group">
-                          <label>Mobile number</label>
-                          <input type="text" class="form-control" name="mobile_number" id="mobile_number" value="<?php if(!empty($visitor_data)){ echo $visitor_data['mobile_number'];} ?>" placeholder="Enter Mobile Number" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" minlength="10">
-                        </div>
+                              <div class="form-group">
+                                <label>Mobile number</label>
+                                <input type="text" class="form-control" name="mobile_number" id="mobile_number" value="<?php if(!empty($visitor_data)){ echo $visitor_data['mobile_number'];} ?>" placeholder="Enter Mobile Number" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" minlength="10">
+                              </div>
                       </div>
 					            <div class="col-md-6">
                               <div class="form-group">
@@ -141,8 +141,7 @@
                 <!-- /.card-body -->
                 <div class="card-footer">
                 <button type="submit" class="btn btn-success" name="booknow_submit" value="Submit & Seat Checker">Submit & Seat Checker</button>
-                  <!-- <button type="submit" class="btn btn-primary" name="submit" value="submit">Save & Close</button> -->
-                  <button class="btn btn-danger btn-sm btn_follow_form"  data-bs-toggle="modal" data-bs-target="#exampleModal" attr-test="no">Next Followup</button>
+                  <button type="submit" class="btn btn-primary" name="submit" value="submit">Save & Close</button>
                    
                   <a href="<?php echo $module_url_path; ?>/index"><button type="button" class="btn btn-danger" >Cancel</button></a>
                 </div>
@@ -263,8 +262,7 @@
                 <!-- /.card-body -->
                 <div class="card-footer">
                   <button type="submit" class="btn btn-success" name="booknow_submit" value="Submit & Seat Checker">Submit & Seat Checker</button> 
-                  <!-- <button type="submit" class="btn btn-primary" name="submit" value="submit">Save & Close</button> -->
-                  <button class="btn btn-danger btn-sm btn_follow_form"  data-bs-toggle="modal" data-bs-target="#exampleModal" attr-test="no">Next Followup</button>
+                  <button type="submit" class="btn btn-primary" name="submit" value="submit">Save & Close</button>
                   
                   <a href="<?php echo $module_url_path; ?>/index"><button type="button" class="btn btn-danger" >Cancel</button></a>
                 </div>
@@ -289,61 +287,7 @@
     </section>
     <!-- /.content -->
   </div>
+  
 
-  <div class="modal fade modal_follow_form" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Next followup form</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form method="post" action="<?php echo $module_url_path;?>/domestic_followup">
-            <div class="col-md-12">
-              
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="col-form-label">Next followup Date:</label>
-                  <input type="date" class="form-control" name="next_followup_date" id="next_followup_date" min="<?php echo date("Y-m-d"); ?>" value="<?php if(isset($domestic_followup_info['next_followup_date'])){ echo $domestic_followup_info['next_followup_date'];}?>" required>
-                  <input type="hidden" name="enquiry_id" id="enquiry_id" value="<?php if(isset($info['id'])){ echo $info['booking_enquiry_id'];}?>">
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="col-form-label">Next Follow Up Time:</label>
-                  <input type="time" class="form-control" name="follow_up_time" id="follow_up_time" required>
-                </div>
-              </div>
-              
-              </div>
-
-              <div class="col-md-12 mb-2">
-                <label>Select Reason</label>
-                  <div class="input-group">
-                      <select class="form-control niceSelect" name="followup_reason" id="followup_reason" onfocus='this.size=4;' onblur='this.size=1;' 
-                          onchange='this.size=1; this.blur();' required="required">
-                          <option value="">Select reason</option>
-
-                          <?php foreach($followup_reason_data as $followup_reason){ ?> 
-                          <option value="<?php echo $followup_reason['id'];?>"><?php echo $followup_reason['create_followup_reason'];?></option> 
-                          <?php } ?>
-                      </select>
-                  </div>
-              </div>
-              
-                <div class="col-md-12">
-                  <label class="col-form-label">Follow Up Remark:</label>
-                  <textarea class="form-control" name="follow_up_comment" id="follow_up_comment" required></textarea>
-                  <!-- <input type="hidden" name="enquiry_id" id="enquiry_id" value="<?php //if(isset($info['id'])){ echo $info['booking_enquiry_id'];}?>"> -->
-                </div>
-              
-            </div>
-            <div class="modal-footer">
-              <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-              <!-- <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button> -->
-              <!-- <a onclick="return confirm('Are You Sure You Want To submit This Follow Up Record?')" href="<?php //echo $module_url_path;?>/domestic_booking_enquiry_followup/<?php //echo $info['id']; ?>"><button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button></a> -->
-              <a onclick="return confirm('Are You Sure You Want To submit This Follow Up Record?')" href="<?php echo $module_url_path;?>/index"> <button type="submit" class="btn btn-primary" name="submit" value="submit">Save & Close</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+</body>
+</html>

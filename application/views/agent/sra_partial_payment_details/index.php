@@ -947,7 +947,7 @@
                                     </div>
                                     <div class="col-md-8 mt-1 cash_payment_div">
                                     <table id="" class="table table-bordered table-striped">
-                                        <thead> 
+                                        <thead>
                                         <tr>
                                             <th>Extra Services Name</th>
                                             <th>Extra Services Amount</th>

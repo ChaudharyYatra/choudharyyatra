@@ -13407,7 +13407,7 @@ $(document).ready(function() {
 <script>
         $(document).ready(function() {
             // Initialize Select2 with search functionality
-            $('#add_sra_sra_no').select2({
+            $('#sra_no').select2({
                 placeholder: "Select SRA No",
                 width: '100%',
                 dropdownAutoWidth: true,
@@ -13447,10 +13447,10 @@ $(document).ready(function() {
             });
 
             // Event listener for the select box change
-            $('#add_sra_sra_no').on('select2:select', function(e) {
+            $('#sra_no').on('select2:select', function(e) {
                 let selectedValue = $(this).val();
                 $('#textbox').val(selectedValue);
-                $('#add_sra_sra_no').select2('close'); // Close the dropdown
+                $('#sra_no').select2('close'); // Close the dropdown
             });
         });
     </script>
@@ -13509,7 +13509,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 
-<script>
+<!-- <script>
     function updateSubmitButton() {
     // Calculate the sum of all customer sending amount inputs
     var xyz = 0;
@@ -13530,6 +13530,82 @@ document.addEventListener('DOMContentLoaded', function() {
         submitButton.disabled = true;
         notMatchMsg.style.display = 'block';
         // alert("Please match customer depositing amount and booking amount.");
+    }
+}
+</script> -->
+
+<!-- <script>
+function updateSubmitButton() {
+    var totalCustomerAmount = 0;
+    var allValid = true;
+    var notMatchMsg = document.getElementById('not_match_show_msg');
+
+    document.querySelectorAll('.customer_sending_amt_class').forEach(function(input, index) {
+        var serviceAmt = parseFloat(document.getElementById('service_amt_value' + (index + 1)).innerText);
+        var customerAmt = parseFloat(input.value) || 0;
+
+        if (customerAmt > serviceAmt) {
+            input.value = serviceAmt;
+            input.readOnly = true;
+            allValid = false;
+            notMatchMsg.style.display = 'block';
+        } else {
+            input.readOnly = false;
+        }
+
+        totalCustomerAmount += customerAmt;
+    });
+
+    var nextExtraServicesAmt = parseFloat(document.getElementById('next_extra_services_amt').value) || 0;
+    var submitButton = document.getElementById('sra_partial_pending_amt_submit_otp');
+
+    if (allValid && totalCustomerAmount === nextExtraServicesAmt) {
+        submitButton.disabled = false;
+        notMatchMsg.style.display = 'none';
+    } else {
+        submitButton.disabled = true;
+        if (!allValid) {
+            notMatchMsg.style.display = 'block';
+        }
+    }
+}
+</script> -->
+
+<script>
+function updateSubmitButton() {
+    var totalCustomerAmount = 0;
+    var allValid = true;
+    var notMatchMsg = document.getElementById('not_match_show_msg');
+    var inputFields = document.querySelectorAll('.customer_sending_amt_class');
+    var numOfFields = inputFields.length;
+
+    inputFields.forEach(function(input, index) {
+        var serviceAmt = parseFloat(document.getElementById('service_amt_value' + (index + 1)).innerText);
+        var customerAmt = parseFloat(input.value) || 0;
+
+        if (customerAmt > serviceAmt) {
+            input.value = serviceAmt;
+            input.readOnly = true;
+            allValid = false;
+            notMatchMsg.style.display = 'block';
+        } else {
+            input.readOnly = false;
+        }
+
+        totalCustomerAmount += customerAmt;
+    });
+
+    var nextExtraServicesAmt = parseFloat(document.getElementById('next_extra_services_amt').value) || 0;
+    var submitButton = document.getElementById('sra_partial_pending_amt_submit_otp');
+
+    if (allValid && totalCustomerAmount === nextExtraServicesAmt) {
+        submitButton.disabled = false;
+        notMatchMsg.style.display = 'none';
+    } else {
+        submitButton.disabled = true;
+        if (!allValid) {
+            notMatchMsg.style.display = 'block';
+        }
     }
 }
 </script>

@@ -94,6 +94,7 @@
                                         <tr>
                                             <th>Extra Services</th>
                                             <th>Amount</th>
+                                            <th>Remark</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -114,6 +115,7 @@
                                                 <input type="text" class="form-control mt-4" name="other_services[]" id="other_services" placeholder="Enter extra services name" value="" style="display: none;">
                                             </td>
                                             <td><input type="text" class="form-control services_quantity" name="services_quantity[]" id="services_quantity<?php echo $i;?>" placeholder="Enter quantity" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" required></td>
+                                            <td><textarea type="text" class="form-control services_remark" name="extra_services_remark[]" id="extra_services_remark<?php echo $i;?>" placeholder="Enter reamrk" required></textarea>
                                             <td>
                                                 <button type="button" class="btn btn-primary" attr_add_id="1" name="submit" value="extra_services_add_more" id="extra_services_add_more">Add More</button>
                                             </td>

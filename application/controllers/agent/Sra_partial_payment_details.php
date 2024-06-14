@@ -28,7 +28,7 @@ class Sra_partial_payment_details extends CI_Controller {
         $this->arr_view_data = [];
 	 }
 
-    public function index($iid)
+    public function index($iid,$academic_year)
     {
         // echo $iid;
         // die;
@@ -41,8 +41,8 @@ class Sra_partial_payment_details extends CI_Controller {
         $this->db->where('sra_payment.is_active','yes');
         $this->db->join("package_date", 'package_date.id=sra_payment.tour_date','left');
         // $this->db->group_start();
-        $this->db->where('sra_payment.id', $iid);
-        // $this->db->where('sra_payment.academic_year', $academic_year);
+        $this->db->where('sra_payment.sra_no', $iid);
+        $this->db->where('sra_payment.academic_year', $academic_year);
         // $this->db->group_end();
         // $traveller_booking_info_header = $this->master_model->getRecords('sra_payment','',$fields);
         $traveller_booking_info_header = $this->master_model->getRecords('sra_payment',array('sra_payment.is_deleted'=>'no'),$fields);
@@ -50,16 +50,147 @@ class Sra_partial_payment_details extends CI_Controller {
         $fields = "sra_payment.*,sra_booking_payment_details.run_pending_amt,sra_booking_payment_details.final_amt";
         $this->db->where('sra_booking_payment_details.is_deleted','no');
         $this->db->where('sra_payment.is_active','yes');
-        $this->db->where('sra_booking_payment_details.sra_payment_id',$iid);
+        $this->db->where('sra_booking_payment_details.sra_no',$iid);
+        $this->db->where('sra_booking_payment_details.academic_year', $academic_year);
         $this->db->join("sra_payment", 'sra_booking_payment_details.sra_payment_id=sra_payment.id','left');
         $traveller_booking_info_amt = $this->master_model->getRecord('sra_booking_payment_details',array('sra_booking_payment_details.is_deleted'=>'no'),$fields);
+
+        $total_sra_amt = 0;
+        $services_amt = 0;
+        $total_amount = 0;
+        $extra_services_booking_amt = 0;
+        $total_paid_amount = 0;
+        $total_sra_paid_amt = 0;
+        $extra_services_paid_amt = 0;
+        $total_sra_final_amt = 0;
+        $total_sra_final_amt_group_by = 0;
+
 
         $fields = "sra_payment.*,sra_booking_payment_details.run_pending_amt";
         $this->db->where('sra_booking_payment_details.is_deleted','no');
         $this->db->where('sra_payment.is_active','yes');
-        $this->db->where('sra_booking_payment_details.sra_payment_id',$iid);
+        $this->db->where('sra_booking_payment_details.sra_no',$iid);
+        $this->db->where('sra_booking_payment_details.academic_year', $academic_year);
         $this->db->join("sra_payment", 'sra_booking_payment_details.sra_payment_id=sra_payment.id','left');
         $traveller_booking_info = $this->master_model->getRecords('sra_booking_payment_details',array('sra_booking_payment_details.is_deleted'=>'no'),$fields);
+        // print_r($traveller_booking_info); die;
+
+        $fields = "sra_payment.*,sra_booking_payment_details.run_pending_amt,sra_booking_payment_details.final_amt,sra_booking_payment_details.booking_amt";
+        $this->db->where('sra_booking_payment_details.is_deleted','no');
+        $this->db->where('sra_payment.is_active','yes');
+        $this->db->where('sra_booking_payment_details.sra_no',$iid);
+        $this->db->where('sra_booking_payment_details.academic_year', $academic_year);
+        $this->db->join("sra_payment", 'sra_booking_payment_details.sra_payment_id=sra_payment.id','left');
+        $sra_booking_payment_info = $this->master_model->getRecords('sra_booking_payment_details',array('sra_booking_payment_details.is_deleted'=>'no'),$fields);
+        // print_r($sra_booking_payment_info); die;
+
+        $fields = "sra_payment.*,sra_booking_payment_details.run_pending_amt,sra_booking_payment_details.final_amt";
+        $this->db->where('sra_booking_payment_details.is_deleted','no');
+        $this->db->where('sra_payment.is_active','yes');
+        $this->db->where('sra_booking_payment_details.sra_no',$iid);
+        $this->db->where('sra_booking_payment_details.academic_year', $academic_year);
+         $this->db->group_by('sra_booking_payment_details.final_amt');
+        $this->db->join("sra_payment", 'sra_booking_payment_details.sra_payment_id=sra_payment.id','left');
+        $traveller_booking_info_group_by = $this->master_model->getRecords('sra_booking_payment_details',array('sra_booking_payment_details.is_deleted'=>'no'),$fields);
+        // print_r($traveller_booking_info); die;
+        
+
+         // ------------------- Total Final Amount -----------------------------------
+
+         if (!empty($traveller_booking_info_group_by)) {
+            foreach ($traveller_booking_info_group_by as $booking) {
+                $total_sra_final_amt += isset($booking['final_amt']) ? $booking['final_amt'] : 0;
+            }
+        }
+
+        if (!empty($traveller_booking_info_group_by)) {
+            foreach ($traveller_booking_info_group_by as $booking) {
+                $total_sra_final_amt_group_by += isset($booking['run_pending_amt']) ? $booking['run_pending_amt'] : 0;
+            }
+        }
+
+         if (!empty($sra_booking_payment_info)) {
+            foreach ($sra_booking_payment_info as $booking) {
+                $total_sra_amt += isset($booking['run_pending_amt']) ? $booking['run_pending_amt'] : 0;
+            }
+        }
+
+        // paid
+        if (!empty($sra_booking_payment_info)) {
+            foreach ($sra_booking_payment_info as $booking) {
+                $total_sra_paid_amt += isset($booking['booking_amt']) ? $booking['booking_amt'] : 0;
+            }
+        }
+        // paid
+
+
+        $this->db->where('is_deleted','no');
+        $this->db->where('is_active','yes');
+        $this->db->where('sra_extra_services.sra_no',$iid);
+        $this->db->where('sra_extra_services.academic_year', $academic_year);
+        $total_extra_services_details = $this->master_model->getRecords('sra_extra_services');
+        // print_r($total_extra_services_details); die;
+
+        if (!empty($total_extra_services_details)) {
+            foreach ($total_extra_services_details as $service) {
+                $services_amt += isset($service['services_amt']) ? $service['services_amt'] : 0;
+            }
+        }
+
+
+        $this->db->where('is_deleted','no');
+        // $this->db->where('is_active','yes');
+        $this->db->where('extra_services_booking_payment_details.sra_no',$iid);
+        $this->db->where('extra_services_booking_payment_details.academic_year', $academic_year);
+        $total_extra_services_booking_payment_details = $this->master_model->getRecords('extra_services_booking_payment_details');
+        // print_r($total_extra_services_booking_payment_details); die;
+
+        if (!empty($total_extra_services_booking_payment_details)) {
+            foreach ($total_extra_services_booking_payment_details as $total_service) {
+                $extra_services_booking_amt += isset($total_service['run_pending_amt']) ? $total_service['run_pending_amt'] : 0;
+            }
+        }
+
+        // paid
+        if (!empty($total_extra_services_booking_payment_details)) {
+            foreach ($total_extra_services_booking_payment_details as $total_service) {
+                $extra_services_paid_amt += isset($total_service['booking_amt']) ? $total_service['booking_amt'] : 0;
+            }
+        }
+        // paid
+
+
+        if($total_extra_services_details = '' && $total_extra_services_booking_payment_details = ''){
+            $total_amount = $total_sra_amt + $extra_services_booking_amt;
+        }else{
+        $total_amount = $total_sra_final_amt + $services_amt; 
+        }
+
+        // paid
+        if($total_extra_services_booking_payment_details = '' && $sra_booking_payment_info = ''){
+        $total_paid_amount = $extra_services_paid_amt + $total_sra_paid_amt; 
+        }else {
+            $total_paid_amount = $extra_services_paid_amt + $total_sra_paid_amt; 
+        }
+        // paid
+
+        // remaining amount
+        if($sra_booking_payment_info ='' && $total_extra_services_booking_payment_details =''){
+            $total_remaining_amount= $total_sra_final_amt_group_by + $services_amt - $extra_services_booking_amt;
+        }else{
+            $total_remaining_amount= $total_sra_final_amt_group_by + $services_amt - $extra_services_booking_amt;
+        }
+
+        $record = array();
+        $fields = "sra_extra_services.*,special_req_master.service_name";
+        $this->db->where('sra_extra_services.is_deleted','no');
+        $this->db->where('sra_extra_services.is_active','yes');
+        $this->db->where('sra_extra_services.sra_no',$iid);
+        $this->db->where('sra_extra_services.academic_year', $academic_year);
+        $this->db->join("special_req_master", 'sra_extra_services.extra_services=special_req_master.id','left');
+        $extra_services_details_value = $this->master_model->getRecords('sra_extra_services',array('sra_extra_services.is_deleted'=>'no'),$fields);
+        // print_r($extra_services_details_value); die; 
+        // ------------------- Total Final Amount -----------------------------------
 
         foreach($traveller_booking_info  as $traveller_booking_pdate){
             $p_id = $traveller_booking_pdate['tour_number'];
@@ -154,9 +285,38 @@ class Sra_partial_payment_details extends CI_Controller {
             // print_r($extra);
 
         $this->db->where('is_deleted','no');
-        $this->db->where('sra_booking_payment_details.sra_payment_id',$iid);
+        $this->db->where('sra_booking_payment_details.sra_no',$iid);
         $booking_payment_details = $this->master_model->getRecord('sra_booking_payment_details');
         // print_r($booking_payment_details); die;
+
+        // -------------------- EXTRA SERVICES SHOW PENDING AMOUNT CALCULATION--------------------
+        $this->db->where('is_deleted','no');
+        $this->db->where('sra_extra_services.sra_no',$iid);
+        $this->db->where('sra_extra_services.academic_year',$academic_year);
+        $extra_services_data = $this->master_model->getRecords('sra_extra_services');
+        // print_r($extra_services_data); die;
+
+        $this->db->where('is_deleted','no');
+        $this->db->where('extra_services_booking_payment_details.sra_no',$iid);
+        $this->db->where('extra_services_booking_payment_details.academic_year',$academic_year);
+        $extra_services_booking_payment_details = $this->master_model->getRecords('extra_services_booking_payment_details');
+        // print_r($extra_services_booking_payment_details); die;
+
+        $x = 0;
+        $y = 0;
+
+        foreach ($extra_services_data as $service) {
+            $x += $service['services_amt'];
+        }
+        
+        // Summing booking_amt in $extra_services_booking_payment_details
+        foreach ($extra_services_booking_payment_details as $booking) {
+            $y += $booking['booking_amt'];
+        }
+        
+        // Subtracting y from x
+        $updating_pending_amount_result = $x - $y;
+        // -------------------- EXTRA SERVICES SHOW PENDING AMOUNT CALCULATION--------------------
 
         $sra_no = isset($booking_payment_details['sra_no']);
         // $enquiry_id = $booking_payment_details['package_date_id'];
@@ -208,12 +368,18 @@ class Sra_partial_payment_details extends CI_Controller {
         $this->arr_view_data['listing_page']    = 'yes';
         $this->arr_view_data['p_id']        = $p_id;
         $this->arr_view_data['p_date_id']        = $p_date_id;
+        $this->arr_view_data['academic_year']        = $academic_year;
+        $this->arr_view_data['total_paid_amount']        = $total_paid_amount;
         $this->arr_view_data['traveller_booking_info_amt']        = $traveller_booking_info_amt;
         $this->arr_view_data['traveller_booking_info_header']        = $traveller_booking_info_header;
         $this->arr_view_data['traveller_booking_info']        = $traveller_booking_info;
         $this->arr_view_data['arr_data']        = $arr_data;
         $this->arr_view_data['relation_data']        = $relation_data;
-        // $this->arr_view_data['enquiry']        = $enquiry;
+        $this->arr_view_data['updating_pending_amount_result']        = $updating_pending_amount_result;
+        $this->arr_view_data['extra_services_details_value']        = $extra_services_details_value;
+        $this->arr_view_data['total_remaining_amount']        = $total_remaining_amount;
+        $this->arr_view_data['total_amount']        = $total_amount;
+        $this->arr_view_data['extra_services_booking_payment_details']        = $extra_services_booking_payment_details;
         $this->arr_view_data['upi_qr_data']        = $upi_qr_data;
         $this->arr_view_data['upi_qr_master_id']        = $upi_qr_master_id; 
         $this->arr_view_data['sra_no']        = $sra_no;
@@ -259,6 +425,13 @@ class Sra_partial_payment_details extends CI_Controller {
         $package_date_id = $this->input->post('package_date_id');
         $sra_payment_id = $this->input->post('sra_payment_id');
         $academic_year = $this->input->post('academic_year');
+        $receipt_type = $this->input->post('receipt_type');
+
+        $next_extra_services_amt = $this->input->post('next_extra_services_amt');
+        $extra_services_pending_amt = $this->input->post('extra_services_pending_amt');
+        $customer_sending_amt = $this->input->post('customer_sending_amt');
+
+        // print_r($receipt_type);
         $today = date('y-m-d');
 
             $alphabet = '1234567890';
@@ -288,7 +461,7 @@ class Sra_partial_payment_details extends CI_Controller {
                
             
                 // $booking_reference_no = $enquiry_id.'_'.$package_id.'_'.$journey_date;
-
+            if($receipt_type == 'SRA'){
                 $arr_insert = array(
                     'booking_tm_mobile_no'  =>  $mobile_no,
                     'sra_payment_id'  =>  $sra_payment_id,
@@ -317,7 +490,43 @@ class Sra_partial_payment_details extends CI_Controller {
                 // print_r($arr_insert); die;
 
                 $inserted_id = $this->master_model->insertRecord('sra_final_booking',$arr_insert,true);
+            }else{
+
+                $count = count($customer_sending_amt);
+                for($i=0;$i<$count;$i++)
+                {
+                $arr_insert = array(
+                    'customer_sending_amt'   =>   $_POST["customer_sending_amt"][$i],
+                    'booking_tm_mobile_no'  =>  $mobile_no,
+                    'sra_payment_id'  =>  $sra_payment_id,
+                    'academic_year'  =>  $academic_year,
+                    'sra_no'  =>  $sra_no,
+                    'package_id'  =>  $package_id,
+                    'package_date_id'  =>  $package_date_id,
+                    'agent_id'  =>  $id,
+                    'traveler_otp'  =>  $traveler_otp
+                );
+                // print_r($arr_insert); die;
+                 $inserted_id = $this->master_model->insertRecord('extra_services_booking_payment_details',$arr_insert,true);
+                 $insertid = $this->db->insert_id();
                 
+
+                 $arr_insert = array(
+                    // 'booking_tm_mobile_no'  =>  $mobile_no,
+                    'customer_sending_amt'   =>   $_POST["customer_sending_amt"][$i],
+                    'sra_payment_id'  =>  $sra_payment_id,
+                    'sra_no'  =>  $sra_no,
+                    'package_id'  =>  $package_id,
+                    'package_date_id'  =>  $package_date_id,
+                    'sra_booking_payment_details_id'  =>  $insertid,
+                    'booking_date'   =>   $today,
+                    'agent_id'  =>  $id
+                );
+                // print_r($arr_insert); die;
+
+                $inserted_id = $this->master_model->insertRecord('extra_services_final_booking',$arr_insert,true);
+            }
+        }
                 
         if($inserted_id!=''){
            echo $insertid;
@@ -438,8 +647,9 @@ class Sra_partial_payment_details extends CI_Controller {
 
     }
 
-    public function extra_services_add($iid)
+    public function extra_services_add($iid,$academic_year)
     {  
+        // print_r($iid);
         $agent_sess_name = $this->session->userdata('agent_name');
         $id=$this->session->userdata('agent_sess_id');
 
@@ -449,7 +659,8 @@ class Sra_partial_payment_details extends CI_Controller {
         $this->db->where('sra_payment.is_active','yes');
         $this->db->join("package_date", 'package_date.id=sra_payment.tour_date','left');
         // $this->db->group_start();
-        $this->db->where('sra_payment.id', $iid);
+        $this->db->where('sra_payment.sra_no', $iid);
+        $this->db->where('sra_payment.academic_year', $academic_year);
         // $this->db->where('sra_payment.academic_year', $academic_year);
         // $this->db->group_end();
         // $traveller_booking_info_header = $this->master_model->getRecords('sra_payment','',$fields);
@@ -475,6 +686,7 @@ class Sra_partial_payment_details extends CI_Controller {
                 $other_services  = $this->input->post('other_services');
                 $sra_extra_services  = $this->input->post('sra_extra_services');
                 $services_quantity  = $this->input->post('services_quantity');
+                $extra_services_remark  = $this->input->post('extra_services_remark');
             
                 if($add_on_services_payment == '2'){
                 $count = count($sra_extra_services);
@@ -485,6 +697,7 @@ class Sra_partial_payment_details extends CI_Controller {
                 'extra_services'   =>   $_POST["sra_extra_services"][$i],
                 'other_services'   =>   $_POST["other_services"][$i],
                 'services_amt'   =>   $_POST["services_quantity"][$i],
+                'extra_services_remark'   =>   $_POST["extra_services_remark"][$i],
                 'payment_type' => $add_on_services_payment,
                 'sra_no' => $sra_no,
                 'tour_number' => $package_id,
@@ -966,10 +1179,12 @@ class Sra_partial_payment_details extends CI_Controller {
              $mobile_no = $this->input->post('mobile_no'); 
             //  print_r($mobile_no);
             $sra_no = $this->input->post('sra_no');  
+            $receipt_type = $this->input->post('receipt_type');  
             //  print_r($enquiry_id); die;
 
             // echo $booking_ref_no = $this->input->post('booking_ref_no');  die;
 
+            if($receipt_type == 'SRA'){
             $record = array();
             $fields = "sra_booking_payment_details.*";
             $this->db->where('is_deleted','no');
@@ -978,8 +1193,16 @@ class Sra_partial_payment_details extends CI_Controller {
             $this->db->where('sra_no',$sra_no);
             $booking_payment_details_info = $this->master_model->getRecord('sra_booking_payment_details');
             // print_r($booking_payment_details_info); die;
+            }else{
+                $record = array();
+                $fields = "extra_services_booking_payment_details.*";
+                $this->db->where('is_deleted','no');
+                $this->db->where('traveler_otp',$verify_otp);
+                $this->db->where('booking_tm_mobile_no',$mobile_no);
+                $this->db->where('sra_no',$sra_no);
+                $booking_payment_details_info = $this->master_model->getRecord('extra_services_booking_payment_details');
+            }
 
-            // print_r($booking_payment_details_info); die;
 
             if($booking_payment_details_info !=''){
 
@@ -1079,6 +1302,14 @@ class Sra_partial_payment_details extends CI_Controller {
                 $booking_payment_details_id = $this->input->post('booking_payment_details_id');
                 $return_customer_booking_payment_id = $this->input->post('return_customer_booking_payment_id');
                 $inserted_id_prev = $this->input->post('inserted_id');
+                // print_r($inserted_id_prev); die;
+
+                $next_extra_services_amt = $this->input->post('next_extra_services_amt');
+                $extra_services_pending_amt = $this->input->post('extra_services_pending_amt');
+                $customer_sending_amt = $this->input->post('customer_sending_amt');
+                $extra_services_inserted_id = $this->input->post('extra_services_inserted_id');
+                // print_r($customer_sending_amt); die;
+
                 // print_r($inserted_id); die;
 
                 // if($pending_amt == '0'){
@@ -1133,7 +1364,20 @@ class Sra_partial_payment_details extends CI_Controller {
                 }
                 $arr_where2     = array("sra_no" => $sra_no);
                 $this->master_model->updateRecord('sra_booking_payment_details',$arr_update2,$arr_where2);
-
+                
+                //----------extra services------------------------ 
+                if($extra_services_pending_amt == '0'){
+                    $arr_update2 = array(
+                        'payment_confirmed_status'   =>  'Payment Completed'
+                    );
+                }else{
+                    $arr_update2 = array(
+                        'payment_confirmed_status'   =>  'In Process'
+                    );
+                }
+                $arr_where2     = array("sra_no" => $sra_no);
+                $this->master_model->updateRecord('extra_services_booking_payment_details',$arr_update2,$arr_where2);
+                //----------extra services------------------------ 
                 //==================================================
                 
                 //==================================================
@@ -1150,9 +1394,22 @@ class Sra_partial_payment_details extends CI_Controller {
                 $arr_where2     = array("sra_no" => $sra_no);
                 $this->master_model->updateRecord('sra_final_booking',$arr_update2,$arr_where2);
 
+                //----------extra services------------------------ 
+                if($extra_services_pending_amt == '0'){
+                    $arr_update2 = array(
+                        'payment_confirmed_status'   =>  'Payment Completed'
+                    );
+                }else{
+                    $arr_update2 = array(
+                        'payment_confirmed_status'   =>  'In Process'
+                    );
+                }
+                $arr_where2     = array("sra_no" => $sra_no);
+                $this->master_model->updateRecord('sra_final_booking',$arr_update2,$arr_where2);
+                //----------extra services------------------------ 
                 //==================================================
-
-                if($pending_amt == '0'){
+                if($receipt_type == 'SRA'){
+                if($extra_services_pending_amt == '0'){
                 $arr_update = array(
                     'final_amt'   =>   $final_amt,
                     'payment_type'   =>   $payment_type,
@@ -1305,14 +1562,188 @@ class Sra_partial_payment_details extends CI_Controller {
                 $arr_where     = array("sra_no" => $sra_no,
                                         "id"=>$inserted_id_prev);
                 $this->master_model->updateRecord('sra_booking_payment_details',$arr_update,$arr_where);
+                }else{
+                    $count = count($customer_sending_amt);
+                        for($i=0;$i<$count;$i++)
+                        {
+                    if($extra_services_pending_amt == '0'){
+                        $arr_update = array(
+                            'customer_sending_amt'   =>   $_POST["customer_sending_amt"][$i],
+                            'final_amt'   =>   $final_amt,
+                            'receipt_type'   =>   $receipt_type,
+                            'payment_type'   =>   $payment_type,
+                            'booking_amt'   =>   $next_extra_services_amt,
+                            'pending_amt'   =>   $extra_services_pending_amt,
+                            // 'customer_sending_amt'   =>   $customer_sending_amt,
 
+                            'payment_now_later'   =>   $payment_now_later,
+                            'booking_tm_mobile_no'   =>   $mobile_no,
+                            'select_transaction'   =>   $select_transaction,
+                            
+                            'UPI_holder_name'   =>   $upi_holder_name,
+                            'upi_payment_type'   =>   $upi_payment_type,
+                            'UPI_transaction_no'   =>   $upi_self_no,
+                            'UPI_reason'   =>   $upi_reason,
+                            'upi_transaction_date'   =>   $upi_transaction_date,
+        
+                            'QR_holder_name'   =>   $qr_holder_name,
+                            'QR_mobile_number'   =>   $qr_mobile_number,
+                            'QR_payment_type'   =>   $qr_payment_type,
+                            'QR_transaction_no'   =>   $qr_upi_no,
+                            'qr_transaction_date'   =>   $qr_transaction_date,
+                            'QR_reason'   =>   $qr_reason_1,
+        
+                            'upi_no'   =>   $upi_no,
+                            'cheque'   =>   $cheque,
+                            'bank_name'   =>   $bank_name,
+                            'drawn_on_date'   =>   $drawn_on_date,
+                            'cheque_select_bank_name'   =>   $cheque_bank_name,
+                            'cheque_reason'   =>   $cheque_reason_1,
+        
+                            'netbanking_payment_type'   =>   $netbanking_payment_type,
+                            'net_banking_acc_no'   =>   $net_banking_acc_no,
+                            'net_banking_acc_holder_nm'   =>   $net_acc_holder_nm,
+                            'net_banking_branch_name'   =>   $net_banking_branch_name,
+                            'net_banking'   =>   $net_banking_utr_no,
+                            'netbanking_bank_name'   =>   $netbanking_bank_name,
+                            'netbanking_date'   =>   $netbanking_date,
+                            'net_banking_reason'   =>   $net_banking_reason_1,
+        
+                            // 'booking_reference_no'  =>  $booking_reference_no,
+                            'package_date_id' => $package_date_id,
+                            'sra_no' => $sra_no,
+                            'package_id' => $package_id,
+                            'traveller_id' => $traveller_id,
+        
+                            // 'select_services' => $select_services,
+                            // 'extra_services' => $extra_services,
+        
+                            // 'cash_2000'   =>   $cash_2000,
+                            // 'total_cash_2000'   =>   $total_cash_2000,
+                            'cash_500'   =>   $cash_500,
+                            'total_cash_500'   =>   $total_cash_500,
+                            'cash_200'   =>   $cash_200,
+                            'total_cash_200'   =>   $total_cash_200,
+                            'cash_100'   =>   $cash_100,
+                            'total_cash_100'   =>   $total_cash_100,
+                            'cash_50'   =>   $cash_50,
+                            'total_cash_50'   =>   $total_cash_50,
+                            'cash_20'   =>   $cash_20,
+                            'total_cash_20'   =>   $total_cash_20,
+                            'cash_10'   =>   $cash_10,
+                            'total_cash_10'   =>   $total_cash_10,
+        
+                            'cash_5'   =>   $cash_5,
+                            'total_cash_5'   =>   $total_cash_5,
+                            'cash_2'   =>   $cash_2,
+                            'total_cash_2'   =>   $total_cash_2,
+                            'cash_1'   =>   $cash_1,
+                            'total_cash_1'   =>   $total_cash_1,
+                            'total_cash_amt'   =>   $total_cash_amt,
+                            'agent_id'   =>   $id,
+                            'payment_confirmed_status'   =>  'Payment Completed'
+                        );
+                        }else{
+                        $arr_update = array(
+                            'customer_sending_amt'   =>   $_POST["customer_sending_amt"][$i],
+                            'final_amt'   =>   $final_amt,
+                            'receipt_type'   =>   $receipt_type,
+                            'payment_type'   =>   $payment_type,
+                            'booking_amt'   =>   $next_extra_services_amt,
+                            'pending_amt'   =>   $extra_services_pending_amt,
+                            'payment_now_later'   =>   $payment_now_later,
+                            'booking_tm_mobile_no'   =>   $mobile_no,
+                            'select_transaction'   =>   $select_transaction,
+                            
+                            'UPI_holder_name'   =>   $upi_holder_name,
+                            'upi_payment_type'   =>   $upi_payment_type,
+                            'UPI_transaction_no'   =>   $upi_self_no,
+                            'UPI_reason'   =>   $upi_reason,
+                            'upi_transaction_date'   =>   $upi_transaction_date,
+        
+                            'QR_holder_name'   =>   $qr_holder_name,
+                            'QR_mobile_number'   =>   $qr_mobile_number,
+                            'QR_payment_type'   =>   $qr_payment_type,
+                            'QR_transaction_no'   =>   $qr_upi_no,
+                            'qr_transaction_date'   =>   $qr_transaction_date,
+                            'QR_reason'   =>   $qr_reason_1,
+        
+                            'upi_no'   =>   $upi_no,
+                            'cheque'   =>   $cheque,
+                            'bank_name'   =>   $bank_name,
+                            'drawn_on_date'   =>   $drawn_on_date,
+                            'cheque_select_bank_name'   =>   $cheque_bank_name,
+                            'cheque_reason'   =>   $cheque_reason_1,
+        
+        
+                            'netbanking_payment_type'   =>   $netbanking_payment_type,
+                            'net_banking_acc_no'   =>   $net_banking_acc_no,
+                            'net_banking_acc_holder_nm'   =>   $net_acc_holder_nm,
+                            'net_banking_branch_name'   =>   $net_banking_branch_name,
+                            'net_banking'   =>   $net_banking_utr_no,
+                            'netbanking_bank_name'   =>   $netbanking_bank_name,
+                            'netbanking_date'   =>   $netbanking_date,
+                            'net_banking_reason'   =>   $net_banking_reason_1,
+        
+                            // 'booking_reference_no'  =>  $booking_reference_no,
+                            'package_date_id' => $package_date_id,
+                            'sra_no' => $sra_no,
+                            'package_id' => $package_id,
+                            'traveller_id' => $traveller_id,
+        
+                            // 'select_services' => $select_services,
+                            // 'extra_services' => $extra_services,
+        
+                            // 'cash_2000'   =>   $cash_2000,
+                            // 'total_cash_2000'   =>   $total_cash_2000,
+                            'cash_500'   =>   $cash_500,
+                            'total_cash_500'   =>   $total_cash_500,
+                            'cash_200'   =>   $cash_200,
+                            'total_cash_200'   =>   $total_cash_200,
+                            'cash_100'   =>   $cash_100,
+                            'total_cash_100'   =>   $total_cash_100,
+                            'cash_50'   =>   $cash_50,
+                            'total_cash_50'   =>   $total_cash_50,
+                            'cash_20'   =>   $cash_20,
+                            'total_cash_20'   =>   $total_cash_20,
+                            'cash_10'   =>   $cash_10,
+                            'total_cash_10'   =>   $total_cash_10,
+        
+                            'cash_5'   =>   $cash_5,
+                            'total_cash_5'   =>   $total_cash_5,
+                            'cash_2'   =>   $cash_2,
+                            'total_cash_2'   =>   $total_cash_2,
+                            'cash_1'   =>   $cash_1,
+                            'total_cash_1'   =>   $total_cash_1,
+                            'total_cash_amt'   =>   $total_cash_amt,
+                            'agent_id'   =>   $id,
+                            'payment_confirmed_status'   =>  'In Process'
+                        );    
+                        }
+
+                        $arr_where     = array("id"=>$extra_services_inserted_id[$i]);
+                        $this->master_model->updateRecord('extra_services_booking_payment_details',$arr_update,$arr_where);
+                }
+                }
+                
+
+                if($receipt_type == 'SRA'){
                 $arr_update2 = array(
                     'run_pending_amt'   =>   $pending_amt
                 );
                 $arr_where2     = array("sra_no" => $sra_no);
                 $this->master_model->updateRecord('sra_booking_payment_details',$arr_update2,$arr_where2);
+                }else{
+                    $arr_update2 = array(
+                        'run_pending_amt'   =>   $extra_services_pending_amt
+                    );
+                    $arr_where2     = array("sra_no" => $sra_no);
+                    $this->master_model->updateRecord('extra_services_booking_payment_details',$arr_update2,$arr_where2);
+                }
 
                 // die;
+
+                if($receipt_type == 'SRA'){
                 if($select_transaction =='CASH'){
                 $arr_insert = array(
                     'return_cash_500'   =>   $return_cash_500 ,
@@ -1349,6 +1780,45 @@ class Sra_partial_payment_details extends CI_Controller {
                     'select_transaction'   =>   $select_transaction
                 );
                 $this->master_model->insertRecord('sra_return_customer_booking_payment_details',$arr_insert,true);
+                }
+                }else{
+                    if($select_transaction =='CASH'){
+                        $arr_insert = array(
+                            'return_cash_500'   =>   $return_cash_500 ,
+                            'return_total_cash_500'   =>   $return_total_cash_500  ,
+        
+                            'return_cash_200'   =>   $return_cash_200  ,
+                            'return_total_cash_200'   =>   $return_total_cash_200  ,
+        
+                            'return_cash_100'   =>   $return_cash_100  ,
+                            'return_total_cash_100'   =>   $return_total_cash_100  ,
+        
+                            'return_cash_50'   =>   $return_cash_50  ,
+                            'return_total_cash_50'   =>   $return_total_cash_50  ,
+        
+                            'return_cash_20'   =>   $return_cash_20  ,
+                            'return_total_cash_20'   =>   $return_total_cash_20  ,
+        
+                            'return_cash_10'   =>   $return_cash_10  ,
+                            'return_total_cash_10'   =>   $return_total_cash_10  ,
+        
+                            'return_cash_5'   =>   $return_cash_5  ,
+                            'return_total_cash_5'   =>   $return_total_cash_5  ,
+        
+                            'return_cash_2'   =>   $return_cash_2   ,
+                            'return_total_cash_2'   =>   $return_total_cash_2   ,
+        
+                            'return_cash_1'   =>   $return_cash_1   ,
+                            'return_total_cash_1'   =>   $return_total_cash_1   ,
+        
+                            'return_total_cash_amt'   =>   $return_total_cash_amt   ,
+                            // 'enquiry_id'   =>   $enquiry_id  ,
+                            'sra_booking_payment_details_id'   =>   $inserted_id_prev ,
+        
+                            'select_transaction'   =>   $select_transaction
+                        );
+                        $this->master_model->insertRecord('extra_services_return_customer_booking_payment_details',$arr_insert,true);
+                        }
                 }
                 // $arr_update = array(
                 //     'booking_done'   =>   'yes'

@@ -4507,7 +4507,7 @@ $(".selectall").click(function() {
 
 <!-- Bank transaction ---------------------------------------- -->
 <script type="text/javascript">
-    function account_details(val){
+    function booking_account_details(val){
 
     var booking_preview = $('#select_transaction').val();
     var booking_preview_mobno = $('#booking_tm_mobile_no').val();
@@ -4515,7 +4515,7 @@ $(".selectall").click(function() {
     // alert(booking_preview);
 
     if(booking_preview == 'CASH' && booking_preview_mobno != '' && booking_preview_amt != ''){
-        $("#submit_otp").attr("disabled", false);
+        $("#submit_otp").attr("disabled", true);
     }else if(booking_preview == 'UPI'){
         $("#submit_otp").attr("disabled", true);
     }else if(booking_preview == 'QR Code'){
@@ -4808,16 +4808,116 @@ $(document).ready(function() {
         var final_total = parseInt(etotal) + parseInt(gtotal) + parseInt(mtotal) +
             parseInt(ltotal) + parseInt(ntotal) + parseInt(ototal) + parseInt(atotal) + parseInt(btotal) +
             parseInt(ctotal);
-
-
         $("#total_cash_amt").val(final_total);
 
 
+// =========== Sra Booking ==========================================================
+    $(document).ready(function() {
+    var total_cash_amt = parseFloat($('#total_cash_amt').val());
+    var booking_amt = parseFloat($('#booking_amt').val());
+
+    function checkConditions() {
+        var return_total_cash_amt = parseFloat($('#return_total_cash_amt').val());
+        if (isNaN(return_total_cash_amt)) {
+            return_total_cash_amt = 0;
+        }
+
+        var total_cash = booking_amt + return_total_cash_amt;
+        $("#total_of_two").val(total_cash);
+
+        if (total_cash_amt === booking_amt || total_cash_amt === total_cash) {
+            $("#sra_submit_otp").attr("disabled", false);
+        } else {
+            $("#sra_submit_otp").attr("disabled", true);
+        }
+
+        if(total_cash_amt === booking_amt){
+            $(".return_data_amt").attr("disabled", true);
+        }else if(total_cash_amt != booking_amt){
+            $(".return_data_amt").attr("disabled", false);
+            $("#send_receiver_msg").show().text("Please match receive amount and sending to customer amount.").addClass("red-text");
+        }else{
+            $(".return_data_amt").attr("disabled", false);
+        }
+    }
+
+    $(".data_amt, .return_data_amt").on('keyup', function() {
+        checkConditions();
+    });
+
+    checkConditions();
+
+
+
+    var total_cash_amt = parseFloat($('#total_cash_amt').val());
+    var booking_amt = parseFloat($('#booking_amt').val());
+
+    function agent_booking_checkConditions() {
+        var return_total_cash_amt = parseFloat($('#return_total_cash_amt').val());
+        if (isNaN(return_total_cash_amt)) {
+            return_total_cash_amt = 0;
+        }
+
+        var total_cash = booking_amt + return_total_cash_amt;
+        $("#total_of_two").val(total_cash);
+
+        if (total_cash_amt === booking_amt || total_cash_amt === total_cash) {
+            $("#submit_otp").attr("disabled", false);
+        } else {
+            $("#submit_otp").attr("disabled", true);
+        }
+    }
+
+    $(".data_amt, .return_data_amt").on('keyup', function() {
+        agent_booking_checkConditions();
+    });
+
+    agent_booking_checkConditions();
+
+
+    function partial_agent_booking_checkConditions() {
+        var total_cash_amt = parseFloat($('#total_cash_amt').val());
+        var booking_amt_first = parseFloat($('#booking_amt').val());
+        var next_booking_pars = parseFloat($('#next_booking_amt').val());
+        
+        if(!isNaN(booking_amt_first))
+        {
+            var booking_amt=booking_amt_first;
+        }
+        else if(!isNaN(next_booking_pars))
+        {
+            var booking_amt=next_booking_pars;
+        }
+        console.log(booking_amt);
+        
+        var return_total_cash_amt = parseFloat($('#return_total_cash_amt').val());
+        
+        if (isNaN(return_total_cash_amt)) {
+            return_total_cash_amt = 0;
+        }
+
+        var total_cash = parseFloat(booking_amt) + parseFloat(return_total_cash_amt);
+        console.log(total_cash);
+        $("#total_of_two").val(total_cash);
+
+        if ((total_cash_amt === booking_amt && total_cash_amt === total_cash) || (total_cash_amt === booking_amt || total_cash_amt === total_cash)) {
+            $("#sra_partial_pending_amt_submit_otp").attr("disabled", false);
+        } else {
+            $("#sra_partial_pending_amt_submit_otp").attr("disabled", true);
+        }
+    }
+
+    $(".data_amt, .return_data_amt").on('keyup', function() {
+        partial_agent_booking_checkConditions();
+    });
+
+    partial_agent_booking_checkConditions();
+});
+ // ====================================================================
     });
 
 });
 </script>
-
 <!-- ================================return to customer  =================================-->
 <script>
     $('.return_data_amt').keyup(function(){
@@ -8504,6 +8604,7 @@ $(document).ready(function(){
 
         var payment_type_tr=document.getElementById('payment_type_tr');
         var booking_amount_tr=document.getElementById('booking_amount_tr');
+        var extra_services_amount_tr=document.getElementById('extra_services_amount_tr');
         var pending_amount_tr=document.getElementById('pending_amount_tr');
 
         if (val == 'Now') {
@@ -11224,6 +11325,7 @@ $('#edit_internationalenquiry').validate({ // initialize the plugin
 
         //   var attr_cancel_val =$(this).attr('attr_cancle_btn');
         var academic_year = $('#partially_academic_year').val();
+        // print_r(academic_year); die;
         var tour_number = $('#partially_tour_number').val();
         var tour_date = $('#partially_tour_date').val();
 
@@ -11269,7 +11371,7 @@ $('#edit_internationalenquiry').validate({ // initialize the plugin
 
                             if (data['pending_amt'] > 0 && data['abcamt']!=data['total_sra_amt']) {
                             var button_id = "partial_payment_" + sra_id; // Dynamically create unique button ID
-                            var buttonHtml = `<a href="<?php echo $sra_partial_payment_details; ?>/index/`+  data['sra_pay_id']+`">
+                            var buttonHtml = `<a href="<?php echo $sra_partial_payment_details; ?>/index/${data['sra_no']}/${data['academic_year']}">
                                                 <button type="submit" class="btn btn-success search_btn partial_payment" data-sra-id="`+ academic_year + sra_no +`" id="`+ button_id +`" value="submit">Make Receipt</button>
                                             </a>`;
                                         } else if (data['pending_amt'] == 0 || data['abcamt']==data['total_sra_amt'])
@@ -11279,7 +11381,7 @@ $('#edit_internationalenquiry').validate({ // initialize the plugin
 
                             if (data['pending_amt'] > 0 && data['abcamt']!=data['total_sra_amt']) {
                             var extra_services_button_id = "partial_payment_" + sra_id; // Dynamically create unique button ID
-                            var extra_services_buttonHtml = `<a href="<?php echo $sra_partial_payment_details; ?>/extra_services_add/`+  data['sra_pay_id']+`">
+                            var extra_services_buttonHtml = `<a href="<?php echo $sra_partial_payment_details; ?>/extra_services_add/${data['sra_no']}/${data['academic_year']}">
                                                 <button type="submit" class="btn btn-success search_btn partial_payment" data-sra-id="`+ academic_year + sra_no +`" id="`+ button_id +`" value="submit">Add</button>
                                             </a>`;
                                         } else if (data['pending_amt'] == 0 || data['abcamt']==data['total_sra_amt'])
@@ -11419,6 +11521,7 @@ $('#edit_internationalenquiry').validate({ // initialize the plugin
                         <input type="text" class="form-control mt-4 other_services_input" name="other_services[]" id="other_services${i}" placeholder="Enter extra services name" value="" style="display: none;">
                     </td>
                     <td><input type="text" class="form-control services_quantity" name="services_quantity[]" id="services_quantity`+i+`" placeholder="Enter quantity" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required></td>
+                    <td><textarea type="text" class="form-control services_remark" name="extra_services_remark[]" id="extra_services_remark`+i+`" placeholder="Enter reamrk" required></textarea>
                     <td>
                         <button type="button" class="btn btn-danger remove-row">Remove</button>
                     </td>
@@ -11865,7 +11968,7 @@ valid = checkEmpty($("#select_transaction")) && checkEmpty($("#netbanking_paymen
     // alert(booking_preview);
 
     if(booking_preview == 'CASH' && booking_preview_mobno != '' && booking_preview_amt != ''){
-        $("#sra_submit_otp").attr("disabled", false);
+        $("#sra_submit_otp").attr("disabled", true);
     }else if(booking_preview == 'UPI'){
         $("#sra_submit_otp").attr("disabled", true);
     }else if(booking_preview == 'QR Code'){
@@ -11876,6 +11979,8 @@ valid = checkEmpty($("#select_transaction")) && checkEmpty($("#netbanking_paymen
         $("#sra_submit_otp").attr("disabled", true);
     }
         
+    
+
     // if(checkEmpty($("#select_transaction"))){
     // $("#submit_otp").attr("disabled", true);
     // }
@@ -11943,10 +12048,58 @@ valid = checkEmpty($("#select_transaction")) && checkEmpty($("#netbanking_paymen
         cash_no_div.style.display='flex';
         mob_no_div.style.display='none';
     }
-
     }
 </script>
 
+<!-- <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sraRadio = document.getElementById('sra');
+    const extraServicesRadio = document.getElementById('extra_services');
+    const extraServicesDiv = document.getElementById('extra_services_div');
+    const extraServicesMsgDiv = document.getElementById('extra_services_div_msg');
+
+    function toggleExtraServicesDiv() {
+        if (extraServicesRadio.checked) {
+            extraServicesDiv.style.display = 'block';
+            extraServicesMsgDiv.style.display = 'block';
+        } else {
+            extraServicesDiv.style.display = 'none';
+            extraServicesMsgDiv.style.display = 'none';
+        }
+    }
+
+    sraRadio.addEventListener('change', toggleExtraServicesDiv);
+    extraServicesRadio.addEventListener('change', toggleExtraServicesDiv);
+
+    // Initial call to set the correct state on page load
+    toggleExtraServicesDiv();
+});
+</script> -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sraRadio = document.getElementById('sra');
+    const extraServicesRadio = document.getElementById('extra_services');
+    const extraServicesDiv = document.getElementById('extra_services_div');
+    const extraServicesMsgDiv = document.getElementById('extra_services_div_msg');
+
+    function toggleExtraServicesDiv() {
+        if (extraServicesRadio.checked) {
+            extraServicesDiv.style.display = 'block';
+            extraServicesMsgDiv.style.display = 'block';
+        } else {
+            extraServicesDiv.style.display = 'none';
+            extraServicesMsgDiv.style.display = 'none';
+        }
+    }
+
+    sraRadio.addEventListener('change', toggleExtraServicesDiv);
+    extraServicesRadio.addEventListener('change', toggleExtraServicesDiv);
+
+    // Initial call to set the correct state on page load
+    toggleExtraServicesDiv();
+});
+</script>
 
 <script>
 $(document).ready(function() {
@@ -12052,6 +12205,24 @@ $("#sra_payment_final_booking_submit").click(function() {
             }
         });
     }
+
+    var receipt_type = $("input[name='receipt_type']:checked").val();
+    var receipt_typeId = "";
+    if (receipt_type === undefined) {
+        // No radio button is checked, insert a default value
+        receipt_type = ""; // You can change this to your desired default value
+    } else {
+        // Loop through radio buttons to find the one with the selected value
+        $("input[name='receipt_type']").each(function() {
+            if ($(this).val() === receipt_type) {
+                receipt_typeId = $(this).attr("id");
+                return false; // Exit the loop once a match is found
+            }
+        });
+    }
+
+    
+    var academic_year = $('#academic_year').val();
 
     var booking_amt = $('#booking_amt').val(); 
     var pending_amt = $('#pending_amt').val();
@@ -12185,6 +12356,7 @@ $("#sra_payment_final_booking_submit").click(function() {
                 return_customer_booking_payment_id: return_customer_booking_payment_id,
                 booking_amt: booking_amt,
                 final_amt: final_amt,
+                receipt_type: receipt_type,
                 payment_type: payment_type,
                 pending_amt: pending_amt,
                 payment_now_later: payment_now_later,
@@ -12270,7 +12442,7 @@ $("#sra_payment_final_booking_submit").click(function() {
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $("#sra_submit_otp").prop('disabled', true);
-                            window.location.href = "<?= base_url() ?>agent/sra_payment_receipt/index/"+sra_no;
+                            window.location.href = "<?= base_url() ?>agent/sra_payment_receipt/index/"+sra_no+ "/" +academic_year;
                         }
                     });
                 } else {
@@ -12669,6 +12841,30 @@ $(document).ready(function() {
         var package_date_id = $('#package_date_id').val();
         var sra_payment_id = $('#sra_payment_id').val();
 
+        var receipt_type = $("input[name='receipt_type']:checked").val();
+        // alert(payment_type);s
+        var receipt_typeId = "";
+        if (receipt_type === undefined) {
+            // No radio button is checked, insert a default value
+            receipt_type = ""; // You can change this to your desired default value
+        } else {
+            // Loop through radio buttons to find the one with the selected value
+            $("input[name='receipt_type']").each(function() {
+                if ($(this).val() === receipt_type) {
+                    receipt_typeId = $(this).attr("id");
+                    return false; // Exit the loop once a match is found
+                }
+            });
+        }
+
+        var next_extra_services_amt = $('#next_extra_services_amt').val(); 
+        var extra_services_pending_amt = $('#extra_service_result_box').val();
+
+        var customer_sending_amt = $('input[name="customer_sending_amt[]"]').map(function () {
+                return this.value; // $(this).val()
+            }).get();
+            // alert(customer_sending_amt);
+
         
         if (mobile_no != '') {
             // alert('IN hiiiii');
@@ -12683,6 +12879,10 @@ $(document).ready(function() {
                     package_id: package_id,
                     package_date_id: package_date_id,
                     sra_payment_id: sra_payment_id,
+                    receipt_type: receipt_type,
+                    next_extra_services_amt: next_extra_services_amt,
+                    extra_services_pending_amt: extra_services_pending_amt,
+                    customer_sending_amt: customer_sending_amt,
                 },
                 // dataType: 'json',
                 success: function(responce) {
@@ -12754,8 +12954,8 @@ $(document).ready(function() {
 $("#sra_partial_pending_amt_payment_final_booking_submit").click(function() {
 
     // alert('hiiiiiiiii'); 
-
     var verify_otp = $('#otp').val(); 
+    var academic_year = $('#academic_year').val(); 
     var mobile_no = $('#booking_tm_mobile_no').val(); 
     var sra_no = $('#sra_no').val();
     // alert(enquiry_id);
@@ -12895,6 +13095,40 @@ $("#sra_partial_pending_amt_payment_final_booking_submit").click(function() {
     var return_customer_booking_payment_id = $('#return_customer_booking_payment_id').val();
     var inserted_id = $('#inserted_id').val();
     
+    // --------------- extra services ---------------------------- 
+    var receipt_type = $("input[name='receipt_type']:checked").val();
+    // alert(payment_type);
+    var receipt_typeId = "";
+    if (receipt_type === undefined) {
+        // No radio button is checked, insert a default value
+        receipt_type = ""; // You can change this to your desired default value
+    } else {
+        // Loop through radio buttons to find the one with the selected value
+        $("input[name='receipt_type']").each(function() {
+            if ($(this).val() === receipt_type) {
+                receipt_typeId = $(this).attr("id");
+                return false; // Exit the loop once a match is found
+            }
+        });
+    }
+
+    var next_extra_services_amt = $('#next_extra_services_amt').val(); 
+    var extra_services_pending_amt = $('#extra_service_result_box').val();
+    // var customer_sending_amt = $('#customer_sending_amt').val();
+    // alert(customer_sending_amt); 
+    
+    var customer_sending_amt = $('input[name="customer_sending_amt[]"]').map(function () {
+            return this.value; // $(this).val()
+        }).get();
+        // alert(customer_sending_amt); 
+
+    var extra_services_inserted_id = $('input[name="extra_services_inserted_id[]"]').map(function () {
+        return this.value; // $(this).val()
+    }).get();
+    // alert(customer_sending_amt); 
+
+
+    // --------------- extra services ---------------------------- 
     // alert(inserted_id);
 
     if (verify_otp != '') {
@@ -12902,6 +13136,7 @@ $("#sra_partial_pending_amt_payment_final_booking_submit").click(function() {
             type: "POST",
             url: '<?= base_url() ?>agent/sra_partial_payment_details/verify_otp',
             data: {
+                extra_services_inserted_id: extra_services_inserted_id,
                 verify_otp: verify_otp,
                 mobile_no: mobile_no,
                 sra_no: sra_no,
@@ -12988,6 +13223,12 @@ $("#sra_partial_pending_amt_payment_final_booking_submit").click(function() {
                 return_cash_1: return_cash_1,
                 return_total_cash_1: return_total_cash_1,
                 return_total_cash_amt: return_total_cash_amt,
+
+                receipt_type: receipt_type,
+                next_extra_services_amt: next_extra_services_amt,
+                extra_services_pending_amt: extra_services_pending_amt,
+                customer_sending_amt: customer_sending_amt
+
             },
             //  dataType: 'json',
             //  cache: false,
@@ -13001,7 +13242,7 @@ $("#sra_partial_pending_amt_payment_final_booking_submit").click(function() {
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $("#submit_otp").prop('disabled', true);
-                            window.location.href = "<?=base_url() ?>agent/sra_payment_receipt/index_pending/"+sra_no+ "/" +inserted_id;
+                            window.location.href = "<?=base_url() ?>agent/sra_payment_receipt/index_pending/"+sra_no+ "/" +academic_year;
                         }
                     });
                 } else {
@@ -13213,5 +13454,89 @@ $(document).ready(function() {
             });
         });
     </script>
+
+    <script>
+        function extra_service_final_amt_greater() {
+    // Get values from the input boxes
+    var updatepending_amt = parseFloat(document.getElementById('extra_service_updatepending_amt').value);
+    // alert(result_box);
+    var next_booking_amt = parseFloat(document.getElementById('next_extra_services_amt').value);
+    // alert(next_booking_amt);
+    // Calculate remaining amount
+    var remainingAmt = updatepending_amt - next_booking_amt;
+    // alert(remainingAmt);
+
+    // Check if remaining amount is less than zero
+    if (remainingAmt < 0) {
+        alert("You Entered Wrong Amount");
+        // Reset the booking amount to prevent going below 0
+        document.getElementById('next_extra_services_amt').value = updatepending_amt;
+        // Recalculate remaining amount
+        remainingAmt = 0;
+    }
+
+    // Update the pending amount input box
+    document.getElementById('extra_service_result_box').value = remainingAmt;
+}
+    </script>
+
+
+<script>
+function extra_service_receipt_type(value) {
+    const bookingAmountRow = document.getElementById('next_booking_amt');
+    const extraServicesAmountRow = document.getElementById('next_extra_services_amt');
+    const result_boxAmountRow = document.getElementById('result_box');
+    const extra_service_result_boxAmountRow = document.getElementById('extra_service_result_box');
+
+    if (value === 'SRA') {
+        bookingAmountRow.style.display = 'table-row';
+        extraServicesAmountRow.style.display = 'none';
+        result_boxAmountRow.style.display = 'table-row';
+        extra_service_result_boxAmountRow.style.display = 'none';
+    } else if (value === 'Extra Services') {
+        bookingAmountRow.style.display = 'none';
+        result_boxAmountRow.style.display = 'none';
+        extraServicesAmountRow.style.display = 'table-row';
+        extra_service_result_boxAmountRow.style.display = 'table-row';
+    }
+}
+
+// Initial call to set the correct state on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const selectedValue = document.querySelector('input[name="receipt_type"]:checked').value;
+    extra_service_receipt_type(selectedValue);
+});
+</script>
+
+
+<script>
+    function updateSubmitButton() {
+    // Calculate the sum of all customer sending amount inputs
+    var xyz = 0;
+    document.querySelectorAll('.customer_sending_amt_class').forEach(function(input) {
+        xyz += parseFloat(input.value) || 0;
+    });
+
+    // Get the value of the next extra services amount
+    var nextExtraServicesAmt = parseFloat(document.getElementById('next_extra_services_amt').value) || 0;
+
+    // Compare the sums and enable/disable the submit button
+    var submitButton = document.getElementById('sra_partial_pending_amt_submit_otp');
+    var notMatchMsg = document.getElementById('not_match_show_msg');
+    if (xyz === nextExtraServicesAmt) {
+        submitButton.disabled = false;
+        notMatchMsg.style.display = 'none';
+    } else {
+        submitButton.disabled = true;
+        notMatchMsg.style.display = 'block';
+        // alert("Please match customer depositing amount and booking amount.");
+    }
+}
+</script>
+
+
+
+
+
 
     

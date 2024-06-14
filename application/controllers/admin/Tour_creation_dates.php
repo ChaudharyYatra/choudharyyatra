@@ -30,6 +30,8 @@ class Tour_creation_dates extends CI_Controller{
         $arr_data = $this->master_model->getRecords('tour_creation_dates',array('tour_creation_dates.is_deleted'=>'no'),$fields);
         // print_r($arr_data); die;
 
+        $tour_created_id ='';
+        
         foreach($arr_data as $info){
             $tour_created_id = $info['package_id'];
         } 

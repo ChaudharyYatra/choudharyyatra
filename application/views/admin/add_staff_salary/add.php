@@ -9,7 +9,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-                <a href="<?php echo $module_url_path; ?>/index/<?php echo $tour_creation_id; ?>/<?php echo $tour_day; ?>">
+                <a href="<?php echo $module_url_path; ?>/index">
                     <button class="btn btn-primary">Back</button>
                 </a>
             </ol>
@@ -32,7 +32,7 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form method="post" enctype="multipart/form-data" id="add_vehicle_cost_adding">
+              <form method="post" enctype="multipart/form-data" id="add_staff">
                 <div class="card-body">
                     <div class="row">
                       <div class="col-md-6">
@@ -42,17 +42,21 @@
                       </div>
                                       
 
-                        <table class="table table-bordered" id="main_row_for_vehicle_cost_adding_master">
+                        <table class="table table-bordered" id="main_row_for_staff_master">
                         <colgroup>
                             <col span="1" style="width: 25%;">
                             <col span="1" style="width: 25%;">
                             <col span="1" style="width: 25%;">
+                            <col span="1" style="width: 25%;">
+                            <col span="1" style="width: 25%;">
+                            <col span="1" style="width: 5%;">
                         </colgroup>
                         <thead>
                             <tr>
                                 <th class="hotel_room_rate">Start Date</th>
-                                <th class="hotel_room_rate">Vehicle Type</th>
-                                <th class="hotel_room_rate">Per Km Rate</th>
+                                <th class="hotel_room_rate">Staff Role</th>
+                                <!-- <th class="hotel_room_rate">Staff Name</th> -->
+                                <th class="hotel_room_rate">Per Day Salary</th>
                                 <th class="hotel_room_rate">End Date</th>
                                 <th class="hotel_room_rate">Action</th>
                             </tr>
@@ -63,18 +67,23 @@
                                   <input type="date" class="form-control" name="start_date[]" id="start_date" placeholder="Enter start date" required="required">
                                 </td>
                                 <td class="hotel_room_rate">
-                                <select class="select_css" name="vehicle_type[]" id="vehicle_type" required="required">
-                                    <option value="">Select vehicle type</option>
+                                <select class="select_css" name="role_type[]" id="role_type" required="required">
+                                    <option value="">Select role type</option>
                                   <?php
-                                    foreach($vehicle_type as $vehicle_type_info) 
+                                    foreach($role_type as $role_type_info) 
                                     { 
                                   ?>
-                                    <option value="<?php echo $vehicle_type_info['id'];?>"><?php echo $vehicle_type_info['vehicle_type_name'];?></option>
+                                    <option value="<?php echo $role_type_info['id'];?>"><?php echo $role_type_info['role_name'];?></option>
                                   <?php } ?>
                                 </select>
                                 </td>
+                                <!-- <td class="hotel_room_rate">
+                                  <select class="select_css name" name="staff_name[]" id="staff_name" required="required">
+                                    <option value="">select name</option>
+                                  </select>
+                                </td> -->
                                 <td class="hotel_room_rate">
-                                  <input type="text" class="form-control" name="per_km_rate[]" id="per_km_rate" placeholder="Enter per km rate" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" required="required">
+                                  <input type="text" class="form-control" name="daywise_salary[]" id="daywise_salary" placeholder="Enter Daywise Salary" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" required="required">
                                 </td>
                                 <td class="hotel_room_rate">
                                   <input type="date" class="form-control" name="end_date[]" id="end_date" placeholder="Enter end date">
@@ -90,7 +99,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                <button type="button" class="btn btn-success" name="submit" value="add_more_vehicle_cost_adding" id="add_more_vehicle_cost_adding">Add More</button>
+                <button type="button" class="btn btn-success" name="submit" value="add_more_staff" id="add_more_staff">Add More</button>
                   <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
 				          <a href="<?php echo $module_url_path; ?>/index/<?php echo $tour_creation_id; ?>/<?php echo $tour_day; ?>"><button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button></a>
                 </div>

@@ -44,6 +44,10 @@ class Sra_booking_payment_details extends CI_Controller {
         // $traveller_booking_info = $this->master_model->getRecords('sra_payment','',$fields);
         // print_r($traveller_booking_info); die;
 
+        $total_sra_amt = 0;
+        $services_amt = 0;
+        $total_amount = 0;
+
         $record = array();
         $fields = "sra_payment.*,package_date.journey_date,sra_payment.id as sra_payment_id,,packages.tour_number as package_tour_number";
         $this->db->where('sra_payment.is_deleted','no');
@@ -55,6 +59,52 @@ class Sra_booking_payment_details extends CI_Controller {
         $this->db->where('sra_payment.academic_year', $academic_year);
         $this->db->group_end();
         $traveller_booking_info = $this->master_model->getRecords('sra_payment','',$fields);
+        // print($traveller_booking_info); die;
+
+        // ------------------- Total Final Amount -----------------------------------
+        if (!empty($traveller_booking_info)) {
+            foreach ($traveller_booking_info as $booking) {
+                $total_sra_amt += isset($booking['total_sra_amt']) ? $booking['total_sra_amt'] : 0;
+            }
+        }
+
+        $this->db->where('is_deleted','no');
+        $this->db->where('is_active','yes');
+        $this->db->where('sra_extra_services.sra_payment_id',$iid);
+        $total_extra_services_details = $this->master_model->getRecords('sra_extra_services');
+
+        if (!empty($total_extra_services_details)) {
+            foreach ($total_extra_services_details as $service) {
+                $services_amt += isset($service['services_amt']) ? $service['services_amt'] : 0;
+            }
+        }
+
+        $total_amount = $total_sra_amt + $services_amt; 
+        // ------------------- Total Final Amount -----------------------------------
+
+        // ------------------- Total Paid Amount -----------------------------------
+        $total_paid_amount = $total_amount - $total_amount;
+        // ------------------- Total Paid Amount -----------------------------------
+
+        // ------------------- Total Remaining Amount -----------------------------------
+        $total_remaining_amount = $total_amount - $total_paid_amount;
+        // ------------------- Total Remaining Amount -----------------------------------
+
+
+        $this->db->where('is_deleted','no');
+        $this->db->where('is_active','yes');
+        $this->db->where('sra_extra_services.sra_payment_id',$iid);
+        $extra_services_details_value = $this->master_model->getRecords('sra_extra_services');
+        // print_r($extra_services_details_value); die;
+
+
+        
+        // $fields = "sra_payment.*,sra_booking_payment_details.run_pending_amt,sra_booking_payment_details.final_amt,sra_extra_services.services_amt as extra_services_amt";
+        // $this->db->where('sra_booking_payment_details.is_deleted','no');
+        // $this->db->where('sra_payment.is_active','yes');
+        // $this->db->where('sra_extra_services.sra_payment_id',$iid);
+        // $this->db->join("sra_payment", 'package_date.id=sra_payment.tour_date','left');
+        // $final_amt_with_extra_services = $this->master_model->getRecord('sra_extra_services',array('sra_booking_payment_details.is_deleted'=>'no'),$fields);
 
         // $record = array();
         // $fields = "booking_basic_info.*,packages.id as pid,packages.tour_title,packages.tour_number,packages.tour_number,package_date.journey_date,package_hotel.package_id,package_hotel.hotel_name_id";
@@ -199,7 +249,11 @@ class Sra_booking_payment_details extends CI_Controller {
         $this->arr_view_data['booking_payment_details']        = $booking_payment_details;
         $this->arr_view_data['extra_services_details']        = $extra_services_details;
         $this->arr_view_data['extra']        = $extra;
+        $this->arr_view_data['total_amount']        = $total_amount;
+        $this->arr_view_data['total_remaining_amount']        = $total_remaining_amount;
+        $this->arr_view_data['total_paid_amount']        = $total_paid_amount;
         $this->arr_view_data['relation_data']        = $relation_data;
+        $this->arr_view_data['extra_services_details_value']        = $extra_services_details_value;
         $this->arr_view_data['extra_services']        = $extra_services;
         $this->arr_view_data['upi_qr_data']        = $upi_qr_data;
         $this->arr_view_data['upi_qr_master_id']        = $upi_qr_master_id; 
@@ -1025,6 +1079,7 @@ class Sra_booking_payment_details extends CI_Controller {
                 $booking_amt = $this->input->post('booking_amt');
                 $final_amt = $this->input->post('final_amt');
                 $payment_type = $this->input->post('payment_type');
+                $receipt_type = $this->input->post('receipt_type');
                 $mobile_no = $this->input->post('mobile_no');
                 $relation = $this->input->post('relation');
                 $pending_amt = $this->input->post('pending_amt');
@@ -1151,6 +1206,7 @@ class Sra_booking_payment_details extends CI_Controller {
                 $arr_update = array(
                     'final_amt'   =>   $final_amt,
                     'payment_type'   =>   $payment_type,
+                    'receipt_type'   =>   $receipt_type,
                     'booking_amt'   =>   $booking_amt,
                     'pending_amt'   =>   $pending_amt,
                     'run_pending_amt'   =>   $pending_amt,
@@ -1221,6 +1277,7 @@ class Sra_booking_payment_details extends CI_Controller {
                     $arr_update = array(
                         'final_amt'   =>   $final_amt,
                         'payment_type'   =>   $payment_type,
+                        'receipt_type'   =>   $receipt_type,
                         'booking_amt'   =>   $booking_amt,
                         'pending_amt'   =>   $pending_amt,
                         'run_pending_amt'   =>   $pending_amt,

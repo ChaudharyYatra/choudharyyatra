@@ -59,10 +59,8 @@
                         </colgroup>
                         <thead>
                             <tr>
-                                <th class="hotel_room_rate">Start Date</th>
-                                <th class="hotel_room_rate">Vehicle Type</th>
-                                <th class="hotel_room_rate">Per Km Rate</th>
-                                <th class="hotel_room_rate">End Date</th>
+                                <th class="hotel_room_rate">Train Name - Number</th>
+                                <th class="hotel_room_rate">Slipper Class Ticket Cost</th>
                             </tr>
                         </thead>
                         <tbody id="hotel_room_body">
@@ -72,26 +70,19 @@
                           ?>
                             <tr>
                                 <td class="hotel_room_rate">
-                                  <input type="date" class="form-control" name="start_date" id="start_date" value="<?php echo $info['start_date']; ?>" placeholder="Enter start date" required="required">
-                                </td>
-                                <td class="hotel_room_rate">
-                                <select class="form-control" name="vehicle_type" id="vehicle_type" required="required">
-                                  <option value="">Select vehicle type</option>
+                                <select class="select_css" name="train_name_number" id="train_name_number" required="required">
+                                    <option value="">Select train name / number</option>
                                   <?php
-                                    foreach($vehicle_type as $vehicle_type_info) 
+                                    foreach($railway_main_master as $railway_main_master_info) 
                                     { 
                                   ?>
-                                    <option value="<?php echo $vehicle_type_info['id'];?>" <?php if($vehicle_type_info['id']==$info['vehicle_type']) { echo "selected"; }?>><?php echo $vehicle_type_info['vehicle_type_name']; ?></option>
+                                    <option value="<?php echo $railway_main_master_info['id'];?>" <?php if($railway_main_master_info['id']==$info['train_name_number']) { echo "selected"; }?>><?php echo $railway_main_master_info['train_no'];?> - <?php echo $railway_main_master_info['train_name'];?></option>
                                   <?php } ?>
                                 </select>
                                 </td>
                                 <td class="hotel_room_rate">
-                                <input type="text" class="form-control" name="per_km_rate" id="per_km_rate" value="<?php echo $info['per_km_rate']; ?>" placeholder="Enter per km rate" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" required="required">
+                                  <input type="text" class="form-control" name="slipper_ticket_cost" id="slipper_ticket_cost" value="<?php echo $info['slipper_ticket_cost']; ?>" placeholder="Enter slipper ticket cost" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" required="required">
                                 </td>
-                                <td class="hotel_room_rate">
-                                  <input type="date" class="form-control" name="end_date" id="end_date" value="<?php echo $info['end_date']; ?>" placeholder="Enter end date">
-                                </td>
-                                
                             </tr>
                             <?php } ?>  
                         </tbody>

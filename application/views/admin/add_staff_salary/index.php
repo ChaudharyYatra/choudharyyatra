@@ -8,19 +8,8 @@
             <h1><?php echo $module_title; ?></h1>
           </div>
           <div class="col-sm-6">
-            <?php foreach($arr_data2 as $info2) { ?>
-              <?php 
-                $tour_creation_id_encoded = rtrim(base64_encode($info2['id']), "=");
-                $tour_no_of_days_encoded = rtrim(base64_encode($info2['tour_number_of_days']), "=");
-              ?>
-              <input type="hidden" name="tour_creation_id" value="<?php echo $tour_creation_id_encoded; ?>">
-              <input type="hidden" name="tour_no_of_days" value="<?php echo $tour_no_of_days_encoded; ?>">
-              
-            <?php } ?>
-
             <ol class="breadcrumb float-sm-right">
-                <a href="<?php echo $module_url_path; ?>/add/<?php echo $tour_creation_id_encoded; ?>/<?php echo $tour_no_of_days_encoded; ?>">
-                    <button class="btn btn-primary">Add</button>
+                <a href="<?php echo $module_url_path; ?>/add"><button class="btn btn-primary">Add</button>
                 </a>
             </ol>
           </div>
@@ -75,14 +64,14 @@
                         if($info['add_staff_is_active']=='yes')
                           {
                         ?>
-                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php echo $info['tour_creation_id'];?>/<?php echo $info['tour_no_of_days'];?>/<?php echo $info['add_staff_id'].'/'.$info['add_staff_is_active']; ?>"><button class="btn btn-success btn-sm">YES</button></a>
+                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php echo $info['add_staff_id'].'/'.$info['add_staff_is_active']; ?>"><button class="btn btn-success btn-sm">YES</button></a>
                         <?php } else { ?>
-                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php echo $info['tour_creation_id'];?>/<?php echo $info['tour_no_of_days'];?>/<?php echo $info['add_staff_id'].'/'.$info['add_staff_is_active']; ?>"><button class="btn btn-danger btn-sm">NO</button> </a>
+                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php echo $info['add_staff_id'].'/'.$info['add_staff_is_active']; ?>"><button class="btn btn-danger btn-sm">NO</button> </a>
                         <?php } ?>
                     </td>
                     <td>
-                          <a href="<?php echo $module_url_path;?>/edit/<?php echo $info['add_staff_id'];?>/<?php echo $info['tour_creation_id'];?>/<?php echo $info['role_type'];?>/<?php echo $info['tour_no_of_days'];?>" title="Edit"><i class="fa fa-edit" aria-hidden="true" style="color:blue";></i></a> &nbsp;/&nbsp;
-                          <a onclick="return confirm('Are You Sure You Want To Delete This Record?')" href="<?php echo $module_url_path;?>/delete/<?php echo $info['add_staff_id']; ?>/<?php echo $info['tour_creation_id'];?>/<?php echo $info['tour_no_of_days'];?>" title="Delete"><i class="fa fa-trash" aria-hidden="true" style="color:red";></i></a>
+                          <a href="<?php echo $module_url_path;?>/edit/<?php echo $info['add_staff_id'];?>/<?php echo $info['role_type'];?>" title="Edit"><i class="fa fa-edit" aria-hidden="true" style="color:blue";></i></a> &nbsp;/&nbsp;
+                          <a onclick="return confirm('Are You Sure You Want To Delete This Record?')" href="<?php echo $module_url_path;?>/delete/<?php echo $info['add_staff_id']; ?>" title="Delete"><i class="fa fa-trash" aria-hidden="true" style="color:red";></i></a>
                     </td>
                   </tr>
                   <?php $i++; } ?>

@@ -46,11 +46,8 @@
                   <thead>
                   <tr>
                     <th>SN</th>
-                    <th>Start Date</th>
-                    <th>Staff Role</th>
-                    <!-- <th>Staff Name</th> -->
-                    <th>Per Day Salary</th>
-                    <th>end Date</th>
+                    <th>Train Name - Number</th>
+                    <th>Slipper Class Ticket Cost</th>
                     <th>Is Active?</th>
                     <th>Action</th>
                   </tr>
@@ -64,25 +61,23 @@
                    { 
                      ?>
                   <tr>
+                  
                     <td><?php echo $i; ?></td>
-                    <td><?php echo date("d-m-Y",strtotime($info['start_date'])); ?></td>
-                    <td><?php echo $info['role_name'] ?></td>
-                    <!-- <td><?php //echo $info['supervision_name'] ?></td> -->
-                    <td><?php echo $info['daywise_salary'] ?></td>
-                    <td><?php echo date("d-m-Y",strtotime($info['end_date'])); ?></td>
+                    <td><?php echo $info['train_no'] ?> - <?php echo $info['train_name'] ?></td>
+                    <td><?php echo $info['slipper_ticket_cost'] ?></td>
                     <td>
                         <?php 
-                        if($info['add_staff_is_active']=='yes')
+                        if($info['slipper_train_ticket_cost_is_active']=='yes')
                           {
                         ?>
-                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php echo $info['tour_creation_id'];?>/<?php echo $info['tour_no_of_days'];?>/<?php echo $info['add_staff_id'].'/'.$info['add_staff_is_active']; ?>"><button class="btn btn-success btn-sm">YES</button></a>
+                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php echo $info['tour_creation_id'];?>/<?php echo $info['tour_no_of_days'];?>/<?php echo $info['slipper_train_ticket_cost_id'].'/'.$info['slipper_train_ticket_cost_is_active']; ?>"><button class="btn btn-success btn-sm">YES</button></a>
                         <?php } else { ?>
-                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php echo $info['tour_creation_id'];?>/<?php echo $info['tour_no_of_days'];?>/<?php echo $info['add_staff_id'].'/'.$info['add_staff_is_active']; ?>"><button class="btn btn-danger btn-sm">NO</button> </a>
+                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php echo $info['tour_creation_id'];?>/<?php echo $info['tour_no_of_days'];?>/<?php echo $info['slipper_train_ticket_cost_id'].'/'.$info['slipper_train_ticket_cost_is_active']; ?>"><button class="btn btn-danger btn-sm">NO</button> </a>
                         <?php } ?>
                     </td>
                     <td>
-                          <a href="<?php echo $module_url_path;?>/edit/<?php echo $info['add_staff_id'];?>/<?php echo $info['tour_creation_id'];?>/<?php echo $info['role_type'];?>/<?php echo $info['tour_no_of_days'];?>" title="Edit"><i class="fa fa-edit" aria-hidden="true" style="color:blue";></i></a> &nbsp;/&nbsp;
-                          <a onclick="return confirm('Are You Sure You Want To Delete This Record?')" href="<?php echo $module_url_path;?>/delete/<?php echo $info['add_staff_id']; ?>/<?php echo $info['tour_creation_id'];?>/<?php echo $info['tour_no_of_days'];?>" title="Delete"><i class="fa fa-trash" aria-hidden="true" style="color:red";></i></a>
+                          <a href="<?php echo $module_url_path;?>/edit/<?php echo $info['slipper_train_ticket_cost_id'];?>/<?php echo $info['tour_creation_id'];?>/<?php echo $info['tour_no_of_days'];?>" title="Edit"><i class="fa fa-edit" aria-hidden="true" style="color:blue";></i></a> &nbsp;/&nbsp;
+                          <a onclick="return confirm('Are You Sure You Want To Delete This Record?')" href="<?php echo $module_url_path;?>/delete/<?php echo $info['slipper_train_ticket_cost_id']; ?>/<?php echo $info['tour_creation_id'];?>/<?php echo $info['tour_no_of_days'];?>" title="Delete"><i class="fa fa-trash" aria-hidden="true" style="color:red";></i></a>
                     </td>
                   </tr>
                   <?php $i++; } ?>

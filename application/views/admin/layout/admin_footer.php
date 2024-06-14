@@ -12614,7 +12614,6 @@ $(document).on("input", ".total_km, .per_km_rate", function() {
             $("#edit_main_row_for_state_master tbody tr").each(function() {
                 updatePerUnitRate(this);
             });
-
             // updateExpenseAmount(); // Recalculate the total when a rate or quantity changes
         });
 </script>
@@ -12716,6 +12715,9 @@ $('[name^="vehicle_type"]').each(function() {
       i++;
       var structure = $(`<tr id="new_row` + i + `">
                     <td class="hotel_room_rate">
+                        <input type="date" class="form-control" name="start_date[]" id="start_date`+i+`" placeholder="Enter start date" required="required">
+                    </td>
+                    <td class="hotel_room_rate">
                         <select class="select_css" name="role_type[]" id="role_type`+i+`">
                             <option value="">Select role type</option>
                             <?php
@@ -12725,14 +12727,11 @@ $('[name^="vehicle_type"]').each(function() {
                             <option value="<?php echo $role_type_info['id'];?>"><?php echo $role_type_info['role_name'];?></option>
                             <?php } ?>
                         </select>
-                    </td>
-                    <td class="hotel_room_rate">
-                        <select class="select_css name" name="staff_name[]" id="staff_name`+i+`" required="required">
-                            <option value="">select name</option>
-                        </select>
-                    </td>
                     <td>
                         <input type="text" class="form-control" name="daywise_salary[]" id="daywise_salary` + i + `" placeholder="Enter Days" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    </td>
+                    <td class="hotel_room_rate">
+                        <input type="date" class="form-control" name="end_date[]" id="end_date`+i+`" placeholder="Enter end date">
                     </td>
                     <td>
                         <button type="button" name="remove" id="` + i + `" class="btn btn-danger btn_remove">X</button>
@@ -12860,6 +12859,9 @@ $('[name^="vehicle_type"]').each(function() {
       i++;
       var structure = $(`<tr id="new_row` + i + `">
                     <td class="hotel_room_rate">
+                        <input type="date" class="form-control" name="start_date[]" id="start_date`+i+`" placeholder="Enter start date" required="required">
+                    </td>
+                    <td class="hotel_room_rate">
                         <select class="select_css" name="vehicle_type[]" id="vehicle_type`+i+`">
                             <option value="">Select vehicle type</option>
                             <?php
@@ -12872,6 +12874,9 @@ $('[name^="vehicle_type"]').each(function() {
                     </td>
                     <td>
                         <input type="text" class="form-control" name="per_km_rate[]" id="per_km_rate` + i + `" placeholder="Enter Days" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    </td>
+                    <td class="hotel_room_rate">
+                        <input type="date" class="form-control" name="end_date[]" id="end_date`+i+`" placeholder="Enter end date">
                     </td>
                     <td>
                         <button type="button" name="remove" id="` + i + `" class="btn btn-danger btn_remove">X</button>
@@ -12919,7 +12924,17 @@ $('[name^="vehicle_type"]').each(function() {
                 }
             })
         });
-
+        $('[name^="start_date"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Select start date",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
     });
 
 </script>
@@ -12952,6 +12967,18 @@ $('[name^="vehicle_type"]').each(function() {
                 // minlength: 2,
                 messages: {
                     required: "Enter per km rate",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+        $('[name^="start_date"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Select start date",
                     // minlength: "Enter at least {0} characters",
                 }
             })
@@ -13009,3 +13036,435 @@ $('#edit_boarding_point').validate({ // initialize the plugin
 
 </script>
 <!-- boarding point validation  -->
+
+
+<!--------------------- Railway Main Master -------------------------->
+<script>
+    $(document).ready(function() {
+        $('.select11').select2();
+
+        // Event listener for dynamically added "Add More" button
+        $('#add_more_place').on('click', function() {
+            var newField = $('#container .col-md-6').first().clone();
+            newField.find('select11').val('').select2(); // Reset cloned select field
+            $('#container').append(newField);
+        });
+
+        // Event listener for select box change
+        $(document).on('change', '.select11', function() {
+            if ($(this).val() && $(this).val().indexOf("9") !== -1) {
+                $(this).val(["1", "2", "3", "4", "5", "6", "7", "8", "9"]).trigger('change');
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('.select22').select2();
+
+        // Event listener for dynamically added "Add More" button
+        $('#add_more_place').on('click', function() {
+            var newField = $('#container .col-md-6').first().clone();
+            newField.find('select22').val('').select2(); // Reset cloned select field
+            $('#container').append(newField);
+        });
+
+        // Event listener for select box change
+        $(document).on('change', '.select22', function() {
+            if ($(this).val() && $(this).val().indexOf("8") !== -1) {
+                $(this).val(["1", "2", "3", "4", "5", "6", "7", "8"]).trigger('change');
+            }
+        });
+    });
+</script>
+<script type='text/javascript'>
+  // baseURL variable
+  var baseURL= "<?php echo base_url();?>";
+ 
+  $(document).ready(function(){
+    
+    var i = 1;
+    $('#add_more_railway_main_master').click(function() {
+      i++;
+      var structure = $(`<tr id="new_row` + i + `">
+                            <td class="hotel_room_rate">
+                                <input type="text" class="form-control" name="place_name[]" id="place_name` + i + `" placeholder="Enter place name" required="required">
+                            </td>
+                            <td class="hotel_room_rate">
+                                <input type="time" class="form-control" name="arrival_time[]" id="arrival_time` + i + `" placeholder="Enter arrival time" required="required">
+                            </td>
+                            <td class="hotel_room_rate">
+                                <input type="time" class="form-control" name="departure_time[]" id="departure_time` + i + `" placeholder="Enter departure time" required="required">
+                            </td>
+                            <td class="hotel_room_rate">
+                                <input type="text" class="form-control" name="day[]" id="day` + i + `" placeholder="Enter day" required="required" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                            </td>
+                            <td class="hotel_room_rate">
+                                <input type="text" class="form-control" name="kilometer[]" id="kilometer` + i + `" placeholder="Enter kilometer" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required="required">
+                            </td>
+                            <td>
+                                <button type="button" name="remove" id="` + i + `" class="btn btn-danger btn_remove">X</button>
+                            </td>
+                </tr>`);
+      $('#main_row_railway').append(structure);    
+    });
+
+    $(document).on('click', '.btn_remove', function(){  
+      var button_id = $(this).attr("id");   
+      $('#new_row' + button_id).remove();  
+    });
+  });
+</script>
+
+<script type='text/javascript'>
+  // baseURL variable
+  var baseURL= "<?php echo base_url();?>";
+ 
+  $(document).ready(function(){
+    
+    var i = 1;
+    $('#edit_more_railway_main_master').click(function() {
+      i++;
+      var structure = $(`<tr id="new_row` + i + `">
+                            <td class="hotel_room_rate">
+                                <input type="text" class="form-control" name="add_place_name[]" id="add_place_name` + i + `" placeholder="Enter place name" required="required">
+                            </td>
+                            <td class="hotel_room_rate">
+                                <input type="time" class="form-control" name="add_arrival_time[]" id="add_arrival_time` + i + `" placeholder="Enter arrival time" required="required">
+                            </td>
+                            <td class="hotel_room_rate">
+                                <input type="time" class="form-control" name="add_departure_time[]" id="add_departure_time` + i + `" placeholder="Enter departure time" required="required">
+                            </td>
+                            <td class="hotel_room_rate">
+                                <input type="text" class="form-control" name="add_day[]" id="add_day` + i + `" placeholder="Enter day" required="required" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                            </td>
+                            <td class="hotel_room_rate">
+                                <input type="text" class="form-control" name="add_kilometer[]" id="add_kilometer` + i + `" placeholder="Enter kilometer" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required="required">
+                            </td>
+                            <td>
+                                <button type="button" name="remove" id="` + i + `" class="btn btn-danger btn_remove">X</button>
+                            </td>
+                </tr>`);
+      $('#main_row_railway').append(structure);    
+      i++;
+      initializeValidationForNewRow(i - 1);
+    });
+
+    function initializeValidationForNewRow(rowIndex) {
+    // Define rules and messages for the newly added row
+    $('#add_place_name' + rowIndex).rules('add', {
+        required: true,
+        messages: {
+            required: "Enter place name"
+        }
+    });
+
+    $('#add_arrival_time' + rowIndex).rules('add', {
+        required: true,
+        messages: {
+            required: "Select arrival time"
+        }
+    });
+
+    $('#add_departure_time' + rowIndex).rules('add', {
+        required: true,
+        messages: {
+            required: "Select departure time"
+        }
+    });
+
+    $('#add_day' + rowIndex).rules('add', {
+        required: true,
+        messages: {
+            required: "Enter day"
+        }
+    });
+
+    $('#add_kilometer' + rowIndex).rules('add', {
+        required: true,
+        messages: {
+            required: "Enter kilometer"
+        }
+    });
+}
+
+// Call the initializeValidationForNewRow function for any existing rows
+$(".dynamic-row").each(function (index) {
+    initializeValidationForNewRow(index + 1);
+});
+
+
+    $(document).on('click', '.btn_remove', function(){  
+      var button_id = $(this).attr("id");   
+      $('#new_row' + button_id).remove();  
+    });
+  });
+</script>
+
+<script>
+$(document).ready(function () {
+
+$('#add_railway_main_master').validate({ // initialize the plugin
+    errorPlacement: function($error, $element) {
+    $error.appendTo($element.closest("div,td"));
+  },
+    rules: {
+        train_no: {
+            required: true,
+        },
+        train_name: {
+            required: true,
+        },
+        train_start_from: {
+            required: true,
+        },
+        train_date: {
+            required: true,
+        },
+        "train_type[]": {
+            required: true,
+        },
+        "running_days[]": {
+            required: true,
+        }
+    },
+
+    messages :{
+        train_no : {
+            required : "Please enter train no",
+        },
+        train_name : {
+            required : "Please enter train name",
+        },
+        train_start_from : {
+            required : "Please enter train start from",
+        },
+        train_date : {
+            required : "Please select date",
+        },
+        "train_type[]" : {
+            required : "Please select train type",
+        },
+        "running_days[]" : {
+            required : "Please select running days",
+        }
+    }
+});
+
+        $('[name^="place_name"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Enter place name",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+        $('[name^="arrival_time"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Select arrival time",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+        $('[name^="departure_time"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Select departure time",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+        $('[name^="day"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Enter day",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+        $('[name^="kilometer"]').each(function() {
+            // alert("cccccc");
+            $(this).rules('add', {
+                required: true,
+                // minlength: 2,
+                messages: {
+                    required: "Enter kilometer",
+                    // minlength: "Enter at least {0} characters",
+                }
+            })
+        });
+
+});
+
+</script>
+
+
+<script>
+$(document).ready(function () {
+$('#edit_railway_main_master').validate({ // initialize the plugin
+    errorPlacement: function($error, $element) {
+    $error.appendTo($element.closest("div,td"));
+  },
+  rules: {
+        train_no: {
+            required: true,
+        },
+        train_name: {
+            required: true,
+        },
+        train_start_from: {
+            required: true,
+        },
+        train_date: {
+            required: true,
+        },
+        "train_type[]": {
+            required: true,
+        },
+        "running_days[]": {
+            required: true,
+        }
+    },
+
+    messages :{
+        train_no : {
+            required : "Please enter train no",
+        },
+        train_name : {
+            required : "Please enter train name",
+        },
+        train_start_from : {
+            required : "Please enter train start from",
+        },
+        train_date : {
+            required : "Please select date",
+        },
+        "train_type[]" : {
+            required : "Please select train type",
+        },
+        "running_days[]" : {
+            required : "Please select running days",
+        }
+    }
+});
+
+$('[name^="place_name"]').each(function() {
+        // alert("cccccc");
+        $(this).rules('add', {
+            required: true,
+            // minlength: 2,
+            messages: {
+                required: "Enter place name",
+                // minlength: "Enter at least {0} characters",
+            }
+        })
+    });
+
+    $('[name^="arrival_time"]').each(function() {
+        // alert("cccccc");
+        $(this).rules('add', {
+            required: true,
+            // minlength: 2,
+            messages: {
+                required: "Select arrival time",
+                // minlength: "Enter at least {0} characters",
+            }
+        })
+    });
+
+    
+    $('[name^="departure_time"]').each(function() {
+        // alert("cccccc");
+        $(this).rules('add', {
+            required: true,
+            // minlength: 2,
+            messages: {
+                required: "Select departure time",
+                // minlength: "Enter at least {0} characters",
+            }
+        })
+    });
+    $('[name^="day"]').each(function() {
+        // alert("cccccc");
+        $(this).rules('add', {
+            required: true,
+            // minlength: 2,
+            messages: {
+                required: "Enter day",
+                // minlength: "Enter at least {0} characters",
+            }
+        })
+    });
+
+    $('[name^="kilometer"]').each(function() {
+        // alert("cccccc");
+        $(this).rules('add', {
+            required: true,
+            // minlength: 2,
+            messages: {
+                required: "Enter kilometer",
+                // minlength: "Enter at least {0} characters",
+            }
+        })
+    });
+});
+
+</script>
+<!--------------------- Railway Main Master -------------------------->
+
+<!--    --------------  slipper train ticket cost --------------------------- -->
+<script type='text/javascript'>
+  // baseURL variable
+  var baseURL= "<?php echo base_url();?>";
+ 
+  $(document).ready(function(){
+    
+    var i = 1;
+    $('#add_more_slipper_train_ticket_cost').click(function() {
+      i++;
+      var structure = $(`<tr id="new_row` + i + `">
+                    <td class="hotel_room_rate">
+                    <select class="select_css" name="train_name_number[]" id="train_name_number` + i + `" required="required">
+                        <option value="">Select train name / number</option>
+                        <?php
+                        foreach($railway_main_master as $railway_main_master_info) 
+                        { 
+                        ?>
+                        <option value="<?php echo $railway_main_master_info['id'];?>"><?php echo $railway_main_master_info['train_no'];?> - <?php echo $railway_main_master_info['train_name'];?></option>
+                        <?php } ?>
+                    </select>
+                    </td>
+                    <td class="hotel_room_rate">
+                        <input type="text" class="form-control" name="slipper_ticket_cost[]" id="slipper_ticket_cost` + i + `" placeholder="Enter slipper ticket cost" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required="required">
+                    </td>
+                    <td>
+                        <button type="button" name="remove" id="` + i + `" class="btn btn-danger btn_remove">X</button>
+                    </td>
+                </tr>`);
+      $('#main_row_for_slipper_train_ticket_cost_master').append(structure);    
+    });
+
+    $(document).on('click', '.btn_remove', function(){  
+      var button_id = $(this).attr("id");   
+      $('#new_row' + button_id).remove();  
+    });
+  });
+</script>
+<!--    --------------  slipper train ticket cost --------------------------- -->

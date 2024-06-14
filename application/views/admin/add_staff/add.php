@@ -47,18 +47,25 @@
                             <col span="1" style="width: 25%;">
                             <col span="1" style="width: 25%;">
                             <col span="1" style="width: 25%;">
+                            <col span="1" style="width: 25%;">
+                            <col span="1" style="width: 25%;">
                             <col span="1" style="width: 5%;">
                         </colgroup>
                         <thead>
                             <tr>
+                                <th class="hotel_room_rate">Start Date</th>
                                 <th class="hotel_room_rate">Staff Role</th>
-                                <th class="hotel_room_rate">Staff Name</th>
+                                <!-- <th class="hotel_room_rate">Staff Name</th> -->
                                 <th class="hotel_room_rate">Per Day Salary</th>
+                                <th class="hotel_room_rate">End Date</th>
                                 <th class="hotel_room_rate">Action</th>
                             </tr>
                         </thead>
                         <tbody id="hotel_room_body">
                             <tr>
+                                <td class="hotel_room_rate">
+                                  <input type="date" class="form-control" name="start_date[]" id="start_date" placeholder="Enter start date" required="required">
+                                </td>
                                 <td class="hotel_room_rate">
                                 <select class="select_css" name="role_type[]" id="role_type" required="required">
                                     <option value="">Select role type</option>
@@ -70,13 +77,16 @@
                                   <?php } ?>
                                 </select>
                                 </td>
-                                <td class="hotel_room_rate">
+                                <!-- <td class="hotel_room_rate">
                                   <select class="select_css name" name="staff_name[]" id="staff_name" required="required">
                                     <option value="">select name</option>
                                   </select>
-                                </td>
+                                </td> -->
                                 <td class="hotel_room_rate">
                                   <input type="text" class="form-control" name="daywise_salary[]" id="daywise_salary" placeholder="Enter Daywise Salary" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" required="required">
+                                </td>
+                                <td class="hotel_room_rate">
+                                  <input type="date" class="form-control" name="end_date[]" id="end_date" placeholder="Enter end date">
                                 </td>
                                 <td class="hotel_room_rate">
                                     <button type="button" class="btn btn-danger btn_remove" disabled>X</button>

@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Add_staff extends CI_Controller{
+class Slipper_train_ticket_cost extends CI_Controller{
 
 	public function __construct()
 	{
@@ -11,37 +11,34 @@ class Add_staff extends CI_Controller{
                 redirect(base_url().'admin/login'); 
         }
 		
-        $this->module_url_path    =  base_url().$this->config->item('admin_panel_slug')."/add_staff";
-        $this->module_title       = "Add Staff";
-        $this->module_url_slug    = "add_staff";
-        $this->module_view_folder = "add_staff/";
+        $this->module_url_path    =  base_url().$this->config->item('admin_panel_slug')."/slipper_train_ticket_cost";
+        $this->module_title       = "Slipper Train Ticket Cost";
+        $this->module_url_slug    = "slipper_train_ticket_cost";
+        $this->module_view_folder = "slipper_train_ticket_cost/";
 	}
 
 	public function index($id,$did)
 	{  
-
         $id=base64_decode($id);
-        // print_r($id);
         $did=base64_decode($did);
-        // print_r($did);
         if ($id=='') 
         {
             $this->session->set_flashdata('error_message','Invalid Selection Of Record');
             redirect($this->module_url_path.'/index');
         } 
 
-        $fields = "add_staff.*,role_type.*,add_staff.id as add_staff_id,add_staff.is_active as add_staff_is_active";
-        $this->db->where('add_staff.is_deleted','no');
-        $this->db->where('add_staff.tour_creation_id',$id);
-        $this->db->join("role_type", 'add_staff.role_type=role_type.id','left');
-        // $this->db->join("supervision", 'add_staff.staff_name=supervision.id','left');
-        $arr_data = $this->master_model->getRecords('add_staff',array('add_staff.is_deleted'=>'no'),$fields);
+        $fields = "slipper_train_ticket_cost.*,railway_main_master.*,slipper_train_ticket_cost.id as slipper_train_ticket_cost_id,slipper_train_ticket_cost.is_active as slipper_train_ticket_cost_is_active";
+        $this->db->where('slipper_train_ticket_cost.is_deleted','no');
+        $this->db->where('slipper_train_ticket_cost.tour_creation_id',$id);
+        $this->db->join("railway_main_master", 'slipper_train_ticket_cost.train_name_number=railway_main_master.id','left');
+        $arr_data = $this->master_model->getRecords('slipper_train_ticket_cost',array('slipper_train_ticket_cost.is_deleted'=>'no'),$fields);
 
+        // print_r($arr_data); die;
         // $this->db->order_by('id','desc');
         // $this->db->where('is_deleted','no');
         // $this->db->where('is_active','yes');
         // $this->db->where('tour_creation_id',$id);
-        // $arr_data = $this->master_model->getRecords('add_staff');
+        // $arr_data = $this->master_model->getRecords('vehicle_cost_adding');
 
         // print_r($arr_data);
 
@@ -72,31 +69,25 @@ class Add_staff extends CI_Controller{
             $tour_days=base64_decode($tour_day);
             // print_r($tour_day);
             
+                $train_name_number = $this->input->post('train_name_number');
+                $slipper_ticket_cost = $this->input->post('slipper_ticket_cost');
 
-                $role_type = $this->input->post('role_type');
-                // $staff_name = $this->input->post('staff_name');
-                $daywise_salary = $this->input->post('daywise_salary');
-                $start_date = $this->input->post('start_date');
-                $end_date = $this->input->post('end_date');
-
-                $count = count($daywise_salary);
+                $count = count($train_name_number);
                 for($i=0;$i<$count;$i++)
                 {
                     $arr_insert = array(
                         'tour_creation_id'   =>   $tour_cre_id,
                         'tour_no_of_days'   =>   $tour_days,
-                        'role_type'   =>   $_POST["role_type"][$i],
-                        'daywise_salary'   =>   $_POST["daywise_salary"][$i],
-                        'start_date'   =>   $_POST["start_date"][$i],
-                        'end_date'   =>   $_POST["end_date"][$i]
+                        'train_name_number'   =>   $_POST["train_name_number"][$i],
+                        'slipper_ticket_cost'   =>   $_POST["slipper_ticket_cost"][$i]
                     ); 
-                    $inserted_id = $this->master_model->insertRecord('add_staff',$arr_insert,true);
+                    $inserted_id = $this->master_model->insertRecord('slipper_train_ticket_cost',$arr_insert,true);
                 }
                     
                                
                 if($inserted_id > 0)
                 {    
-                    $this->session->set_flashdata('success_message',"Staff Added Successfully.");
+                    $this->session->set_flashdata('success_message',"Slipper train ticket cost Added Successfully.");
                     redirect($this->module_url_path.'/index/'.$tour_creation_id.'/'.$tour_day);
                 }
                 else
@@ -109,32 +100,19 @@ class Add_staff extends CI_Controller{
 
         $this->db->where('is_deleted','no');
         $this->db->where('is_active','yes');
-        $role_type = $this->master_model->getRecords('role_type');
+        $railway_main_master = $this->master_model->getRecords('railway_main_master');
+        // print_r($railway_main_master); die;
 
 
         $this->arr_view_data['action']          = 'add';
         $this->arr_view_data['page_title']      = " Add ".$this->module_title;
         $this->arr_view_data['module_title']    = $this->module_title;
-        $this->arr_view_data['role_type']    = $role_type;
+        $this->arr_view_data['railway_main_master']    = $railway_main_master;
         $this->arr_view_data['tour_creation_id']    = $tour_creation_id;
         $this->arr_view_data['tour_day']    = $tour_day;
         $this->arr_view_data['module_url_path'] = $this->module_url_path;
         $this->arr_view_data['middle_content']  = $this->module_view_folder."add";
         $this->load->view('admin/layout/admin_combo',$this->arr_view_data);
-    }
-
-    public function getrolename(){ 
-        // POST data 
-        // $all_b=array();
-        $getname = $this->input->post('did');
-        // print_r($getname); die;
-        
-            $this->db->where('is_deleted','no');
-            $this->db->where('is_active','yes');
-            $this->db->where('role_type',$getname);   
-            $data = $this->master_model->getRecords('supervision');
-        
-        echo json_encode($data);
     }
 
 
@@ -147,7 +125,7 @@ class Add_staff extends CI_Controller{
         {  
             // print_r($id); die;
             $this->db->where('id',$id);
-            $arr_data = $this->master_model->getRecords('add_staff');
+            $arr_data = $this->master_model->getRecords('slipper_train_ticket_cost');
             // print_r($arr_data); die;
             
             if(empty($arr_data))
@@ -167,8 +145,8 @@ class Add_staff extends CI_Controller{
                 $arr_update['is_active'] = "yes";
             }
             // print_r($arr_update); die;
-            // if($this->master_model->updateRecord('add_staff',$arr_update,array('id' => $id)))
-            if($this->master_model->updateRecord('add_staff', $arr_update, array('add_staff.id' => $id)))
+            // if($this->master_model->updateRecord('vehicle_cost_adding',$arr_update,array('id' => $id)))
+            if($this->master_model->updateRecord('slipper_train_ticket_cost', $arr_update, array('slipper_train_ticket_cost.id' => $id)))
             {
                 $this->session->set_flashdata('success_message',$this->module_title.' Updated Successfully.');
                 redirect($this->module_url_path.'/index/'.$encoded_tour_creation_id.'/'.$encoded_tour_no_of_days);
@@ -197,7 +175,7 @@ class Add_staff extends CI_Controller{
         if($id!='')
         {  
             $arr_where = "(id = $id)";
-            $arr_data = $this->master_model->getRecords('add_staff');
+            $arr_data = $this->master_model->getRecords('slipper_train_ticket_cost');
             // print_r($arr_data); die;
             if(empty($arr_data))
             {
@@ -207,7 +185,7 @@ class Add_staff extends CI_Controller{
             $arr_update = array('is_deleted' => 'yes');
             // $arr_where = array("id" => $id,"state_sigle_insert_id" => $id);
                  
-            if($this->master_model->updateRecord('add_staff',$arr_update,$arr_where))
+            if($this->master_model->updateRecord('slipper_train_ticket_cost',$arr_update,$arr_where))
             {
                 $this->session->set_flashdata('success_message',$this->module_title.' Deleted Successfully.');
                 redirect($this->module_url_path.'/index/'.$encoded_tour_creation_id.'/'.$encoded_tour_no_of_days);
@@ -230,7 +208,7 @@ class Add_staff extends CI_Controller{
    
     // Edit - Get data for edit
 
-    public function edit($id,$tour_creation_id,$role_type_id,$tour_no_of_days)
+    public function edit($id,$tour_creation_id,$tour_no_of_days)
     {
         $encoded_tour_creation_id = rtrim(base64_encode($tour_creation_id), '=');
         $encoded_tour_no_of_days = rtrim(base64_encode($tour_no_of_days), '=');
@@ -244,29 +222,21 @@ class Add_staff extends CI_Controller{
         if(is_numeric($id))
         {   
             $this->db->where('id',$id);
-            $arr_data = $this->master_model->getRecords('add_staff');
+            $arr_data = $this->master_model->getRecords('slipper_train_ticket_cost');
             
             if($this->input->post('submit'))
             {
                 
                     
-                    $role_type = $this->input->post('role_type');
-                    // $staff_name = $this->input->post('staff_name');
-                    $daywise_salary = $this->input->post('daywise_salary');
-                    $start_date = $this->input->post('start_date');
-                    $end_date = $this->input->post('end_date');
-
+                $train_name_number = $this->input->post('train_name_number');
+                $slipper_ticket_cost = $this->input->post('slipper_ticket_cost');
 
                    $arr_update = array(
-                        'role_type'   =>   $role_type,
-                        // 'staff_name'   =>   $staff_name,
-                        'daywise_salary'   =>  $daywise_salary,
-                        'start_date'   =>  $start_date,
-                        'end_date'   =>  $end_date
-
+                        'train_name_number'   =>   $train_name_number,
+                        'slipper_ticket_cost'   =>  $slipper_ticket_cost
                     );
                      $arr_where     = array("id" => $id);
-                     $this->master_model->updateRecord('add_staff',$arr_update,$arr_where);
+                     $this->master_model->updateRecord('slipper_train_ticket_cost',$arr_update,$arr_where);
 
                     if($id > 0)
                     {
@@ -289,22 +259,18 @@ class Add_staff extends CI_Controller{
          
         $this->db->where('is_deleted','no');
         $this->db->where('is_active','yes');
-        $role_type = $this->master_model->getRecords('role_type');
+        $railway_main_master = $this->master_model->getRecords('railway_main_master');
+        // print_r($railway_main_master); die;
 
-        $this->db->order_by('id','desc');
-        $this->db->where('is_deleted','no');
-        $this->db->where('role_type',$role_type_id);
-        $supervision = $this->master_model->getRecords('supervision');
 
         $this->arr_view_data['arr_data']        = $arr_data;
         $this->arr_view_data['page_title']      = "Edit ".$this->module_title;
         $this->arr_view_data['module_title']    = $this->module_title;
-        $this->arr_view_data['role_type']    = $role_type;
+        $this->arr_view_data['railway_main_master']    = $railway_main_master;
         $this->arr_view_data['id']    = $id;
         $this->arr_view_data['tour_creation_id']    = $tour_creation_id;
-        $this->arr_view_data['role_type_id']    = $role_type_id;
+        // $this->arr_view_data['role_type_id']    = $role_type_id;
         $this->arr_view_data['tour_no_of_days']    = $tour_no_of_days;
-        $this->arr_view_data['supervision']    = $supervision;
         $this->arr_view_data['module_url_path'] = $this->module_url_path;
         $this->arr_view_data['middle_content']  = $this->module_view_folder."edit";
         $this->load->view('admin/layout/admin_combo',$this->arr_view_data);

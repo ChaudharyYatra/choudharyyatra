@@ -75,10 +75,10 @@
               <?php foreach($traveller_booking_info_header as $traveller_booking_info_value) 
                    {  ?>
                     <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                             <label>Tour No -</label>
                         </div>  
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <div><?php echo $traveller_booking_info_value['tour_number']; ?></div>
                         </div>
                         <div class="col-md-2">
@@ -87,10 +87,10 @@
                         <div class="col-md-3">
                             <div><?php echo $traveller_booking_info_value['customer_name']; ?></div>
                         </div>
-                        <div class="col-md-2">  
+                        <div class="col-md-3">  
                             <label>Tour Date -</label>
                         </div>
-                        <div class="col-md-5">  
+                        <div class="col-md-4">  
                             <div><?php echo date('d-m-Y', strtotime($traveller_booking_info_value['journey_date'])); ?></div>
                         </div>
                         <div class="col-md-2">
@@ -99,7 +99,11 @@
                         <div class="col-md-3">
                             <div><?php echo $traveller_booking_info_value['mobile_number']; ?></div>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-3">
+                            <label>Total Final Amount -</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div><?php echo $total_amount; ?></div>
                         </div>
                         <div class="col-md-3">
                             <label> Total Seat -</label>
@@ -108,9 +112,23 @@
                             <div><?php echo $traveller_booking_info_value['total_seat']; ?></div>
                         </div>
 
+                        <div class="col-md-3">
+                            <label>Total Paid Amount -</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div><?php echo $total_paid_amount; ?></div>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Total Remaining Amount -</label>
+                        </div>
+                        <div class="col-md-1">
+                            <div><?php echo $total_remaining_amount; ?></div>
+                        </div>
+                        
+
                         <!-- <input type="hidden" class="form-control" name="academic_year" id="academic_year" value="<?php //echo $traveller_booking_info_value['academic_year']; ?>"> -->
                         <input type="hidden" class="form-control" name="academic_year" id="academic_year" value="<?php echo $traveller_booking_info_value['academic_year']; ?>">
-                        <input type="hidden" class="form-control" name="sra_no" id="sra_no" value="<?php echo $traveller_booking_info_value['sra_no']; ?>">
+                        <input type="text" class="form-control" name="sra_no" id="sra_no" value="<?php echo $traveller_booking_info_value['sra_no']; ?>">
                         <input type="hidden" class="form-control" name="package_date_id" id="package_date_id" value="<?php echo $traveller_booking_info_value['tour_date']; ?>">
                         <input type="hidden" class="form-control" name="sra_payment_id" id="sra_payment_id" value="<?php echo $traveller_booking_info_value['sra_payment_id']; ?>">
                         <input type="hidden" class="form-control" name="package_id" id="package_id" value="<?php echo $traveller_booking_info_value['tour_number']; ?>">
@@ -194,6 +212,13 @@
                                     <input type="text" class="form-control" name="booking_tm_mobile_no" id="booking_tm_mobile_no" minlength="10" maxlength="10" placeholder="Enter mobile number" value="<?php if(!empty($booking_payment_details)){ echo $booking_payment_details['booking_tm_mobile_no'];} ?>" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" required onkeyup="validate()">
                                     <input type="hidden" class="form-control" name="inserted_id" id="inserted_id" value="">
 
+                                    <input type="hidden" class="form-control" name="academic_year" id="academic_year" value="<?php echo $academic_year; ?>">
+                                    <?php
+                                    foreach($extra_services_booking_payment_details as $extra_services_booking_payment_details_value) 
+                                    { 
+                                    ?>
+                                    <input type="hidden" class="form-control" name="extra_services_inserted_id[]" id="extra_services_inserted_id" value="<?php if(!empty($extra_services_booking_payment_details_value)){ echo $extra_services_booking_payment_details_value['id'];} ?>">
+                                    <?php }?>
                                     <input type="hidden" class="form-control" name="mobile_no" id="mobile_no" minlength="10" maxlength="10" placeholder="Enter mobile number" value="<?php if(!empty($booking_payment_details)){ echo $booking_payment_details['booking_tm_mobile_no'];} ?>" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" required onkeyup="validate()">
                                     </td>
                                 </tr>
@@ -214,18 +239,31 @@
                                     </td>
                                 </tr>
                                 
-                                <tr>
+                                <tr hidden>
                                     <th>Final Total</th>
                                     <td><input readonly type="text" class="form-control" name="final_amt" id="final_amt" placeholder="Final amount" value="<?php echo $traveller_booking_info_amt['final_amt']; ?>" required></td>
-                                    
+                                </tr>
+
+                                <tr>
+                                <th>Receipt Type</th>
+                                <td>
+                                &nbsp;&nbsp;&nbsp;<input type="radio" class="extra_services_class" name="receipt_type" id="sra" value="SRA" checked onchange='extra_service_receipt_type(this.value);'>&nbsp;&nbsp;SRA &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="radio" class="extra_services_class" name="receipt_type" id="extra_services" value="Extra Services" onchange='extra_service_receipt_type(this.value);'>&nbsp;&nbsp;Extra Services
+                                </td>
                                 </tr>
                                     
-                                <tr id="booking_amount_tr" style='display:table-row;'>
+                                <tr id="booking_amount_tr">
                                     <th>Depositing Amount</th>
                                     <td>
                                     <input type="text" class="form-control" name="next_booking_amt" id="next_booking_amt" placeholder="Enter Next booking amount" required onkeyup="final_amt_not_greater()">
+                                    <input type="text" class="form-control" name="next_extra_services_amt" id="next_extra_services_amt" placeholder="Enter ES booking amount" required onkeyup="extra_service_final_amt_greater()">
                                     </td>
                                 </tr>
+                                <!-- <tr id="extra_services_amount_tr" style='display:none;'>
+                                    <th>Depositing Amount</th>
+                                    <td>
+                                    </td>
+                                </tr> -->
                                 <tr id="payment_type_tr" style='display:contents;'>
                                     <th>Payment Type</th>
                                     <td>&nbsp;&nbsp;&nbsp;<input type="radio" name="payment_type" id="payment_type_advance" value="Advance">&nbsp;&nbsp;Advance
@@ -233,24 +271,27 @@
                                     &nbsp;&nbsp;&nbsp;<input type="radio" name="payment_type" id="payment_type_full" value="Full">&nbsp;&nbsp;Full</td>
                                     
                                 </tr>
-
-
-                                
-
-                                <tr id="pending_amount_tr" style='display:table-row;'>
+                                <tr id="pending_amount_tr">
                                     <th>Pending Amount</th>
                                     <td>
                                     <input readonly type="text" class="form-control" name="pending_amt" id="result_box" placeholder="Enter pending amount" value="<?php if(!empty($booking_payment_details)){ echo $booking_payment_details['run_pending_amt'];} ?>">
                                     <input readonly type="hidden" class="form-control" name="updatepending_amt" id="updatepending_amt" placeholder="Enter pending amount" value="<?php if(!empty($booking_payment_details)){ echo $booking_payment_details['run_pending_amt'];} ?>">
 
                                     <input readonly type="hidden" class="form-control" name="old_pending_amt" id="old_pending_amt" placeholder="Enter pending amount" value="<?php if(!empty($booking_payment_details)){ echo $booking_payment_details['pending_amt'];} ?>">
-                                    </td>
+
+                                    <!-- extra services pending amount-->
+                                    <input readonly type="text" class="form-control" name="extra_service_pending_amt" id="extra_service_result_box" placeholder="Enter ES pending amount" value="<?php echo $updating_pending_amount_result; ?>">
+                                    <input readonly type="hidden" class="form-control" name="extra_service_updatepending_amt" id="extra_service_updatepending_amt" placeholder="Enter ES pending amount" value="<?php echo $updating_pending_amount_result; ?>">
+
+                                    <input readonly type="hidden" class="form-control" name="extra_service_old_pending_amt" id="extra_service_old_pending_amt" placeholder="Enter ES pending amount" value="<?php //if(!empty($booking_payment_details)){ echo $booking_payment_details['pending_amt'];} ?>">
+                                    <!-- extra services pending amount-->
+                                </td>
                                 </tr>
 
                                 <!-- <tr id="pending_amount_tr" style='display:table-row;'>
                                     <th>Pending Amount</th>
                                     <td>
-                                    <input readonly type="text" class="form-control" name="result_box" id="result_box" placeholder="Enter pending amount" value="<?php if(!empty($booking_payment_details)){ echo $booking_payment_details['run_pending_amt'];} ?>">
+                                    <input readonly type="text" class="form-control" name="result_box" id="result_box" placeholder="Enter pending amount" value="<?php //if(!empty($booking_payment_details)){ echo $booking_payment_details['run_pending_amt'];} ?>">
                                     </td>
                                 </tr> -->
 
@@ -897,6 +938,54 @@
                             </div>
                         </div>
                     </div>
+
+                    <?php 
+                        if(!empty($extra_services_details_value)){?>
+                            <div class="" id="extra_services_div" style='display:none;'>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-8 mt-1 cash_payment_div">
+                                    <table id="" class="table table-bordered table-striped">
+                                        <thead> 
+                                        <tr>
+                                            <th>Extra Services Name</th>
+                                            <th>Extra Services Amount</th>
+                                            <th>Customer Depositing Amount</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php $i=1;?>
+                                        <?php  
+                                        foreach($extra_services_details_value as $extra_services_details_value_info) 
+                                        { 
+                                            ?>
+                                        <tr>
+                                            <td><?php echo $extra_services_details_value_info['service_name'] ?></td>
+                                            <td id="service_amt_value<?php echo $i; ?>"><?php echo $extra_services_details_value_info['services_amt'] ?></td>
+                                            <td><input type="text" class="form-control customer_sending_amt_class" name="customer_sending_amt[]" id="customer_sending_amt<?php echo $i;?>" placeholder="Enter sending amount" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1'); updateSubmitButton();"></td>
+                                        </tr>
+                                        <?php } ?>
+                                        <?php $i++; ?>
+                                        </tbody>
+                                        <h6 id="not_match_show_msg" style="color:red; text-align:center; display:none;">Please check Depositing Amount.</h6>
+                                    </table> 
+                                    </div> 
+                                    <div class="col-md-2">
+                                    </div>
+                                </div>
+                            </div>
+                            <?php  } else{ ?>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                    </div>
+                                    <div class="col-md-6 mt-1 cash_payment_div">
+                                        <h6 style="color:red; text-align:center">Extra services not added</h6>
+                                    </div>
+                                    <div class="col-md-3">
+                                    </div>
+                                </div>
+                            <?php } ?>
 
                     <div id="other_payment_mode_div">
                         <div class="card-body">

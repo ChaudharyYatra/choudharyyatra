@@ -510,6 +510,13 @@
                                     </a>
                                 </li>
 
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url(); ?>admin/discount_reason/index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Discount Reason</p>
+                                    </a>
+                                </li>
+
                             </ul>
                         </li>
 

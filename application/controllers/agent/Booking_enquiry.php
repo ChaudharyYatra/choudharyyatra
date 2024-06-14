@@ -46,11 +46,11 @@ class Booking_enquiry extends CI_Controller {
         // $this->db->where('booking_enquiry.not_interested','yes');
 
         $this->db->where('booking_enquiry.agent_id',$id);
-        $this->db->where('booking_enquiry.created_at >', $twentyFourHoursAgo);
+        // $this->db->where('booking_enquiry.created_at >', $twentyFourHoursAgo);
+        $this->db->where('booking_enquiry.enquiry_from', 'Agent');
         $this->db->join("packages", 'booking_enquiry.package_id=packages.id','left');
         $this->db->join("agent", 'booking_enquiry.agent_id=agent.id','left');
         $this->db->order_by("booking_enquiry.id", "desc");
-        // $this->db->join("domestic_followup", 'booking_enquiry.id=domestic_followup.booking_enquiry_id','left');
         $arr_data = $this->master_model->getRecords('booking_enquiry',array('booking_enquiry.is_deleted'=>'no'),$fields);
         // print_r($arr_data); die;
 
@@ -155,7 +155,7 @@ class Booking_enquiry extends CI_Controller {
              $this->form_validation->set_rules('last_name', 'last_name', 'required');
              $this->form_validation->set_rules('mobile_number', 'mobile_number', 'required');
              $this->form_validation->set_rules('gender', 'gender', 'required');
-             $this->form_validation->set_rules('wp_mobile_number', 'wp_mobile_number', 'required');
+            //  $this->form_validation->set_rules('wp_mobile_number', 'wp_mobile_number', 'required');
              
              
              if($this->form_validation->run() == TRUE)
@@ -194,7 +194,27 @@ class Booking_enquiry extends CI_Controller {
                     $arr_where     = array("id" => $iid);
                     $this->master_model->updateRecord('booking_enquiry',$arr_insert,$arr_where);
                  }else{
-                $inserted_id = $this->master_model->insertRecord('booking_enquiry',$arr_insert,true);
+                    $inserted_id = $this->master_model->insertRecord('booking_enquiry',$arr_insert,true);
+
+                    // domestic_followup_insert
+
+                    // $follow_up_time  = $this->input->post('follow_up_time'); 
+                    // $next_followup_date  = $this->input->post('next_followup_date'); 
+                    // $follow_up_comment  = $this->input->post('follow_up_comment'); 
+                    // $followup_reason  = $this->input->post('followup_reason'); 
+                    // $current_date= date('Y-m-d');
+
+                    // $domestic_followup_insert = array(
+                    //     'booking_enquiry_id' => $inserted_id,
+                    //     'follow_up_time'     => $follow_up_time,
+                    //     'next_followup_date' => $next_followup_date,
+                    //     'follow_up_comment'   => $follow_up_comment,
+                    //     'follow_up_date' => $current_date,
+                    //     'followup_reason' => $followup_reason
+                    // );
+
+                    // $domestic_followup_id = $this->master_model->insertRecord('domestic_followup', $domestic_followup_insert,true);
+
                  }
                 
                  $this->db->where('is_deleted','no');

@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Special_req_master extends CI_Controller{
+class Discount_reason extends CI_Controller{
 
 	public function __construct()
 	{
@@ -11,17 +11,17 @@ class Special_req_master extends CI_Controller{
                 redirect(base_url().'admin/login'); 
         }
 		
-        $this->module_url_path    =  base_url().$this->config->item('admin_panel_slug')."/special_req_master";
-        $this->module_title       = "Special Request Master";
-        $this->module_url_slug    = "special_req_master";
-        $this->module_view_folder = "special_req_master/";
+        $this->module_url_path    =  base_url().$this->config->item('admin_panel_slug')."/discount_reason";
+        $this->module_title       = "Discount Reason";
+        $this->module_url_slug    = "discount_reason";
+        $this->module_view_folder = "discount_reason/";
 	}
 
 	public function index()
 	{  
         $this->db->order_by('id','desc');
         $this->db->where('is_deleted','no');
-        $arr_data = $this->master_model->getRecords('special_req_master');
+        $arr_data = $this->master_model->getRecords('discount_reason');
 
         $this->arr_view_data['listing_page']    = 'yes';
         $this->arr_view_data['arr_data']        = $arr_data;
@@ -37,35 +37,30 @@ class Special_req_master extends CI_Controller{
 
         if($this->input->post('submit'))
         {
-            $this->form_validation->set_rules('service_name', 'service name', 'required');
+            $this->form_validation->set_rules('discount_reason', 'Discount Reason', 'required');
             
             if($this->form_validation->run() == TRUE)
             {
-                $service_name = $this->input->post('service_name');
-                $ledger = $this->input->post('ledger');
-
+                $discount_reason = $this->input->post('discount_reason');
                 $arr_insert = array(
-                    'service_name'   =>   $service_name,
-                    'ledger'   =>   $ledger
+                    'discount_reason'   =>   $discount_reason
                     
                 );
-                
-
-                $this->db->where('service_name',$service_name);
+                $this->db->where('discount_reason',$discount_reason);
                 $this->db->where('is_deleted','no');
                 $this->db->where('is_active','yes');
-                $hotel_type_exist_data = $this->master_model->getRecords('special_req_master');
-                if(count($hotel_type_exist_data) > 0)
+                $discount_reason_data = $this->master_model->getRecords('discount_reason');
+                if(count($discount_reason_data) > 0)
                 {
-                    $this->session->set_flashdata('error_message',"Service ".$service_name." Already Exist.");
+                    $this->session->set_flashdata('error_message',"Discount Reason ".$discount_reason." Already Exist.");
                     redirect($this->module_url_path.'/add');
                 }
                 
-                $inserted_id = $this->master_model->insertRecord('special_req_master',$arr_insert,true);
+                $inserted_id = $this->master_model->insertRecord('discount_reason',$arr_insert,true);
                                
                 if($inserted_id > 0)
                 {    
-                    $this->session->set_flashdata('success_message',"Service Added Successfully.");
+                    $this->session->set_flashdata('success_message',"Vehicle Brand Added Successfully.");
                     redirect($this->module_url_path.'/index');
                 }
                 else
@@ -76,27 +71,13 @@ class Special_req_master extends CI_Controller{
             }   
         }
 
-        $this->db->order_by('id','desc');
-        $this->db->where('is_deleted','no');
-        $ledger_data = $this->master_model->getRecords('ledgers');
-
         $this->arr_view_data['action']          = 'add';
-        $this->arr_view_data['ledger_data']        = $ledger_data;
         $this->arr_view_data['page_title']      = " Add ".$this->module_title;
         $this->arr_view_data['module_title']    = $this->module_title;
         $this->arr_view_data['module_url_path'] = $this->module_url_path;
         $this->arr_view_data['middle_content']  = $this->module_view_folder."add";
         $this->load->view('admin/layout/admin_combo',$this->arr_view_data);
     }
-
-    
-
-    
-
-    
-
-    
-   
   // Active/Inactive
   
   public function active_inactive($id,$type)
@@ -104,7 +85,7 @@ class Special_req_master extends CI_Controller{
         if(is_numeric($id) && ($type == "yes" || $type == "no") )
         {   
             $this->db->where('id',$id);
-            $arr_data = $this->master_model->getRecords('special_req_master');
+            $arr_data = $this->master_model->getRecords('discount_reason');
             if(empty($arr_data))
             {
                $this->session->set_flashdata('error_message','Invalid Selection Of Record');
@@ -122,7 +103,7 @@ class Special_req_master extends CI_Controller{
                 $arr_update['is_active'] = "yes";
             }
             
-            if($this->master_model->updateRecord('special_req_master',$arr_update,array('id' => $id)))
+            if($this->master_model->updateRecord('discount_reason',$arr_update,array('id' => $id)))
             {
                 $this->session->set_flashdata('success_message',$this->module_title.' Updated Successfully.');
             }
@@ -140,24 +121,24 @@ class Special_req_master extends CI_Controller{
 
     
     // Delete
-    
+
     public function delete($id)
     {
         
-        if(is_numeric($id))
+        if($id!='')
         {   
             $this->db->where('id',$id);
-            $arr_data = $this->master_model->getRecords('special_req_master');
+            $arr_data = $this->master_model->getRecords('discount_reason');
 
             if(empty($arr_data))
             {
                 $this->session->set_flashdata('error_message','Invalid Selection Of Record');
                 redirect($this->module_url_path);
             }
-            
+            $arr_update = array('is_deleted' => 'yes');
             $arr_where = array("id" => $id);
                  
-            if($this->master_model->deleteRecord('special_req_master',$arr_where))
+            if($this->master_model->updateRecord('discount_reason',$arr_update,$arr_where))
             {
                 $this->session->set_flashdata('success_message',$this->module_title.' Deleted Successfully.');
             }
@@ -187,32 +168,30 @@ class Special_req_master extends CI_Controller{
         if(is_numeric($id))
         {   
             $this->db->where('id',$id);
-            $arr_data = $this->master_model->getRecords('special_req_master');
+            $arr_data = $this->master_model->getRecords('discount_reason');
             if($this->input->post('submit'))
             {
-                $this->form_validation->set_rules('service_name', 'service name', 'required');
+                $this->form_validation->set_rules('discount_reason', 'Vehicle Brand', 'required');
                 
                 if($this->form_validation->run() == TRUE)
                 {
-                    $service_name = $this->input->post('service_name');
-                    $ledger = $this->input->post('ledger');
+                   $discount_reason = trim($this->input->post('discount_reason'));
                    
-                   $this->db->where('service_name',$service_name);
+                   $this->db->where('discount_reason',$discount_reason);
                     $this->db->where('id!='.$id);
                     $this->db->where('is_deleted','no');
-                    $bus_master_exist_data = $this->master_model->getRecords('special_req_master');
-                    if(count($bus_master_exist_data) > 0)
+                    $discount_reason_exist_data = $this->master_model->getRecords('discount_reason');
+                    if(count($discount_reason_exist_data) > 0)
                     {
-                        $this->session->set_flashdata('error_message',"service ".$service_name." Already Exist.");
+                        $this->session->set_flashdata('error_message',"Discount Reason ".$discount_reason." Already Exist.");
                         redirect($this->module_url_path.'/add');
                     }
 
                    $arr_update = array(
-                        'service_name' => $service_name,
-                        'ledger' => $ledger
+                        'discount_reason' => $discount_reason,
                     );
                     $arr_where     = array("id" => $id);
-                   $this->master_model->updateRecord('special_req_master ',$arr_update,$arr_where);
+                   $this->master_model->updateRecord('discount_reason',$arr_update,$arr_where);
                     if($id > 0)
                     {
                         $this->session->set_flashdata('success_message',$this->module_title." Information Updated Successfully.");
@@ -230,13 +209,8 @@ class Special_req_master extends CI_Controller{
             $this->session->set_flashdata('error_message','Invalid Selection Of Record');
             redirect($this->module_url_path.'/index');
         }
-
-        $this->db->order_by('id','desc');
-        $this->db->where('is_deleted','no');
-        $ledger_data = $this->master_model->getRecords('ledgers');
          
         $this->arr_view_data['arr_data']        = $arr_data;
-        $this->arr_view_data['ledger_data']        = $ledger_data;
         $this->arr_view_data['page_title']      = "Edit ".$this->module_title;
         $this->arr_view_data['module_title']    = $this->module_title;
         $this->arr_view_data['module_url_path'] = $this->module_url_path;

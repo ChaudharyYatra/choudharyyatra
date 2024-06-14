@@ -9,7 +9,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <a href="<?php echo $module_url_path; ?>/index"><button class="btn btn-primary">Back</button></a>
+              <a href="<?php echo $module_url_path; ?>/index"><button class="btn btn-primary">List</button></a>
               
             </ol>
           </div>
@@ -31,44 +31,32 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              
-              <form method="post" enctype="multipart/form-data" id="add_special_req_master">
-                <div class="card-body">
-                  
-                  <div class="row"> 
-                    <div class="col-md-6">
-                      <div class="form-group">
-                          <label>Service Name</label>
-                          <input type="text" class="form-control" name="service_name" id="service_name" placeholder="Enter Name" required="required">
-                      </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                          <label>Ledger</label>
-                          <select class="form-control" style="width: 100%;" name="ledger" id="ledger" required="required">
-                              <option value="">Select ledger</option>
-                              <?php
-                                  foreach($ledger_data as $ledger_info) 
-                                  { 
-                              ?>
-                                  <option value="<?php echo $ledger_info['id']; ?>"><?php echo $ledger_info['ledger_name']; ?></option>
-                              <?php } ?>
-                            </select>
+              <?php
+                   foreach($arr_data as $info) 
+                   { 
+                     ?>
+              <form method="post" enctype="multipart/form-data" id="edit_country">
+              <div class="card-body">
+                  <div class="container">
+                    <div class="row"> 
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label>Discount Reason</label>
+                            <input type="text" class="form-control" name="discount_reason" id="discount_reason" placeholder="Enter Discount Reason" required="required" value="<?php echo $info['discount_reason'] ?>">
+                          </div>
                         </div>
-                    </div>
-                    
+                    </div> 
+                    <br>
                   </div>
-                        
-                 
 
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
-					        <a href="<?php echo $module_url_path; ?>/index"><button type="button" class="btn btn-danger" >Cancel</button></a>
+					<a href="<?php echo $module_url_path; ?>/index"><button type="button" class="btn btn-danger" >Cancel</button></a>
                 </div>
               </form>
+              <?php } ?>
             </div>
             <!-- /.card -->
             </div>
@@ -84,7 +72,4 @@
     </section>
     <!-- /.content -->
   </div>
-  
-
-</body>
-</html>
+ 

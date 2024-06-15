@@ -4887,7 +4887,7 @@ $('[name^="expense_type_row"]').each(function() {
 });
 
 </script>
-<!-- tour manager module suugestion mosule validation -->
+<!-- tour manager module suugestion module validation -->
 
 <!-- suggestion in that package type wise package name display dependency start -->
 <script type='text/javascript'>

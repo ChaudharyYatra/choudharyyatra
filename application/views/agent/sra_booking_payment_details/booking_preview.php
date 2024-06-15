@@ -40,6 +40,11 @@
     .reason_css{
         background-color:rgba(0,0,0,.05) !important;
     }
+
+    .red-text {
+    color: red;
+    text-align:center;
+}
 </style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -75,10 +80,10 @@
                 <?php foreach($traveller_booking_info as $traveller_booking_info_value) 
                    {  ?>
                     <div class="row">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label>Tour No -</label>
                         </div>  
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <div><?php echo $traveller_booking_info_value['package_tour_number']; ?></div>
                         </div>
                         <div class="col-md-2">
@@ -87,10 +92,10 @@
                         <div class="col-md-3">
                             <div><?php echo $traveller_booking_info_value['customer_name']; ?></div>
                         </div>
-                        <div class="col-md-2">  
+                        <div class="col-md-3">  
                             <label>Tour Date -</label>
                         </div>
-                        <div class="col-md-5">  
+                        <div class="col-md-4">  
                             <div><?php echo date('d-m-Y', strtotime($traveller_booking_info_value['journey_date'])); ?></div>
                         </div>
                         <div class="col-md-2">
@@ -99,13 +104,29 @@
                         <div class="col-md-3">
                             <div><?php echo $traveller_booking_info_value['mobile_number']; ?></div>
                         </div>
-                        <div class="col-md-7">
-                        </div>
                         <div class="col-md-3">
+                            <label>Total Final Amount -</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div><?php echo $total_amount; ?></div>
+                        </div>
+                        <div class="col-md-2">
                             <label> Total Seat -</label>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-3">
                             <div><?php echo $traveller_booking_info_value['total_seat']; ?></div>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Total Paid Amount -</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div><?php echo $total_paid_amount; ?></div>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Total Remaining Amount -</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div><?php echo $total_remaining_amount; ?></div>
                         </div>
                         <input type="hidden" class="form-control" name="academic_year" id="academic_year" value="<?php echo $traveller_booking_info_value['academic_year']; ?>">
                         <input type="hidden" class="form-control" name="sra_no" id="sra_no" value="<?php echo $traveller_booking_info_value['sra_no']; ?>">
@@ -214,11 +235,20 @@
                                     </td>
                                 </tr>
                                 
-                                <tr>
+                                <tr hidden>
                                     <th>Final Total</th>
                                     <?php //$final_total = $total_hotel_amount + $seat_total_cost; ?>
                                     <td><input readonly type="text" class="form-control" name="final_amt" id="final_amt" placeholder="Final amount" value="<?php echo $traveller_booking_info_value['total_sra_amt']; ?>" required></td>
                                 </tr>
+
+                                <tr>
+                                <th>Receipt Type</th>
+                                <td>
+                                &nbsp;&nbsp;&nbsp;<input type="radio" name="receipt_type" id="sra" value="SRA" checked>&nbsp;&nbsp;SRA &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="radio" name="receipt_type" id="extra_services" value="Extra Services">&nbsp;&nbsp;Extra Services
+                                </td>
+                                </tr>
+
                                 <?php } ?>
                                 <tr id="payment_type_tr" style='display:contents;'>
                                     <th>Payment Type</th>
@@ -231,7 +261,7 @@
                                 <tr id="booking_amount_tr" style='display:table-row;'>
                                     <th>Depositing Amount</th>
                                     <td>
-                                    <input type="text" class="form-control" name="booking_amt" id="booking_amt" placeholder="Enter booking amount" value="<?php if(!empty($booking_payment_details)){ echo $booking_payment_details['booking_amt'];} ?>" required onkeyup="sra_booking_amt_not_greater()">
+                                    <input type="text" class="form-control" name="booking_amt" id="booking_amt" placeholder="Enter booking amount" value="<?php if(!empty($booking_payment_details)){ echo $booking_payment_details['booking_amt'];} ?>" required onkeyup="sra_booking_amt_not_greater()" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
                                     </td>
                                 </tr>
 
@@ -1243,6 +1273,7 @@
                                         </div>
                                         <div class="col-md-5 mt-2">
                                             <input readonly type="text" class="form-control" name="total_cash_amt" id="total_cash_amt" placeholder="Total Cash" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" > 
+                                            <input readonly type="hidden" class="form-control" name="total_of_two" id="total_of_two" placeholder="" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" > 
                                         </div>
                                 </div>
                             </div>
@@ -1253,7 +1284,7 @@
                                             <h6 class="text-center">Return to customer</h6>
                                         </div>
                                         <div class="col-md-6">
-                                            <h6 class="text-center">Particulars</h6>
+                                            <h6 class="text-center">Particulars</h6> 
                                         </div>
                                         <div class="col-md-6">
                                             <h6 class="text-center">Rupees</h6>
@@ -1392,6 +1423,61 @@
                             </div>
                         </div>
                         <?php } ?>
+
+                        
+                        <?php 
+                        if(!empty($extra_services_details_value)){?>
+                            <div class="" id="extra_services_div" style='display:none;'>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-8 mt-1 cash_payment_div">
+                                    <table id="" class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Extra Services Name</th>
+                                            <th>Extra Services Amount</th>
+                                            <th>Customer sending Amount</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <?php  
+                                        foreach($extra_services_details_value as $extra_services_details_value_info) 
+                                        { 
+                                            ?>
+                                        <tr>
+                                            <td><?php echo $extra_services_details_value_info['extra_services'] ?></td>
+                                            <td><?php echo $extra_services_details_value_info['services_amt'] ?></td>
+                                            <td><input type="text" name="customer_sending_amt" id="customer_sending_amt" placeholder="Enter sending amount" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"></td>
+                                        </tr>
+                                        <?php } ?>
+                                        </tbody>
+                                    </table> 
+                                    </div> 
+                                    <div class="col-md-2">
+                                    </div>
+                                </div>
+                            </div>
+                            <?php  } else{ ?>
+                                <div id="extra_services_div_msg" style='display:block;'>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                    </div>
+                                    <div class="col-md-6 mt-1 cash_payment_div">
+                                        <h6 style="color:red; text-align:center">Extra services not added</h6>
+                                    </div>
+                                    <div class="col-md-3">
+                                    </div>
+                                </div>
+                                </div>
+                            <?php } ?>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p id="send_receiver_msg"></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

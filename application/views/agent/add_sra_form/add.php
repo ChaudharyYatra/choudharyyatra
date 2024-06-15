@@ -79,8 +79,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                             <label>SRA No</label>
-                            <select class="form-control" style="width: 100%;" name="sra_no" id="add_sra_sra_no" required="required"></select>
-                            <input type="text" id="textbox" class="form-control" style="margin-top: 10px;" readonly>
+                            <select class="form-control" style="width: 100%;" name="sra_no" id="sra_no" required="required"></select>
+    <input type="text" id="textbox" class="form-control" style="margin-top: 10px;" readonly>
                             <!-- <input type="text" class="form-control" name="sra_no" id="sra_no" placeholder="Enter SRA No" required="required"> -->
                             <input type="hidden" class="form-control" name="firstly_payment" id="firstly_payment" required="required">
                             </div>

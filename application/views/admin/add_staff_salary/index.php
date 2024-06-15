@@ -9,8 +9,8 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <a href="<?php echo $module_url_path; ?>/add"><button class="btn btn-primary">Add</button></a>
-              
+                <a href="<?php echo $module_url_path; ?>/add"><button class="btn btn-primary">Add</button>
+                </a>
             </ol>
           </div>
         </div>
@@ -18,6 +18,7 @@
     </section>
 
     <!-- Main content -->
+    
     <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -30,15 +31,21 @@
                   <?php  if(count($arr_data) > 0 ) 
               { ?>
                 <table id="example1" class="table table-bordered table-striped">
+                
                   <thead>
                   <tr>
                     <th>SN</th>
-                    <th>Discount Reason</th>
+                    <th>Start Date</th>
+                    <th>Staff Role</th>
+                    <!-- <th>Staff Name</th> -->
+                    <th>Per Day Salary</th>
+                    <th>end Date</th>
                     <th>Is Active?</th>
                     <th>Action</th>
                   </tr>
                   </thead>
                   <tbody>
+
                   <?php  
                   
                    $i=1; 
@@ -47,21 +54,24 @@
                      ?>
                   <tr>
                     <td><?php echo $i; ?></td>
-                    <td><?php echo $info['discount_reason'] ?></td>
+                    <td><?php echo date("d-m-Y",strtotime($info['start_date'])); ?></td>
+                    <td><?php echo $info['role_name'] ?></td>
+                    <!-- <td><?php //echo $info['supervision_name'] ?></td> -->
+                    <td><?php echo $info['daywise_salary'] ?></td>
+                    <td><?php echo date("d-m-Y",strtotime($info['end_date'])); ?></td>
                     <td>
                         <?php 
-                        if($info['is_active']=='yes')
+                        if($info['add_staff_is_active']=='yes')
                           {
                         ?>
-                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php echo $info['id'].'/'.$info['is_active']; ?>"><button class="btn btn-success btn-sm">YES</button></a>
+                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php echo $info['add_staff_id'].'/'.$info['add_staff_is_active']; ?>"><button class="btn btn-success btn-sm">YES</button></a>
                         <?php } else { ?>
-                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php echo $info['id'].'/'.$info['is_active']; ?>"><button class="btn btn-danger btn-sm">NO</button> </a>
+                        <a href="<?php echo $module_url_path ?>/active_inactive/<?php echo $info['add_staff_id'].'/'.$info['add_staff_is_active']; ?>"><button class="btn btn-danger btn-sm">NO</button> </a>
                         <?php } ?>
                     </td>
                     <td>
-                          <a href="<?php echo $module_url_path;?>/edit/<?php echo $info['id'];  ?>" title="Edit"><i class="fa fa-edit" aria-hidden="true" style="color:blue";></i></a> &nbsp;/&nbsp;
-                          <a onclick="return confirm('Are You Sure You Want To Delete This Record?')" href="<?php echo $module_url_path;?>/delete/<?php echo $info['id']; ?>" title="Delete"><i class="fa fa-trash" aria-hidden="true" style="color:red";></i></a>
-                          
+                          <a href="<?php echo $module_url_path;?>/edit/<?php echo $info['add_staff_id'];?>/<?php echo $info['role_type'];?>" title="Edit"><i class="fa fa-edit" aria-hidden="true" style="color:blue";></i></a> &nbsp;/&nbsp;
+                          <a onclick="return confirm('Are You Sure You Want To Delete This Record?')" href="<?php echo $module_url_path;?>/delete/<?php echo $info['add_staff_id']; ?>" title="Delete"><i class="fa fa-trash" aria-hidden="true" style="color:red";></i></a>
                     </td>
                   </tr>
                   <?php $i++; } ?>
@@ -84,7 +94,6 @@
       </div>
       <!-- /.container-fluid -->
     </section>
-
     <!-- /.content -->
   </div>
   

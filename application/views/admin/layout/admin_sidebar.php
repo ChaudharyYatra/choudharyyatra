@@ -510,13 +510,6 @@
                                     </a>
                                 </li>
 
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url(); ?>admin/discount_reason/index" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Discount Reason</p>
-                                    </a>
-                                </li>
-
                             </ul>
                         </li>
 
@@ -688,6 +681,20 @@
                                     <a href="<?php echo base_url(); ?>admin/train_master/index" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Train Master</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url(); ?>admin/railway_main_master/index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Railway Main Master</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url(); ?>admin/add_staff_salary/index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Add Staff Salary</p>
                                     </a>
                                 </li>
 

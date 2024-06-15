@@ -254,7 +254,7 @@
                                 <tr>
                                     <th>Amount Receiving Mode</th>
                                     <td>
-                                    <select class="select_css" name="select_transaction" id="select_transaction" onchange='account_details(this.value); 
+                                    <select class="select_css" name="select_transaction" id="select_transaction" onchange='booking_account_details(this.value); 
                                         this.blur();'required="required">
                                         <option value="">Select Transaction</option>
                                         <option value="CASH" <?php if(!empty($booking_payment_details['select_transaction'])){if("CASH" == $booking_payment_details['select_transaction']) {echo 'selected';}}?>>CASH</option>
@@ -939,7 +939,7 @@
                                             =
                                         </div>
                                         <div class="col-md-5 mt-2">
-                                            <input readonly type="text" value="" class="form-control" name="total_cash_amt" id="total_cash_amt" placeholder="Total Cash" value="<?php if(!empty($booking_payment_details)){ echo $booking_payment_details['total_cash_amt'];}?>" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" > 
+                                            <input readonly type="text" value="" class="form-control" name="total_cash_amt" id="total_cash_amt" placeholder="Total Cash" value="<?php if(!empty($booking_payment_details)){ echo $booking_payment_details['total_cash_amt'];}?>" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" >
                                         </div>
                                 </div>
                             </div>
@@ -1244,6 +1244,7 @@
                                         </div>
                                         <div class="col-md-5 mt-2">
                                             <input readonly type="text" class="form-control" name="total_cash_amt" id="total_cash_amt" placeholder="Total Cash" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" > 
+                                            <input readonly type="text" class="form-control" name="total_of_two" id="total_of_two" placeholder="" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" > 
                                         </div>
                                 </div>
                             </div>

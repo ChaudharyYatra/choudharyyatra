@@ -45,21 +45,6 @@
                         <input type="text" class="form-control" name="service_name" id="service_name" placeholder="Enter Name" required="required" value="<?php echo $info['service_name'] ?>">
                       </div>
                     </div>
-
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Academic Year</label>
-                        <select class="form-control" style="width: 100%;" name="ledger" id="ledger" required="required">
-                          <option value="">Select Year</option>
-                          <?php
-                              foreach($ledger_data as $ledger_info) 
-                              { 
-                          ?>
-                              <option value="<?php echo $ledger_info['id']; ?>" <?php if($ledger_info['id']==$info['ledger']) { echo "selected"; } ?>><?php echo $ledger_info['ledger_name']; ?></option>
-                          <?php } ?>
-                        </select>
-                      </div>
-                    </div>
                     
                   </div> 
                   <br>

@@ -46,8 +46,10 @@
                   <thead>
                   <tr>
                     <th>SN</th>
+                    <th>Start Date</th>
                     <th>Vehicle Role</th>
                     <th>Per Km Rate</th>
+                    <th>end Date</th>
                     <th>Is Active?</th>
                     <th>Action</th>
                   </tr>
@@ -63,8 +65,10 @@
                   <tr>
                   
                     <td><?php echo $i; ?></td>
+                    <td><?php echo date("d-m-Y",strtotime($info['start_date'])); ?></td>
                     <td><?php echo $info['vehicle_type_name'] ?></td>
                     <td><?php echo $info['per_km_rate'] ?></td>
+                    <td><?php echo date("d-m-Y",strtotime($info['end_date'])); ?></td>
                     <td>
                         <?php 
                         if($info['vehicle_cost_adding_is_active']=='yes')

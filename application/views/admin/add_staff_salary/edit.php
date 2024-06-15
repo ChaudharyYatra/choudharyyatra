@@ -8,16 +8,8 @@
             <h1><?php echo $module_title; ?></h1>
           </div>
           <div class="col-sm-6">
-            <?php
-              // Assuming $tour_creation_id and $tour_no_of_days are already defined
-
-              // Encode the IDs
-              $encoded_tour_creation_id = rtrim(base64_encode($tour_creation_id), '=');
-              $encoded_tour_no_of_days = rtrim(base64_encode($tour_no_of_days), '=');
-            ?>
-
             <ol class="breadcrumb float-sm-right">
-                <a href="<?php echo $module_url_path; ?>/index/<?php echo $encoded_tour_creation_id; ?>/<?php echo $encoded_tour_no_of_days; ?>">
+                <a href="<?php echo $module_url_path; ?>/index">
                     <button class="btn btn-primary">Back</button>
                 </a>
             </ol>
@@ -41,7 +33,7 @@
               <!-- /.card-header -->
               <!-- form start -->
               
-              <form method="post" enctype="multipart/form-data" id="edit_vehicle_cost_adding">
+              <form method="post" enctype="multipart/form-data" id="edit_staff">
                 <div class="card-body">
                 <div class="row">
                 <div class="col-md-6">
@@ -56,12 +48,13 @@
                         <colgroup>
                             <col span="1" style="width: 25%;">
                             <col span="1" style="width: 25%;">
+                            <col span="1" style="width: 25%;">
                         </colgroup>
                         <thead>
                             <tr>
                                 <th class="hotel_room_rate">Start Date</th>
-                                <th class="hotel_room_rate">Vehicle Type</th>
-                                <th class="hotel_room_rate">Per Km Rate</th>
+                                <th class="hotel_room_rate">Staff Role</th>
+                                <th class="hotel_room_rate">Per Day Salary</th>
                                 <th class="hotel_room_rate">End Date</th>
                             </tr>
                         </thead>
@@ -75,19 +68,31 @@
                                   <input type="date" class="form-control" name="start_date" id="start_date" value="<?php echo $info['start_date']; ?>" placeholder="Enter start date" required="required">
                                 </td>
                                 <td class="hotel_room_rate">
-                                <select class="form-control" name="vehicle_type" id="vehicle_type" required="required">
-                                  <option value="">Select vehicle type</option>
+                                <select class="form-control" name="role_type" id="role_type" required="required">
+                                  <option value="">Select role type</option>
                                   <?php
-                                    foreach($vehicle_type as $vehicle_type_info) 
+                                    foreach($role_type as $role_type_info) 
                                     { 
                                   ?>
-                                    <option value="<?php echo $vehicle_type_info['id'];?>" <?php if($vehicle_type_info['id']==$info['vehicle_type']) { echo "selected"; }?>><?php echo $vehicle_type_info['vehicle_type_name']; ?></option>
+                                    <option value="<?php echo $role_type_info['id'];?>" <?php if($role_type_info['id']==$info['role_type']) { echo "selected"; }?>><?php echo $role_type_info['role_name']; ?></option>
                                   <?php } ?>
                                 </select>
                                 </td>
+                                <!-- <td class="hotel_room_rate">
+                                  <select class="select_css row_set1 name" name="staff_name" id="staff_name" required="required">
+                                    <option value="">select name</option>
+                                    <?php
+                                        //foreach($supervision as $supervision_info) 
+                                        //{ 
+                                    ?>
+                                        <option value="<?php //echo $supervision_info['id']; ?>" <?php //if($supervision_info['id']==$info['staff_name']) { echo "selected"; } ?>><?php //echo $supervision_info['supervision_name']; ?></option>
+                                    <?php //} ?>
+                                  </select>
+                                </td> -->
                                 <td class="hotel_room_rate">
-                                <input type="text" class="form-control" name="per_km_rate" id="per_km_rate" value="<?php echo $info['per_km_rate']; ?>" placeholder="Enter per km rate" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" required="required">
+                                <input type="text" class="form-control" name="daywise_salary" id="daywise_salary" value="<?php echo $info['daywise_salary']; ?>" placeholder="Enter daywise salary" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" required="required">
                                 </td>
+
                                 <td class="hotel_room_rate">
                                   <input type="date" class="form-control" name="end_date" id="end_date" value="<?php echo $info['end_date']; ?>" placeholder="Enter end date">
                                 </td>
@@ -98,9 +103,8 @@
                     </table>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  
                   <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
-					        <a href="<?php echo $module_url_path; ?>/index/<?php echo $encoded_tour_creation_id; ?>/<?php echo $encoded_tour_no_of_days; ?>"><button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button></a>
+					        <a href="<?php echo $module_url_path; ?>/index"><button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button></a>
                 </div>
               </form>
               

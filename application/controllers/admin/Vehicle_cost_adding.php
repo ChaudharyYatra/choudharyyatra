@@ -74,6 +74,8 @@ class Vehicle_cost_adding extends CI_Controller{
 
                 $vehicle_type = $this->input->post('vehicle_type');
                 $per_km_rate = $this->input->post('per_km_rate');
+                $start_date = $this->input->post('start_date');
+                $end_date = $this->input->post('end_date');
 
                 $count = count($per_km_rate);
                 for($i=0;$i<$count;$i++)
@@ -83,6 +85,8 @@ class Vehicle_cost_adding extends CI_Controller{
                         'tour_no_of_days'   =>   $tour_days,
                         'vehicle_type'   =>   $_POST["vehicle_type"][$i],
                         'per_km_rate'   =>   $_POST["per_km_rate"][$i],
+                        'start_date'   =>   $_POST["start_date"][$i],
+                        'end_date'   =>   $_POST["end_date"][$i]
                     ); 
                     $inserted_id = $this->master_model->insertRecord('vehicle_cost_adding',$arr_insert,true);
                 }
@@ -232,10 +236,14 @@ class Vehicle_cost_adding extends CI_Controller{
                     
                 $vehicle_type = $this->input->post('vehicle_type');
                 $per_km_rate = $this->input->post('per_km_rate');
+                $start_date = $this->input->post('start_date');
+                $end_date = $this->input->post('end_date');
 
                    $arr_update = array(
                         'vehicle_type'   =>   $vehicle_type,
-                        'per_km_rate'   =>  $per_km_rate
+                        'per_km_rate'   =>  $per_km_rate,
+                        'start_date'   =>  $start_date,
+                        'end_date'   =>  $end_date
                     );
                      $arr_where     = array("id" => $id);
                      $this->master_model->updateRecord('vehicle_cost_adding',$arr_update,$arr_where);

@@ -55,8 +55,8 @@ class Sra_partial_payment_details extends CI_Controller {
         $this->db->join("sra_extra_services", 'sra_payment.id=sra_extra_services.sra_payment_id','left');
         $traveller_booking_info_amt = $this->master_model->getRecord('sra_booking_payment_details',array('sra_booking_payment_details.is_deleted'=>'no'),$fields);
 
-        print_r($traveller_booking_info_amt);
-        die;
+        // print_r($traveller_booking_info_amt);
+        // die;
         $fields = "sra_payment.*,sra_booking_payment_details.run_pending_amt";
         $this->db->where('sra_booking_payment_details.is_deleted','no');
         $this->db->where('sra_payment.is_active','yes');
